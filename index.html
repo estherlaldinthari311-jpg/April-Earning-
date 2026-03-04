@@ -32,11 +32,14 @@
 
     <section id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-6">
         <div class="glass p-8 w-full max-w-sm shadow-2xl border-t-2 border-pink-500/20">
-            <h1 id="auth-title" class="text-4xl font-black mb-6 text-center">Login</h1>
+            <h1 id="auth-title" class="text-4xl font-black mb-6 text-center text-white">Login</h1>
             <div class="space-y-4">
-                <input type="email" id="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                <input type="text" id="refBy" placeholder="Refer Code (Optional)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none hidden">
+                <input type="email" id="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white">
+                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white">
+                <div id="ref-field" class="hidden">
+                   <p class="text-[9px] text-pink-500 mb-1 font-bold uppercase ml-2">Invited By (Referral)</p>
+                   <input type="text" id="refBy" readonly class="w-full bg-white/10 border border-white/10 p-4 rounded-2xl outline-none text-gray-400">
+                </div>
                 <button onclick="handleAuth()" id="auth-btn" class="w-full april-gradient py-4 rounded-2xl font-bold text-lg active:scale-95 transition-all">LOGIN</button>
                 <div class="text-center mt-4">
                     <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-[10px] text-pink-500 font-black uppercase tracking-widest">Create New Account</button>
@@ -60,12 +63,15 @@
             <button onclick="dailyClaim()" id="claim-24-btn" class="w-full bg-white/10 border border-white/10 py-3 rounded-2xl font-black text-[10px] uppercase mb-6">Daily Check-in (₹5.00)</button>
 
             <div class="glass p-4 mb-6 border-dashed border-2 border-pink-500/30">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-2">Your Referral Code</p>
+                <p class="text-[10px] font-black text-gray-500 uppercase mb-2">Share & Earn ₹3.00 Per Invite</p>
                 <div class="flex gap-2">
-                    <input type="text" id="my-ref-code" readonly class="bg-white/5 p-2 rounded-lg text-xs flex-1 border border-white/10 outline-none">
-                    <button onclick="copyRef()" class="bg-pink-600 px-4 py-2 rounded-lg text-[10px] font-bold">COPY</button>
+                    <input type="text" id="share-link" readonly class="bg-white/5 p-2 rounded-lg text-[9px] flex-1 border border-white/10 outline-none text-gray-400">
+                    <button onclick="copyLink()" class="bg-pink-600 px-4 py-2 rounded-lg text-[10px] font-bold">COPY LINK</button>
                 </div>
-                <p class="text-[9px] text-gray-400 mt-2 text-center">Invites: <span id="inv-count" class="text-pink-500 font-bold">0</span></p>
+                <div class="flex justify-around mt-4">
+                    <div class="text-center"><p class="text-[9px] text-gray-500 uppercase">Total Invites</p><p id="inv-count" class="font-black text-pink-500">0</p></div>
+                    <div class="text-center"><p class="text-[9px] text-gray-500 uppercase">Refer Income</p><p id="ref-income" class="font-black text-green-500">₹0</p></div>
+                </div>
             </div>
 
             <div class="space-y-4">
@@ -73,44 +79,32 @@
                     <div><p class="text-sm font-bold">Watch Video Ads</p><p class="text-[10px] text-gray-500">Earn ₹0.35</p></div>
                     <button onclick="startVideoTask()" id="vid-watch-btn" class="bg-orange-600 text-[9px] font-black px-4 py-2 rounded-lg">WATCH</button>
                 </div>
-
                 <div class="glass p-4 flex justify-between items-center border-l-4 border-blue-600">
                     <div><p class="text-sm font-bold">Instagram Task</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
                     <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" onclick="enableVerify('ig')" class="bg-blue-600 text-[9px] font-black px-4 py-2 rounded-lg">JOIN</a>
-                    <button id="ig-btn" onclick="verifySocial('ig', 2)" class="hidden bg-pink-600 text-[9px] font-black px-4 py-2 rounded-lg">VERIFY</button>
-                </div>
-
-                <div class="glass p-4 flex justify-between items-center border-l-4 border-sky-500">
-                    <div><p class="text-sm font-bold">Telegram Task</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
-                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" onclick="enableVerify('tg')" class="bg-sky-500 text-[9px] font-black px-4 py-2 rounded-lg">JOIN</a>
-                    <button id="tg-btn" onclick="verifySocial('tg', 2)" class="hidden bg-pink-600 text-[9px] font-black px-4 py-2 rounded-lg">VERIFY</button>
+                    <button id="ig-btn" onclick="verifySocial('ig', 2)" class="hidden bg-pink-600 text-[9px] font-black px-4 py-2 rounded-lg ml-2">VERIFY</button>
                 </div>
             </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section p-6 pt-12">
             <h2 class="text-3xl font-black mb-4">Withdraw</h2>
-            
-            <div class="glass p-6 mb-6 space-y-4">
+            <div class="glass p-6 mb-6 space-y-4 text-white">
                 <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
                 <input type="number" id="w-amt" placeholder="Amount (30 - 130)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
                 <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black">WITHDRAW NOW</button>
             </div>
-
-            <div class="ad-container"><div id="container-a37aaa93ed45ea8b66f8fb60e58eb230"></div></div>
-
-            <h3 class="text-sm font-black text-gray-500 uppercase mb-4">Withdrawal History</h3>
-            <div id="history-list" class="space-y-2">
-                </div>
+            <h3 class="text-sm font-black text-gray-500 uppercase mb-4 ml-1">Withdrawal History</h3>
+            <div id="history-list" class="space-y-2"></div>
         </section>
 
         <section id="spin-tab" class="hidden-section p-6 text-center">
              <h2 class="text-3xl font-black mb-10 mt-12">Lucky Spin</h2>
              <button onclick="startSpin()" id="spin-btn" class="april-gradient w-48 h-48 rounded-full border-8 border-white/10 font-black text-2xl shadow-2xl">SPIN</button>
-             <p class="mt-6 text-xs text-pink-500">Need 10 Invites for 1 Spin</p>
+             <p class="mt-6 text-xs text-pink-500">Cost: 10 Invites</p>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-3xl border-t border-white/5 p-4 flex justify-around items-center z-50">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-3xl border-t border-white/5 p-4 flex justify-around items-center z-50 rounded-t-[30px]">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home text-2xl"></i></button>
             <button onclick="showTab('spin-tab')" id="n-spin" class="text-gray-600"><i class="fas fa-sync-alt text-2xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-wallet text-2xl"></i></button>
@@ -133,6 +127,16 @@
         let currentUserEmail = "";
         let userData = { balance: 0, invites: 0, last24h: 0, lastWithdrawDate: "" };
 
+        // --- URL PARSER FOR REFERRAL ---
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const referCode = params.get('ref');
+            if(referCode) {
+                toggleAuthMode();
+                document.getElementById('refBy').value = referCode;
+            }
+        };
+
         function playSfx(type) {
             const audio = document.getElementById(type === 'click' ? 'click-sound' : 'success-sound');
             audio.currentTime = 0;
@@ -144,8 +148,8 @@
             isLoginMode = !isLoginMode;
             document.getElementById('auth-title').innerText = isLoginMode ? "Login" : "Register";
             document.getElementById('auth-btn').innerText = isLoginMode ? "LOGIN" : "CREATE ACCOUNT";
-            document.getElementById('refBy').classList.toggle('hidden', isLoginMode);
-            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Create New Account" : "Already have an account? Login";
+            document.getElementById('ref-field').classList.toggle('hidden', isLoginMode);
+            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Create New Account" : "Back to Login";
         }
 
         function handleAuth() {
@@ -163,19 +167,33 @@
                     if (!snapshot.exists() || snapshot.val().password !== passInput) return alert("Wrong credentials!");
                 } else {
                     if (snapshot.exists()) return alert("User already exists!");
+                    
                     userRef.set({ password: passInput, balance: 0, invites: 0, last24h: 0, lastWithdrawDate: "" });
-                    if (refBy) {
+                    
+                    // REWARD REFERRER (₹3.00 Reward)
+                    if (refBy && refBy !== currentUserEmail) {
                         database.ref('users/' + refBy).once('value', s => {
-                            if(s.exists()) database.ref('users/' + refBy).update({ invites: s.val().invites + 1 });
+                            if(s.exists()) {
+                                const oldData = s.val();
+                                database.ref('users/' + refBy).update({ 
+                                    invites: (oldData.invites || 0) + 1,
+                                    balance: (oldData.balance || 0) + 3.00 
+                                });
+                            }
                         });
                     }
                 }
-                document.getElementById('auth-page').style.display = 'none';
-                document.getElementById('main-app').classList.remove('hidden-section');
-                document.getElementById('user-display').innerText = emailInput.split('@')[0];
-                document.getElementById('my-ref-code').value = currentUserEmail;
-                syncData();
+                enterApp(emailInput);
             });
+        }
+
+        function enterApp(email) {
+            document.getElementById('auth-page').style.display = 'none';
+            document.getElementById('main-app').classList.remove('hidden-section');
+            document.getElementById('user-display').innerText = email.split('@')[0];
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            document.getElementById('share-link').value = cleanUrl + "?ref=" + currentUserEmail;
+            syncData();
         }
 
         function syncData() {
@@ -183,7 +201,8 @@
                 if(snapshot.exists()) {
                     userData = snapshot.val();
                     document.getElementById('balance').innerText = userData.balance.toFixed(2);
-                    document.getElementById('inv-count').innerText = userData.invites;
+                    document.getElementById('inv-count').innerText = userData.invites || 0;
+                    document.getElementById('ref-income').innerText = "₹" + ((userData.invites || 0) * 3);
                 }
             });
             
@@ -192,8 +211,8 @@
                 list.innerHTML = "";
                 snapshot.forEach(child => {
                     const data = child.val();
-                    list.innerHTML += `<div class="glass p-3 flex justify-between text-[10px]">
-                        <span>${data.date}</span><span>₹${data.amount}</span><span class="text-orange-500">${data.status}</span>
+                    list.innerHTML += `<div class="glass p-3 flex justify-between text-[10px] border border-white/5">
+                        <span class="text-gray-400">${data.date.split(',')[0]}</span><span class="font-bold">₹${data.amount}</span><span class="${data.status === 'Pending' ? 'text-orange-500' : 'text-green-500'}">${data.status}</span>
                     </div>`;
                 });
             });
@@ -206,9 +225,9 @@
             btn.innerText = "WAITING...";
             btn.classList.add('btn-disabled');
             setTimeout(() => {
-                database.ref('users/' + currentUserEmail).update({ balance: userData.balance + 0.35 });
+                database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + 0.35 });
                 playSfx('success');
-                btn.innerText = "DONE ✓";
+                btn.innerText = "WATCHED ✓";
                 btn.classList.remove('btn-disabled');
             }, 20000);
         }
@@ -220,7 +239,7 @@
 
         function verifySocial(id, amt) {
             playSfx('success');
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + amt });
+            database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + amt });
             document.getElementById(id + '-btn').innerText = "ADDED ✓";
             document.getElementById(id + '-btn').disabled = true;
         }
@@ -228,9 +247,9 @@
         function dailyClaim() {
             const now = Date.now();
             if (now - (userData.last24h || 0) < 86400000) return alert("Come back tomorrow!");
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + 5, last24h: now });
+            database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + 5, last24h: now });
             playSfx('success');
-            alert("₹5.00 Added!");
+            alert("₹5.00 Claimed!");
         }
 
         function handleWithdraw() {
@@ -238,38 +257,31 @@
             const upi = document.getElementById('upi').value;
             const today = new Date().toLocaleDateString();
 
-            if (userData.lastWithdrawDate === today) return alert("Only 1 withdrawal per day!");
-            if (amt < 30 || amt > 130) return alert("Amount must be between 30 and 130");
-            if (amt > userData.balance) return alert("Insufficient balance");
+            if (userData.lastWithdrawDate === today) return alert("Limit: 1 withdraw per day!");
+            if (amt < 30 || amt > 130) return alert("Enter 30 - 130");
+            if (amt > userData.balance) return alert("Not enough balance!");
 
-            database.ref('users/' + currentUserEmail).update({ 
-                balance: userData.balance - amt, 
-                lastWithdrawDate: today 
-            });
-            database.ref('withdrawals').push({
-                user: currentUserEmail,
-                amount: amt,
-                upi: upi,
-                status: "Pending",
-                date: new Date().toLocaleString()
-            });
+            database.ref('users/' + currentUserEmail).update({ balance: userData.balance - amt, lastWithdrawDate: today });
+            database.ref('withdrawals').push({ user: currentUserEmail, amount: amt, upi: upi, status: "Pending", date: new Date().toLocaleString() });
             playSfx('success');
-            alert("Withdrawal Requested!");
+            alert("Requested!");
         }
 
         function startSpin() {
-            if (userData.invites < 10) return alert("Need 10 invites!");
+            if ((userData.invites || 0) < 10) return alert("Need 10 invites!");
+            playSfx('click');
             const results = [1,5,3,2,1,7,8,3,2,6,0,5,10];
             const win = results[Math.floor(Math.random() * results.length)];
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + win, invites: userData.invites - 10 });
+            database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + win, invites: userData.invites - 10 });
             alert("You won ₹" + win);
         }
 
-        function copyRef() {
-            const el = document.getElementById('my-ref-code');
+        function copyLink() {
+            const el = document.getElementById('share-link');
             el.select();
             document.execCommand('copy');
-            alert("Referral Code Copied!");
+            playSfx('success');
+            alert("Referral Link Copied!");
         }
 
         function showTab(id) {
@@ -284,5 +296,5 @@
         }
     </script>
 </body>
-                        </html>
-                                          
+    </html>
+                                                                                     
