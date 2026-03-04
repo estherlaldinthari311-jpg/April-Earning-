@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>April - Premium Earning</title>
+    <title>April - Premium Ads Earning</title>
     
+    <script src="https://pl28844293.effectivegatecpm.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,19 +32,25 @@
     <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3" preload="auto"></audio>
 
     <div id="loader">
-        <div class="w-16 h-16 rounded-2xl april-gradient flex items-center justify-center mb-4"><span class="text-3xl font-black italic">A</span></div>
+        <div class="w-16 h-16 rounded-2xl april-gradient flex items-center justify-center mb-4 shadow-xl"><span class="text-3xl font-black italic">A</span></div>
         <h2 class="text-lg font-bold tracking-[0.3em] text-pink-500">APRIL</h2>
         <div class="bar-bg"><div class="bar-fill"></div></div>
     </div>
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-6">
-        <div class="glass p-10 w-full max-w-sm shadow-2xl">
+        <div class="glass p-10 w-full max-w-sm shadow-2xl border-t-2 border-pink-500/20">
             <h1 class="text-5xl font-extrabold mb-10 text-center april-gradient bg-clip-text text-transparent">April</h1>
             <div class="space-y-4">
-                <input type="email" id="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                <button onclick="handleAuth()" id="auth-btn" class="w-full april-gradient py-4 rounded-2xl font-bold text-lg shadow-xl">Login</button>
-                <button onclick="toggleAuth()" id="toggle-link" class="w-full text-xs text-pink-500 font-bold uppercase mt-4">Create Account</button>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-4 top-4 text-gray-500"></i>
+                    <input type="email" id="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded-2xl outline-none focus:border-pink-500">
+                </div>
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-4 top-4 text-gray-500"></i>
+                    <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded-2xl outline-none focus:border-pink-500">
+                </div>
+                <button onclick="handleAuth()" id="auth-btn" class="w-full april-gradient py-4 rounded-2xl font-bold text-lg shadow-xl shadow-pink-500/20 active:scale-95 transition-all">Login / Register</button>
+                <p class="text-[10px] text-center text-gray-500 uppercase tracking-widest font-bold">Secure Cloud Login</p>
             </div>
         </div>
     </section>
@@ -50,31 +58,24 @@
     <main id="main-app" class="hidden-section min-h-screen pb-32">
         <section id="home-tab" class="p-6">
             <div class="flex justify-between items-center py-4 mb-4">
-                <div><p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Premium Member</p><h3 id="user-display" class="text-2xl font-black">User</h3></div>
-                <div class="w-12 h-12 rounded-2xl glass flex items-center justify-center text-pink-500"><i class="fas fa-gem text-xl"></i></div>
+                <div><p class="text-gray-500 text-[10px] font-bold uppercase">Member</p><h3 id="user-display" class="text-2xl font-black">User</h3></div>
+                <div class="w-12 h-12 rounded-2xl glass flex items-center justify-center text-pink-500 shadow-lg"><i class="fas fa-crown"></i></div>
             </div>
 
             <div class="glass p-4 mb-6 border-l-4 border-pink-500 bg-pink-500/5">
-                <p id="global-notice" class="text-xs text-gray-300 font-medium">Fetching admin updates...</p>
+                <p id="global-notice" class="text-xs text-gray-300">Checking for updates...</p>
             </div>
 
-            <div class="glass p-8 mb-8 relative overflow-hidden bg-gradient-to-br from-white/5 to-transparent">
-                <p class="text-gray-400 text-xs font-bold uppercase mb-2">My Balance</p>
+            <div class="glass p-8 mb-8 relative overflow-hidden shadow-2xl">
+                <p class="text-gray-400 text-[10px] font-black uppercase mb-1 tracking-widest">My Balance</p>
                 <h2 class="text-5xl font-black">₹<span id="balance">0.00</span></h2>
             </div>
 
             <div class="space-y-4">
-                <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Daily Tasks</h4>
-                
-                <div class="glass p-5 flex justify-between items-center">
-                    <div><p class="text-sm font-bold">Daily Check-in</p><p class="text-[10px] text-gray-500">Reward: ₹0.13</p></div>
-                    <button onclick="claimDaily()" class="april-gradient text-[10px] font-black px-6 py-2.5 rounded-xl">CLAIM</button>
-                </div>
-
                 <div class="glass p-5 flex justify-between items-center border-l-4 border-blue-500">
                     <div><p class="text-sm font-bold">Follow Instagram</p><p class="text-[10px] text-gray-500">Reward: ₹2.00</p></div>
                     <div class="flex flex-col gap-1">
-                        <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" onclick="enableVerify('ig')" class="bg-blue-500 text-[9px] font-black px-4 py-1.5 rounded-lg text-center">FOLLOW</a>
+                        <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" onclick="enableVerify('ig')" class="bg-blue-500 text-[9px] font-black px-4 py-1.5 rounded-lg text-center">OPEN</a>
                         <button onclick="verifySocial('ig', 2)" id="ig-btn" class="bg-white/10 text-[9px] font-black px-4 py-1.5 rounded-lg btn-disabled">VERIFY</button>
                     </div>
                 </div>
@@ -87,42 +88,38 @@
                     </div>
                 </div>
 
-                <div class="glass p-5">
-                    <p class="text-xs font-bold mb-3 uppercase tracking-wider">Refer & Earn ₹5.00</p>
+                <div class="glass p-5 border border-white/5">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase mb-3">Your Referral Link</p>
                     <div class="flex gap-2 mb-3">
-                        <input type="text" id="refer-link" readonly class="flex-1 bg-black/40 p-3 rounded-xl text-[10px] outline-none text-pink-400 font-mono" value="Link generating...">
+                        <input type="text" id="refer-link" readonly class="flex-1 bg-black/40 p-3 rounded-xl text-[10px] outline-none text-pink-400" value="Generating...">
                         <button onclick="copyRefer()" class="bg-white/10 px-4 rounded-xl text-[10px] font-bold">COPY</button>
                     </div>
-                    <div class="flex justify-between items-center px-1">
-                        <p class="text-[10px] text-gray-500 font-bold">Total Refers: <span id="ref-count-display" class="text-white">0</span></p>
-                        <button onclick="inviteFriend()" class="text-[10px] text-pink-500 font-black">TEST REFER</button>
-                    </div>
+                    <p class="text-[10px] text-center text-gray-500 uppercase">Total Refers: <span id="ref-count-display" class="text-white">0</span></p>
                 </div>
             </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section p-6 pt-12">
-            <h2 class="text-4xl font-black mb-6 tracking-tighter">Withdraw</h2>
-            <div class="glass p-8 mb-6 border-pink-500/20 shadow-2xl shadow-pink-500/5">
-                <p class="text-[10px] text-gray-500 font-bold uppercase mb-6 text-center tracking-[0.2em]">Required Invites: <span id="inv-count" class="text-pink-500">0</span>/5</p>
+            <h2 class="text-4xl font-black mb-6">Withdraw</h2>
+            <div class="glass p-8 mb-6">
+                <p class="text-[10px] text-gray-500 font-black text-center mb-6">INVITE PROGRESS: <span id="inv-count" class="text-pink-500">0</span>/5</p>
                 <div class="space-y-4">
                     <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none text-sm focus:border-pink-500">
                     <input type="number" id="w-amt" placeholder="Amount (30-130)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none text-sm focus:border-pink-500">
-                    <p class="text-[9px] text-gray-500 text-center font-bold">ADMIN FEE: 10% SERVICE TAX</p>
-                    <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black text-lg shadow-xl active:scale-95 transition-all">Submit Payout</button>
+                    <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black text-lg active:scale-95 transition-all">Submit Payout</button>
+                    <p class="text-[8px] text-gray-600 text-center uppercase tracking-widest font-bold">Admin Fee 10% Applies</p>
                 </div>
             </div>
         </section>
 
         <nav class="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-3xl border-t border-white/5 p-5 flex justify-around items-center z-50 rounded-t-[40px]">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home-alt text-2xl"></i></button>
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home-lg-alt text-2xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-wallet text-2xl"></i></button>
             <button onclick="location.reload()" class="text-red-500"><i class="fas fa-power-off text-2xl"></i></button>
         </nav>
     </main>
 
     <script>
-        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDk3yDT5QoTB6IP84bnklr_5PYXT9Zc9gE",
             authDomain: "arpi-earning.firebaseapp.com",
@@ -141,27 +138,44 @@
         function playSfx(type) {
             const audio = document.getElementById(type === 'click' ? 'click-sound' : 'success-sound');
             audio.currentTime = 0;
-            audio.play();
+            audio.play().catch(e => {});
         }
 
-        function toggleAuth() {
-            playSfx('click');
-            const btn = document.getElementById('auth-btn');
-            btn.innerText = btn.innerText === "Login" ? "Register" : "Login";
-        }
-
+        // --- STRICT LOGIN/REGISTER LOGIC ---
         function handleAuth() {
             playSfx('click');
-            const emailInput = document.getElementById('email').value;
-            if(!emailInput.includes('@')) return alert("Enter valid email!");
+            const emailInput = document.getElementById('email').value.trim();
+            const passInput = document.getElementById('password').value.trim();
+            
+            if(!emailInput.includes('@') || passInput.length < 4) {
+                return alert("Enter valid email & password (min 4 chars)!");
+            }
             
             currentUserEmail = emailInput.replace(/[.#$[\]]/g, "_");
             document.getElementById('loader').style.display = 'flex';
             
-            database.ref('users/' + currentUserEmail).once('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    database.ref('users/' + currentUserEmail).set({ balance: 0, invites: 0, lastClaim: 0, status: "Active" });
+            const userRef = database.ref('users/' + currentUserEmail);
+            userRef.once('value').then((snapshot) => {
+                const data = snapshot.val();
+                
+                if (data) {
+                    // Login: Check if password matches
+                    if (data.password !== passInput) {
+                        document.getElementById('loader').style.display = 'none';
+                        return alert("Incorrect Password! Please try again.");
+                    }
+                } else {
+                    // Register: Create new user with password
+                    userRef.set({
+                        password: passInput,
+                        balance: 0,
+                        invites: 0,
+                        lastClaim: 0,
+                        status: "Active"
+                    });
                 }
+                
+                // Login Success
                 setTimeout(() => {
                     document.getElementById('loader').style.display = 'none';
                     document.getElementById('auth-page').style.display = 'none';
@@ -183,7 +197,7 @@
                 const data = snapshot.val();
                 if(data) {
                     if(data.status === "Blocked") {
-                        alert("Your account is BLOCKED!");
+                        alert("YOUR ACCOUNT IS BLOCKED!");
                         location.reload();
                         return;
                     }
@@ -197,56 +211,41 @@
 
         function enableVerify(id) {
             playSfx('click');
-            // User-in link a click hmasak loh chuan verify a theih loh
-            document.getElementById(id + '-btn').classList.remove('btn-disabled');
-            document.getElementById(id + '-btn').classList.replace('bg-white/10', 'bg-pink-600');
+            // Show ads when they click the link
+            if(window.open) window.open('https://effectivegatecpm.com/e8058f59b323b04bd8e64295ac0638c0', '_blank');
+            
+            const btn = document.getElementById(id + '-btn');
+            btn.classList.remove('btn-disabled');
+            btn.classList.replace('bg-white/10', 'bg-pink-600');
         }
 
         function verifySocial(type, amt) {
             playSfx('click');
             const btn = document.getElementById(type + '-btn');
-            btn.innerText = "VERIFYING...";
+            btn.innerText = "VERIFYING (WAIT 10s)...";
             btn.classList.add('btn-disabled');
 
             setTimeout(() => {
                 database.ref('users/' + currentUserEmail).update({ balance: userData.balance + amt });
                 playSfx('success');
-                btn.innerText = "COMPLETED";
+                btn.innerText = "VERIFIED ✓";
                 btn.className = "bg-green-500/20 text-green-500 text-[9px] font-black px-4 py-1.5 rounded-lg";
-                alert("Verified! ₹" + amt + " added to balance.");
-            }, 6000); // 6 seconds nghah tir rawh an follow tak tak nan
-        }
-
-        function claimDaily() {
-            playSfx('click');
-            const now = new Date().getTime();
-            if (now - userData.lastClaim < 86400000) return alert("Come back in 24 hours!");
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + 0.13, lastClaim: now });
-            playSfx('success');
-        }
-
-        function copyRefer() {
-            playSfx('click');
-            const copyText = document.getElementById("refer-link");
-            copyText.select();
-            document.execCommand("copy");
-            alert("Link copied!");
-        }
-
-        function inviteFriend() {
-            playSfx('click');
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + 5, invites: userData.invites + 1 });
-            playSfx('success');
+                alert("Verified! ₹" + amt + " added.");
+            }, 10000); 
         }
 
         function handleWithdraw() {
             playSfx('click');
+            // Show Ads on Withdraw click
+            if(window.open) window.open('https://effectivegatecpm.com/e8058f59b323b04bd8e64295ac0638c0', '_blank');
+
             const amt = parseFloat(document.getElementById('w-amt').value);
             const upi = document.getElementById('upi').value;
+            
             if(userData.invites < 5) return alert("You need 5 invites!");
             if(amt < 30 || amt > 130 || amt > userData.balance) return alert("Invalid amount!");
 
-            const payable = amt * 0.90; // Admin pays 90%
+            const payable = amt * 0.90;
             database.ref('users/' + currentUserEmail).update({ balance: userData.balance - amt });
             database.ref('withdrawals').push({
                 user: currentUserEmail,
@@ -257,7 +256,15 @@
                 date: new Date().toLocaleString()
             });
             playSfx('success');
-            alert("Request sent! You will receive ₹" + payable.toFixed(2));
+            alert("Request sent! You'll receive ₹" + payable.toFixed(2));
+        }
+
+        function copyRefer() {
+            playSfx('click');
+            const copyText = document.getElementById("refer-link");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Referral Link Copied!");
         }
 
         function showTab(id) {
@@ -272,5 +279,5 @@
         }
     </script>
 </body>
-  </html>
-  
+    </html>
+                    
