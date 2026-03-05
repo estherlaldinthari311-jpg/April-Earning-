@@ -21,8 +21,7 @@
         .glass { background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; }
         .hidden-section { display: none; }
         .nav-active { color: #ff0055; transform: scale(1.1); transition: 0.3s; }
-        .btn-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-        .ad-container { width: 100%; min-height: 60px; background: rgba(255,255,255,0.02); border-radius: 15px; margin: 10px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed rgba(255,255,255,0.1); padding: 5px; }
+        .ad-container { width: 100%; min-height: 60px; background: rgba(255,255,255,0.02); border-radius: 15px; margin: 10px 0; display: flex; flex-direction: center; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -32,18 +31,16 @@
 
     <section id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-6">
         <div class="glass p-8 w-full max-w-sm shadow-2xl border-t-2 border-pink-500/20">
-            <h1 id="auth-title" class="text-4xl font-black mb-6 text-center text-white">Login</h1>
+            <h1 id="auth-title" class="text-4xl font-black mb-6 text-center">Login</h1>
             <div class="space-y-4">
-                <input type="email" id="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white">
-                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white">
+                <input type="email" id="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
+                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
                 <div id="ref-field" class="hidden">
-                   <p class="text-[9px] text-pink-500 mb-1 font-bold uppercase ml-2">Invited By</p>
+                   <p class="text-[9px] text-pink-500 mb-1 font-bold uppercase ml-2">Referrer Code</p>
                    <input type="text" id="refBy" readonly class="w-full bg-white/10 border border-white/10 p-4 rounded-2xl outline-none text-gray-400">
                 </div>
                 <button onclick="handleAuth()" id="auth-btn" class="w-full april-gradient py-4 rounded-2xl font-bold text-lg active:scale-95 transition-all">LOGIN</button>
-                <div class="text-center mt-4">
-                    <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-[10px] text-pink-500 font-black uppercase tracking-widest">Create New Account</button>
-                </div>
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-[10px] text-pink-500 font-black uppercase tracking-widest mt-4">Create New Account</button>
             </div>
         </div>
     </section>
@@ -51,84 +48,70 @@
     <main id="main-app" class="hidden-section min-h-screen pb-32">
         <section id="home-tab" class="p-6">
             <div class="flex justify-between items-center py-4 mb-4">
-                <div><p class="text-[10px] font-bold text-gray-500 uppercase">Premium Member</p><h3 id="user-display" class="text-2xl font-black">User</h3></div>
+                <div><p class="text-[10px] font-bold text-gray-500 uppercase">Premium</p><h3 id="user-display" class="text-2xl font-black">User</h3></div>
                 <div class="text-pink-500"><i class="fas fa-crown"></i></div>
             </div>
 
-            <div class="glass p-6 mb-4 april-gradient shadow-xl">
-                <p class="text-white/70 text-[10px] font-bold uppercase mb-1">Total Balance</p>
+            <div class="glass p-6 mb-6 april-gradient shadow-xl">
+                <p class="text-white/70 text-[10px] font-bold uppercase mb-1">Balance</p>
                 <h2 class="text-4xl font-black text-white">₹<span id="balance">0.00</span></h2>
             </div>
 
             <div class="glass p-6 border-l-4 border-yellow-500 bg-yellow-500/5 mb-6 rounded-2xl">
                 <div class="text-center mb-6">
                     <h2 class="text-xs font-black uppercase text-yellow-500 tracking-widest">Captcha Mining</h2>
-                    <p class="text-[10px] text-slate-400">Type correctly to earn ₹0.20 per captcha</p>
+                    <p class="text-[10px] text-slate-400">Type correctly to earn ₹0.20</p>
                 </div>
-                <div class="relative group mb-6">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-xl blur opacity-25"></div>
-                    <div class="relative bg-black p-6 rounded-xl border border-white/5 flex justify-center items-center">
-                        <span id="captcha-code" class="text-4xl font-mono font-black tracking-[12px] text-white italic select-none" style="text-shadow: 0 0 15px rgba(255,255,255,0.3); transform: skewX(-10deg);">LOAD...</span>
-                        <button onclick="generateCaptcha()" class="absolute right-4 text-slate-500 hover:text-yellow-500 transition-colors">
-                            <i class="fas fa-sync-alt text-xs"></i>
-                        </button>
-                    </div>
+                <div class="relative bg-black p-6 rounded-xl border border-white/5 flex justify-center items-center mb-6">
+                    <span id="captcha-code" class="text-4xl font-mono font-black tracking-[10px] text-white italic">LOAD...</span>
+                    <button onclick="generateCaptcha()" class="absolute right-4 text-slate-500"><i class="fas fa-sync-alt"></i></button>
                 </div>
-                <div class="space-y-4">
-                    <input type="text" id="user-input" placeholder="Enter Captcha Code" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-center text-white font-bold outline-none focus:border-yellow-500 uppercase">
-                    <button id="verify-btn" onclick="processCaptcha()" class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 py-4 rounded-xl font-black text-xs uppercase shadow-lg shadow-yellow-600/20 active:scale-95 transition-all">Verify & Claim Reward</button>
-                </div>
+                <input type="text" id="user-input" placeholder="Enter Code" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-center font-bold mb-4 uppercase">
+                <button id="verify-btn" onclick="processCaptcha()" class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 py-4 rounded-xl font-black text-xs uppercase">Verify & Claim</button>
             </div>
 
-            <button onclick="dailyClaim()" id="claim-24-btn" class="w-full bg-white/10 border border-white/10 py-3 rounded-2xl font-black text-[10px] uppercase mb-6">Daily Check-in (₹5.00)</button>
+            <button onclick="dailyClaim()" id="claim-24-btn" class="w-full bg-white/10 border border-white/10 py-3 rounded-2xl font-black text-[10px] uppercase mb-6 tracking-widest">Daily Check-in ₹5.00</button>
 
             <div class="glass p-4 mb-6 border-dashed border-2 border-pink-500/30">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-2">Share & Earn ₹3.00 Per Invite</p>
+                <p class="text-[10px] font-black text-gray-500 uppercase mb-2">Invite Link (₹3.00 Per Refer)</p>
                 <div class="flex gap-2">
-                    <input type="text" id="share-link" readonly class="bg-white/5 p-2 rounded-lg text-[9px] flex-1 border border-white/10 outline-none text-gray-400">
+                    <input type="text" id="share-link" readonly class="bg-white/5 p-2 rounded-lg text-[9px] flex-1 border border-white/10 outline-none">
                     <button onclick="copyLink()" class="bg-pink-600 px-4 py-2 rounded-lg text-[10px] font-bold">COPY</button>
                 </div>
                 <div class="flex justify-around mt-4">
-                    <div class="text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="font-black text-pink-500">0</p></div>
-                    <div class="text-center"><p class="text-[9px] text-gray-500 uppercase">Income</p><p id="ref-income" class="font-black text-green-500">₹0</p></div>
+                    <div class="text-center"><p class="text-[9px] text-gray-500">Invites</p><p id="inv-count" class="font-black text-pink-500">0</p></div>
+                    <div class="text-center"><p class="text-[9px] text-gray-500">Refer Income</p><p id="ref-income" class="font-black text-green-500">₹0</p></div>
                 </div>
             </div>
 
             <div class="space-y-4">
                 <div class="glass p-4 flex justify-between items-center border-l-4 border-blue-600">
-                    <div><p class="text-sm font-bold">Instagram Task</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
+                    <div><p class="text-sm font-bold">Instagram Follow</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
                     <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" onclick="enableVerify('ig')" class="bg-blue-600 text-[9px] font-black px-4 py-2 rounded-lg">JOIN</a>
                     <button id="ig-btn" onclick="verifySocial('ig', 2)" class="hidden bg-pink-600 text-[9px] font-black px-4 py-2 rounded-lg ml-2">VERIFY</button>
                 </div>
                 <div class="glass p-4 flex justify-between items-center border-l-4 border-sky-500">
-                    <div><p class="text-sm font-bold">Telegram Task</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
+                    <div><p class="text-sm font-bold">Telegram Channel</p><p class="text-[10px] text-gray-500">Earn ₹2.00</p></div>
                     <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" onclick="enableVerify('tg')" class="bg-sky-500 text-[9px] font-black px-4 py-2 rounded-lg">JOIN</a>
                     <button id="tg-btn" onclick="verifySocial('tg', 2)" class="hidden bg-pink-600 text-[9px] font-black px-4 py-2 rounded-lg ml-2">VERIFY</button>
                 </div>
-
                 <div class="ad-container"><div id="container-a37aaa93ed45ea8b66f8fb60e58eb230"></div></div>
-                <div class="ad-container">
-                    <script type="text/javascript">
-                      atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                    </script>
-                    <script type="text/javascript" src="https://www.highperformanceformat.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
-                </div>
             </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section p-6 pt-12">
             <h2 class="text-3xl font-black mb-4">Withdraw</h2>
-            <div class="glass p-6 mb-6 space-y-4 text-white">
+            <div class="glass p-6 mb-6 space-y-4">
                 <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
                 <input type="number" id="w-amt" placeholder="Amount (30 - 130)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
                 <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black">WITHDRAW NOW</button>
             </div>
-            <h3 class="text-sm font-black text-gray-500 uppercase mb-4 ml-1">Withdrawal History</h3>
+            <h3 class="text-sm font-black text-gray-500 uppercase mb-4 ml-1">History</h3>
             <div id="history-list" class="space-y-2"></div>
         </section>
 
         <section id="spin-tab" class="hidden-section p-6 text-center">
-             <h2 class="text-3xl font-black mb-10 mt-12 text-white">Lucky Spin</h2>
+             <h2 class="text-3xl font-black mb-10 mt-12">Lucky Spin</h2>
              <button onclick="startSpin()" id="spin-btn" class="april-gradient w-48 h-48 rounded-full border-8 border-white/10 font-black text-2xl shadow-2xl">SPIN</button>
              <p class="mt-6 text-xs text-pink-500">Need 10 Invites</p>
         </section>
@@ -154,167 +137,155 @@
         const database = firebase.database();
         let isLoginMode = true;
         let currentUserEmail = "";
-        let userData = { balance: 0, invites: 0, last24h: 0, lastWithdrawDate: "" };
+        let userData = { balance: 0, invites: 0, last24h: 0 };
 
-        // --- PERSISTENT LOGIN CHECK ---
         window.onload = () => {
             generateCaptcha();
-            const savedEmail = localStorage.getItem('aprilUser');
+            const savedEmail = localStorage.getItem('aprilUserKey');
             if (savedEmail) {
                 currentUserEmail = savedEmail;
-                enterApp(currentUserEmail.replace("_", "@"));
+                enterApp();
             }
             const params = new URLSearchParams(window.location.search);
-            const referCode = params.get('ref');
-            if(referCode) {
-                isLoginMode = false;
-                toggleAuthMode();
-                document.getElementById('refBy').value = referCode;
+            if(params.get('ref')) {
+                isLoginMode = false; toggleAuthMode();
+                document.getElementById('refBy').value = params.get('ref');
             }
         };
 
         function generateCaptcha() {
             const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let result = "";
-            for (let i = 0; i < 5; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('captcha-code').innerText = result;
-            document.getElementById('user-input').value = "";
+            let res = "";
+            for (let i = 0; i < 5; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('captcha-code').innerText = res;
         }
 
-        async function processCaptcha() {
-            const userInput = document.getElementById('user-input').value.toUpperCase();
-            const actualCode = document.getElementById('captcha-code').innerText;
+        function processCaptcha() {
+            const input = document.getElementById('user-input').value.toUpperCase();
+            const code = document.getElementById('captcha-code').innerText;
             const btn = document.getElementById('verify-btn');
-            if (userInput === actualCode) {
+            if (input === code) {
                 window.open("https://pl28844293.effectivegatecpm.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js", '_blank');
                 btn.disabled = true;
                 let wait = 5;
-                const timer = setInterval(() => {
-                    wait--;
-                    btn.innerHTML = `Verifying... ${wait}s`;
+                const t = setInterval(() => {
+                    btn.innerHTML = `Verifying... ${--wait}s`;
                     if (wait <= 0) {
-                        clearInterval(timer);
+                        clearInterval(t);
                         database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + 0.20 });
-                        playSfx('success');
-                        generateCaptcha();
-                        btn.disabled = false;
-                        btn.innerHTML = "Verify & Claim Reward";
+                        generateCaptcha(); document.getElementById('user-input').value = "";
+                        btn.disabled = false; btn.innerHTML = "Verify & Claim";
                     }
                 }, 1000);
-            } else {
-                alert("Captcha dik lo!");
-                generateCaptcha();
-            }
-        }
-
-        function playSfx(type) {
-            const audio = document.getElementById(type === 'click' ? 'click-sound' : 'success-sound');
-            audio.currentTime = 0;
-            audio.play().catch(e => {});
+            } else { alert("Wrong Code!"); generateCaptcha(); }
         }
 
         function toggleAuthMode() {
-            playSfx('click');
             isLoginMode = !isLoginMode;
             document.getElementById('auth-title').innerText = isLoginMode ? "Login" : "Register";
-            document.getElementById('auth-btn').innerText = isLoginMode ? "LOGIN" : "CREATE ACCOUNT";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "LOGIN" : "REGISTER";
             document.getElementById('ref-field').classList.toggle('hidden', isLoginMode);
-            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Create New Account" : "Back to Login";
         }
 
         function handleAuth() {
-            playSfx('click');
-            const emailInput = document.getElementById('email').value.trim();
-            const passInput = document.getElementById('password').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const pass = document.getElementById('password').value.trim();
             const refBy = document.getElementById('refBy').value.trim();
-            if(!emailInput.includes('@')) return alert("Invalid email");
+            if(!email.includes('@') || pass.length < 4) return alert("Fill correctly!");
             
-            currentUserEmail = emailInput.replace(/[.#$[\]]/g, "_");
-            const userRef = database.ref('users/' + currentUserEmail);
-            
-            userRef.once('value').then((snapshot) => {
-                if (isLoginMode) {
-                    if (!snapshot.exists() || snapshot.val().password !== passInput) return alert("Wrong credentials!");
+            const userKey = email.replace(/[.#$[\]]/g, "_");
+            const userRef = database.ref('users/' + userKey);
+
+            userRef.once('value').then(snap => {
+                if(isLoginMode) {
+                    if(snap.exists() && snap.val().password === pass) {
+                        currentUserEmail = userKey; localStorage.setItem('aprilUserKey', userKey); enterApp();
+                    } else alert("Wrong details!");
                 } else {
-                    if (snapshot.exists()) return alert("User already exists!");
-                    userRef.set({ password: passInput, balance: 0, invites: 0, last24h: 0, lastWithdrawDate: "" });
-                    if (refBy && refBy !== currentUserEmail) {
+                    if(snap.exists()) return alert("Exists!");
+                    userRef.set({ password: pass, balance: 0, invites: 0, last24h: 0 });
+                    if(refBy && refBy !== userKey) {
                         database.ref('users/' + refBy).once('value', s => {
-                            if(s.exists()) {
-                                database.ref('users/' + refBy).update({ invites: (s.val().invites || 0) + 1, balance: (s.val().balance || 0) + 3.00 });
-                            }
+                            if(s.exists()) database.ref('users/' + refBy).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+3 });
                         });
                     }
+                    currentUserEmail = userKey; localStorage.setItem('aprilUserKey', userKey); enterApp();
                 }
-                localStorage.setItem('aprilUser', currentUserEmail); // SAVE LOGIN
-                enterApp(emailInput);
             });
         }
 
-        function enterApp(email) {
+        function enterApp() {
             document.getElementById('auth-page').style.display = 'none';
             document.getElementById('main-app').classList.remove('hidden-section');
-            document.getElementById('user-display').innerText = email.split('@')[0];
-            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            document.getElementById('share-link').value = cleanUrl + "?ref=" + currentUserEmail;
+            document.getElementById('user-display').innerText = currentUserEmail.split('_')[0];
+            document.getElementById('share-link').value = window.location.href.split('?')[0] + "?ref=" + currentUserEmail;
             syncData();
         }
 
         function syncData() {
-            database.ref('users/' + currentUserEmail).on('value', (snapshot) => {
-                if(snapshot.exists()) {
-                    userData = snapshot.val();
-                    document.getElementById('balance').innerText = userData.balance.toFixed(2);
+            database.ref('users/' + currentUserEmail).on('value', snap => {
+                if(snap.exists()) {
+                    userData = snap.val();
+                    document.getElementById('balance').innerText = (userData.balance || 0).toFixed(2);
                     document.getElementById('inv-count').innerText = userData.invites || 0;
-                    document.getElementById('ref-income').innerText = "₹" + ((userData.invites || 0) * 3);
+                    document.getElementById('ref-income').innerText = "₹" + (userData.invites * 3 || 0);
                 }
             });
-            database.ref('withdrawals').orderByChild('user').equalTo(currentUserEmail).on('value', snapshot => {
-                const list = document.getElementById('history-list');
-                list.innerHTML = "";
-                snapshot.forEach(child => {
-                    const data = child.val();
-                    list.innerHTML += `<div class="glass p-3 flex justify-between text-[10px] border border-white/5"><span>${data.date.split(',')[0]}</span><span class="font-bold">₹${data.amount}</span><span class="${data.status === 'Pending' ? 'text-orange-500' : 'text-green-500'}">${data.status}</span></div>`;
+            database.ref('withdrawals').orderByChild('user').equalTo(currentUserEmail).on('value', snap => {
+                const list = document.getElementById('history-list'); list.innerHTML = "";
+                snap.forEach(c => {
+                    const d = c.val();
+                    list.innerHTML += `<div class="glass p-3 flex justify-between text-[10px] border border-white/5"><span>${d.date.split(',')[0]}</span><b>₹${d.amount}</b><span class="text-orange-500">${d.status}</span></div>`;
                 });
             });
         }
 
-        function enableVerify(id) {
-            playSfx('click');
-            document.getElementById(id + '-btn').classList.remove('hidden');
-        }
-
+        function enableVerify(id) { document.getElementById(id + '-btn').classList.remove('hidden'); }
         function verifySocial(id, amt) {
-            playSfx('success');
             database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + amt });
-            document.getElementById(id + '-btn').innerText = "ADDED ✓";
-            document.getElementById(id + '-btn').disabled = true;
+            document.getElementById(id + '-btn').innerText = "DONE"; document.getElementById(id + '-btn').disabled = true;
         }
 
         function dailyClaim() {
             const now = Date.now();
-            if (now - (userData.last24h || 0) < 86400000) return alert("Come back tomorrow!");
+            if (now - (userData.last24h || 0) < 86400000) return alert("Wait 24h!");
             database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + 5, last24h: now });
-            playSfx('success');
-            alert("₹5.00 Claimed!");
+            alert("₹5.00 Added!");
         }
 
         function handleWithdraw() {
             const amt = parseFloat(document.getElementById('w-amt').value);
             const upi = document.getElementById('upi').value;
             const today = new Date().toLocaleDateString();
-            if (userData.lastWithdrawDate === today) return alert("Limit: 1 withdraw per day!");
-            if (amt < 30 || amt > 130) return alert("Enter 30 - 130");
-            if (amt > userData.balance) return alert("Not enough balance!");
+            if (userData.lastWithdrawDate === today) return alert("1 Per Day!");
+            if (amt < 30 || amt > 130 || amt > userData.balance) return alert("Invalid Amount!");
             database.ref('users/' + currentUserEmail).update({ balance: userData.balance - amt, lastWithdrawDate: today });
             database.ref('withdrawals').push({ user: currentUserEmail, amount: amt, upi: upi, status: "Pending", date: new Date().toLocaleString() });
-            playSfx('success');
             alert("Requested!");
         }
 
         function startSpin() {
             if ((userData.invites || 0) < 10) return alert("Need 10 invites!");
-            playSfx('click');
-            const results = [1,5,3,2,1,7,8,3,2,6,0,5,10];
-            const win = results[Math.floor(Math.random() * results.length)];
-            data
+            const res = [1,5,3,2,1,7,8,3,2,6,0,5,10];
+            const win = res[Math.floor(Math.random() * res.length)];
+            database.ref('users/' + currentUserEmail).update({ balance: (userData.balance || 0) + win, invites: userData.invites - 10 });
+            alert("Won ₹" + win);
+        }
+
+        function copyLink() {
+            const el = document.getElementById('share-link'); el.select(); document.execCommand('copy'); alert("Copied!");
+        }
+
+        function showTab(id) {
+            document.getElementById('home-tab').classList.add('hidden-section');
+            document.getElementById('spin-tab').classList.add('hidden-section');
+            document.getElementById('wallet-tab').classList.add('hidden-section');
+            document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const nId = id === 'home-tab' ? 'n-home' : (id === 'spin-tab' ? 'n-spin' : 'n-wallet');
+            document.getElementById(nId).classList.replace('text-gray-600', 'nav-active');
+        }
+    </script>
+</body>
+                                                                                                                                                        </html>
+                    
