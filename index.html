@@ -7,6 +7,7 @@
     
     <script src="https://pl28844683.effectivegatecpm.com/d9/07/49/d90749994ae7e79af413fd864fdead46.js"></script>
     <script async="async" data-cfasync="false" src="https://pl28844431.effectivegatecpm.com/a37aaa93ed45ea8b66f8fb60e58eb230/invoke.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,135 +20,112 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .hidden-section { display: none; }
         .nav-active { color: #ff0055; transform: translateY(-5px); text-shadow: 0 0 10px #ff0055; }
-        
-        /* Slide Animation */
-        .slide-container { position: relative; overflow: hidden; height: 420px; transition: 0.5s ease-in-out; }
-        .slide-content { display: flex; width: 200%; transition: 0.5s ease; }
-        .slide-pane { width: 50%; padding: 20px; }
-        .active-reg .slide-content { transform: translateX(-50%); }
+        .captcha-box { background: linear-gradient(145deg, #1a1a1e, #0a0a0c); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
-    <section id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div id="auth-box" class="glass w-full max-w-sm p-2 shadow-2xl border-t border-pink-500/30">
-            <div class="flex border-b border-white/5 mb-4">
-                <button onclick="setAuthMode(true)" id="tab-l" class="flex-1 py-4 font-bold text-pink-500 border-b-2 border-pink-500">LOGIN</button>
-                <button onclick="setAuthMode(false)" id="tab-r" class="flex-1 py-4 font-bold text-gray-500">REGISTER</button>
-            </div>
-            
-            <div class="slide-container">
-                <div class="slide-content">
-                    <div class="slide-pane space-y-4">
-                        <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                        <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                        <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">SIGN IN</button>
-                    </div>
-                    <div class="slide-pane space-y-4">
-                        <input type="email" id="r-email" placeholder="New Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                        <input type="password" id="r-pass" placeholder="New Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500">
-                        <div class="bg-pink-500/10 p-4 rounded-2xl border border-pink-500/20">
-                            <p class="text-[9px] font-bold text-pink-500 uppercase mb-1">Referral Code (Optional)</p>
-                            <input type="text" id="refBy" placeholder="Code" class="w-full bg-transparent outline-none text-white text-sm">
-                        </div>
-                        <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-2xl font-black">CREATE ACCOUNT</button>
-                    </div>
+    <section id="auth-page" class="min-h-screen flex flex-col items-center justify-center p-6">
+        <div class="glass p-8 w-full max-w-sm shadow-2xl border-t-2 border-pink-500/20 text-center">
+            <h1 class="text-3xl font-black mb-6 uppercase">April Earning</h1>
+            <div class="space-y-4">
+                <input type="email" id="email" placeholder="Email" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none text-white focus:border-pink-500">
+                <input type="password" id="password" placeholder="Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none text-white focus:border-pink-500">
+                <div id="ref-field" class="hidden text-left">
+                   <p class="text-[9px] text-pink-500 mb-1 font-bold uppercase ml-2">Invited By (Refer Code)</p>
+                   <input type="text" id="refBy" placeholder="Optional" class="w-full bg-white/10 border border-white/10 p-4 rounded-2xl outline-none text-gray-400">
                 </div>
+                <button onclick="handleAuth()" id="auth-btn" class="w-full april-gradient py-4 rounded-2xl font-bold text-lg">LOGIN</button>
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="w-full text-[10px] text-pink-500 font-black uppercase mt-4">Create New Account</button>
             </div>
         </div>
     </section>
 
     <main id="main-app" class="hidden-section min-h-screen pb-32">
         <div class="p-6 flex justify-between items-center">
-            <div><p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Welcome</p><h3 id="user-display" class="text-xl font-black">User</h3></div>
-            <button onclick="showNotice()" class="w-10 h-10 glass flex items-center justify-center text-yellow-500"><i class="fas fa-bell"></i></button>
+            <div><p class="text-[10px] text-gray-500 font-bold uppercase">Welcome Back</p><h3 id="user-display" class="text-xl font-black italic">User</h3></div>
+            <button onclick="showNotice()" class="text-yellow-500 text-xl"><i class="fas fa-bell"></i></button>
         </div>
 
         <section id="home-tab" class="px-6">
-            <div class="glass p-6 mb-6 april-gradient shadow-xl relative overflow-hidden">
-                <div class="relative z-10">
-                    <p class="text-white/70 text-[10px] font-bold uppercase">Main Balance</p>
-                    <h2 class="text-4xl font-black mt-1">₹<span id="balance">0.00</span></h2>
-                </div>
-                <i class="fas fa-wallet absolute -bottom-4 -right-4 text-7xl text-black/10"></i>
+            <div class="glass p-6 mb-6 april-gradient shadow-xl">
+                <p class="text-white/70 text-[10px] font-bold uppercase">Main Balance</p>
+                <h2 class="text-4xl font-black">₹<span id="balance">0.00</span></h2>
             </div>
 
-            <button onclick="claimDaily()" class="w-full glass p-4 mb-6 border-l-4 border-green-500 flex justify-between items-center">
-                <div class="text-left"><p class="text-xs font-bold uppercase">Daily Bonus</p><p class="text-[9px] text-gray-500">Claim ₹0.13 every 24h</p></div>
-                <div class="bg-green-500/20 text-green-500 px-4 py-2 rounded-xl text-[10px] font-black">CLAIM</div>
-            </button>
+            <div class="captcha-box p-6 rounded-[30px] mb-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[10px] font-bold text-yellow-500 uppercase">Captcha Mining</span>
+                    <span class="text-[10px] text-gray-500">Earn ₹0.15 / solve</span>
+                </div>
+                <div class="bg-black/40 py-6 rounded-2xl border border-white/5 text-center mb-4 relative">
+                    <span id="captcha-code" class="text-4xl font-mono font-black tracking-[10px] text-white">LOAD...</span>
+                    <button onclick="generateCaptcha()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"><i class="fas fa-sync"></i></button>
+                </div>
+                <input type="text" id="user-input" placeholder="Enter code here" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-bold mb-4 outline-none focus:border-yellow-500">
+                <button id="verify-btn" onclick="processCaptcha()" class="w-full april-gradient py-4 rounded-2xl font-black uppercase text-sm">Verify & Claim</button>
+            </div>
 
-            <div class="glass p-6 mb-6">
-                <div class="text-center mb-4"><p class="text-[10px] font-bold text-yellow-500 uppercase">Captcha Work</p></div>
-                <div class="bg-black/50 p-6 rounded-3xl border border-white/5 text-center mb-4">
-                    <span id="captcha-code" class="text-3xl font-mono font-black tracking-[8px] text-white">LOAD...</span>
+            <div class="space-y-3 mb-6">
+                <div class="glass p-4 flex justify-between items-center border-l-4 border-blue-500">
+                    <div><p class="text-sm font-bold">Follow Instagram</p><p class="text-[10px] text-gray-500">Reward: ₹2.00</p></div>
+                    <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" class="bg-blue-600 px-4 py-2 rounded-lg text-[10px] font-black uppercase">Join</a>
                 </div>
-                <input type="text" id="user-input" placeholder="Type here..." class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-bold mb-4 outline-none">
-                <button id="verify-btn" onclick="processCaptcha()" class="w-full april-gradient py-4 rounded-2xl font-black text-sm uppercase shadow-lg shadow-pink-500/20">Verify & Earn ₹0.15</button>
+                <div class="glass p-4 flex justify-between items-center border-l-4 border-sky-500">
+                    <div><p class="text-sm font-bold">Join Telegram</p><p class="text-[10px] text-gray-500">Reward: ₹2.00</p></div>
+                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" class="bg-sky-500 px-4 py-2 rounded-lg text-[10px] font-black uppercase">Join</a>
+                </div>
             </div>
-            
-            <div class="glass p-6 mb-6 border-t-2 border-pink-500">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 april-gradient rounded-full flex items-center justify-center shadow-lg"><i class="fas fa-users text-white"></i></div>
-                    <div><h4 class="font-bold text-sm">Referral Program</h4><p class="text-[10px] text-gray-500">Invite 3 friends to unlock withdraw</p></div>
-                </div>
-                <div class="bg-black/40 p-3 rounded-xl flex gap-2 border border-white/5">
-                    <input type="text" id="share-link" readonly class="bg-transparent text-[10px] flex-1 outline-none text-gray-400">
-                    <button onclick="copyLink()" class="text-pink-500 font-bold text-[10px] uppercase">Copy</button>
-                </div>
-                <button onclick="shareWhatsApp()" class="w-full mt-3 bg-[#25D366] py-3 rounded-xl font-black text-[10px] uppercase flex items-center justify-center gap-2">
-                    <i class="fab fa-whatsapp text-lg"></i> Share on WhatsApp
-                </button>
-            </div>
+
+            <div class="ad-container mb-6"><div id="container-a37aaa93ed45ea8b66f8fb60e58eb230"></div></div>
         </section>
 
-        <section id="history-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6 uppercase">Earnings Log</h2>
-            <div class="flex gap-2 mb-6">
+        <section id="refer-tab" class="hidden-section px-6">
+            <h2 class="text-2xl font-black mb-6">REFER & EARN</h2>
+            <div class="flex gap-3 mb-6">
                 <div class="glass flex-1 p-4 text-center">
-                    <p class="text-[9px] text-gray-500 uppercase">Invites</p>
-                    <p id="inv-count" class="font-black text-pink-500 text-lg">0</p>
+                    <p class="text-[9px] text-gray-500 uppercase">Total Invites</p>
+                    <p id="inv-count" class="text-xl font-black text-pink-500">0</p>
                 </div>
                 <div class="glass flex-1 p-4 text-center">
                     <p class="text-[9px] text-gray-500 uppercase">Comm. Earned</p>
-                    <p id="ref-income" class="font-black text-green-500 text-lg">₹0</p>
+                    <p id="ref-income" class="text-xl font-black text-green-500">₹0</p>
                 </div>
             </div>
-            <p class="text-[10px] font-bold text-gray-500 mb-2 uppercase">Recent Transactions</p>
-            <div id="wdr-history" class="space-y-3"></div>
+            <div class="glass p-6 border-dashed border-2 border-pink-500/20">
+                <p class="text-xs text-center text-gray-400 mb-4">Share your link with friends. When they earn, you get ₹0.03 commission!</p>
+                <input type="text" id="share-link" readonly class="w-full bg-black/40 p-3 rounded-xl text-[10px] text-center border border-white/5 mb-3 outline-none">
+                <div class="flex gap-2">
+                    <button onclick="copyLink()" class="flex-1 bg-white text-black py-3 rounded-xl font-bold text-xs uppercase">Copy Link</button>
+                    <button onclick="shareWhatsApp()" class="flex-1 bg-green-600 py-3 rounded-xl font-bold text-xs uppercase">WhatsApp</button>
+                </div>
+            </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6 uppercase">Withdraw</h2>
+            <h2 class="text-2xl font-black mb-6">WITHDRAW</h2>
+            <div class="glass p-4 mb-6 border-l-4 border-pink-500 text-[10px] text-gray-400 uppercase">
+                <p>• Minimum: ₹80</p>
+                <p>• Limit: 2 times daily</p>
+                <p>• Required: 2 Invites to unlock</p>
+            </div>
             <div class="glass p-6 space-y-4">
-                <input type="text" id="upi" placeholder="UPI ID (e.g. name@paytm)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
-                <input type="number" id="w-amt" placeholder="Amount (Min ₹80)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
-                <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black">SUBMIT REQUEST</button>
+                <input type="text" id="upi" placeholder="Enter UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
+                <input type="number" id="w-amt" placeholder="Enter Amount" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
+                <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black uppercase">Submit Request</button>
             </div>
-            <div class="mt-6 p-4 glass bg-pink-500/5 border-pink-500/20">
-                <p class="text-[10px] text-center text-gray-400">Requests are processed within 24 hours.</p>
-            </div>
+            <div id="wdr-history" class="mt-6 space-y-2"></div>
         </section>
 
-        <div id="success-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
-            <div class="glass p-8 w-full max-w-xs text-center border-t-4 border-green-500 animate-bounce">
-                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/40">
-                    <i class="fas fa-check text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-black mb-2">REQUEST SENT!</h3>
-                <p class="text-xs text-gray-400 mb-6">Your withdrawal is being processed. Please wait 24h.</p>
-                <button onclick="closeModal()" class="w-full bg-white text-black py-3 rounded-xl font-bold uppercase text-xs">Got it</button>
-            </div>
-        </div>
-
         <nav class="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-3xl border-t border-white/5 p-4 flex justify-around items-center z-50 rounded-t-[32px]">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-th-large text-xl"></i></button>
-            <button onclick="showTab('history-tab')" id="n-history" class="text-gray-600"><i class="fas fa-list-ul text-xl"></i></button>
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home text-xl"></i></button>
+            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600"><i class="fas fa-users text-xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-wallet text-xl"></i></button>
         </nav>
     </main>
 
     <script>
+        // Firebase Config (Keep yours)
         const firebaseConfig = {
             apiKey: "AIzaSyDk3yDT5QoTB6IP84bnklr_5PYXT9Zc9gE",
             authDomain: "arpi-earning.firebaseapp.com",
@@ -161,55 +139,36 @@
         const database = firebase.database();
         let currentUserEmail = "";
         let userData = { balance: 0, invites: 0 };
+        let isLoginMode = true;
 
         window.onload = () => {
             generateCaptcha();
             const saved = localStorage.getItem('aprilUserKey');
             if(saved) { currentUserEmail = saved; enterApp(); }
-            const params = new URLSearchParams(window.location.search);
-            if(params.get('ref')) {
-                setAuthMode(false);
-                document.getElementById('refBy').value = params.get('ref');
-            }
         };
 
-        function setAuthMode(isLogin) {
-            const box = document.getElementById('auth-box');
-            const tl = document.getElementById('tab-l');
-            const tr = document.getElementById('tab-r');
-            if(isLogin) {
-                box.classList.remove('active-reg');
-                tl.className = "flex-1 py-4 font-bold text-pink-500 border-b-2 border-pink-500";
-                tr.className = "flex-1 py-4 font-bold text-gray-500";
-            } else {
-                box.classList.add('active-reg');
-                tr.className = "flex-1 py-4 font-bold text-pink-500 border-b-2 border-pink-500";
-                tl.className = "flex-1 py-4 font-bold text-gray-500";
-            }
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title')?.innerText = isLoginMode ? "Login" : "Register";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "LOGIN" : "REGISTER";
+            document.getElementById('ref-field').classList.toggle('hidden', isLoginMode);
         }
 
-        function generateCaptcha() {
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let res = "";
-            for (let i = 0; i < 5; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('captcha-code').innerText = res;
-        }
-
-        function handleAuth(isLogin) {
-            const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
-            const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
+        function handleAuth() {
+            const email = document.getElementById('email').value.trim();
+            const pass = document.getElementById('password').value.trim();
             const refBy = document.getElementById('refBy').value.trim();
             if(!email || !pass) return alert("Fill all fields");
-            
             const userKey = email.replace(/[.#$[\]]/g, "_");
+
             database.ref('users/' + userKey).once('value', snap => {
-                if(isLogin) {
+                if(isLoginMode) {
                     if(snap.exists() && snap.val().password === pass) {
                         currentUserEmail = userKey; localStorage.setItem('aprilUserKey', userKey); enterApp();
-                    } else alert("Wrong details");
+                    } else alert("Invalid credentials");
                 } else {
-                    if(snap.exists()) return alert("Exists!");
-                    database.ref('users/' + userKey).set({ password: pass, balance: 0, invites: 0, invitedBy: refBy, lastClaim: 0 });
+                    if(snap.exists()) return alert("User already exists!");
+                    database.ref('users/' + userKey).set({ password: pass, balance: 0, invites: 0, invitedBy: refBy });
                     if(refBy && refBy !== userKey) {
                         database.ref('users/' + refBy).once('value', s => {
                             if(s.exists()) database.ref('users/' + refBy).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+3 });
@@ -231,7 +190,7 @@
         function syncData() {
             database.ref('users/' + currentUserEmail).on('value', snap => {
                 userData = snap.val();
-                document.getElementById('balance').innerText = userData.balance.toFixed(2);
+                document.getElementById('balance').innerText = (userData.balance || 0).toFixed(2);
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('ref-income').innerText = "₹" + (userData.invites * 3).toFixed(2);
             });
@@ -239,13 +198,16 @@
                 const list = document.getElementById('wdr-history'); list.innerHTML = "";
                 snap.forEach(c => {
                     const d = c.val();
-                    const color = d.status === "Success" ? "text-green-500" : "text-orange-500";
-                    list.innerHTML += `<div class="glass p-4 flex justify-between items-center text-[11px]">
-                        <div><p class="font-bold">Withdrawal Request</p><p class="text-gray-500 uppercase">${d.date.split(',')[0]}</p></div>
-                        <div class="text-right"><p class="font-black">₹${d.amount}</p><p class="${color} font-bold">${d.status}</p></div>
-                    </div>`;
+                    list.innerHTML += `<div class="glass p-3 flex justify-between text-[10px] uppercase"><span>${d.date.split(',')[0]}</span><b>₹${d.amount}</b><span class="text-orange-500">${d.status}</span></div>`;
                 });
             });
+        }
+
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let res = "";
+            for (let i = 0; i < 5; i++) res += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('captcha-code').innerText = res;
         }
 
         async function processCaptcha() {
@@ -258,40 +220,32 @@
                     });
                 }
                 generateCaptcha(); document.getElementById('user-input').value = "";
-            } else alert("Wrong!");
+            } else alert("Captcha wrong!");
         }
 
         function handleWithdraw() {
             const amt = parseFloat(document.getElementById('w-amt').value);
-            if(amt < 80) return alert("Min ₹80");
-            if(userData.invites < 3) return alert("Refer 3 friends first!");
-            if(amt > userData.balance) return alert("Low balance");
+            if(userData.invites < 2) return alert("Refer at least 2 friends to withdraw!");
+            if(amt < 80) return alert("Minimum ₹80");
+            if(amt > userData.balance) return alert("Insufficient balance");
             
             database.ref('users/' + currentUserEmail).update({ balance: userData.balance - amt });
             database.ref('withdrawals').push({ user: currentUserEmail, amount: amt, status: "Pending", date: new Date().toLocaleString() });
-            document.getElementById('success-modal').classList.remove('hidden');
+            alert("Withdrawal request sent!");
         }
 
-        function claimDaily() {
-            const now = Date.now();
-            if(now - (userData.lastClaim||0) < 86400000) return alert("Come back later");
-            window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
-            database.ref('users/' + currentUserEmail).update({ balance: userData.balance + 0.13, lastClaim: now });
-            alert("Claimed!");
-        }
-
-        function closeModal() { document.getElementById('success-modal').classList.add('hidden'); }
         function showTab(id) {
-            ['home-tab', 'history-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
+            ['home-tab', 'refer-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
             document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home', 'history-tab':'n-history', 'wallet-tab':'n-wallet'};
+            const map = {'home-tab':'n-home', 'refer-tab':'n-refer', 'wallet-tab':'n-wallet'};
             document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
-        function copyLink() { const el = document.getElementById('share-link'); el.select(); document.execCommand('copy'); alert("Link Copied!"); }
-        function shareWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Solve captcha & earn real cash! Join: " + document.getElementById('share-link').value)); }
+
+        function copyLink() { const el = document.getElementById('share-link'); el.select(); document.execCommand('copy'); alert("Copied!"); }
+        function shareWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Solve captcha & earn cash! Join: " + document.getElementById('share-link').value)); }
         function showNotice() { database.ref('app_settings/notice').once('value', s => alert(s.val() || "Welcome!")); }
     </script>
 </body>
-                            </html>
+                    </html>
     
