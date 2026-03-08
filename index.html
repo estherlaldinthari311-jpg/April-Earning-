@@ -10,49 +10,65 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; height: 100vh; overflow: hidden; }
         
-        .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); backdrop-filter: blur(15px); border-radius: 24px; }
-        .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); color: #000; }
+        .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border-radius: 28px; }
+        .classic-gold { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; transition: 0.3s; }
+        .classic-gold:active { transform: scale(0.95); opacity: 0.8; }
         .hidden-section { display: none !important; }
-        .nav-active { color: #c5a059; transform: scale(1.1); }
+        .nav-active { color: #ffd700; transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
         
-        /* FULL SCREEN OPTIMIZATION */
-        main { min-height: 100vh; display: flex; flex-direction: column; }
-        .tab-content { flex: 1; padding-bottom: 100px; }
+        /* AUTH ANIMATION */
+        .auth-container { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        input { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; transition: 0.3s; }
+        input:focus { border-color: #ffd700 !important; background: rgba(255,255,255,0.08) !important; }
 
-        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 200; border-radius: 24px; }
+        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 200; border-radius: 28px; }
         .timer-active #timer-box { display: flex; }
+
+        .withdraw-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
     </style>
 </head>
 <body>
 
-    <section id="auth-page" class="min-h-screen flex items-center justify-center p-6 text-center">
-        <div class="premium-card w-full max-w-sm p-8 shadow-2xl border-yellow-500/20">
-            <h2 class="text-4xl font-black text-yellow-500 mb-2 italic uppercase tracking-tighter">APRIL</h2>
-            <p class="text-[10px] text-gray-500 mb-8 tracking-[4px]">EARNING APP</p>
-            <div class="space-y-4">
-                <input type="email" id="u-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                <input type="password" id="u-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                <button onclick="handleAuth()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase shadow-lg shadow-yellow-900/20">Get Started</button>
+    <section id="auth-page" class="min-h-screen flex items-center justify-center p-6 overflow-y-auto">
+        <div class="auth-container premium-card w-full max-w-sm p-8 shadow-2xl animate__animated animate__fadeInUp">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-black text-yellow-500 italic tracking-tighter">APRIL</h2>
+                <p id="auth-title" class="text-[10px] text-gray-500 uppercase tracking-[4px]">Create Account</p>
             </div>
+
+            <div id="auth-form" class="space-y-4">
+                <input type="email" id="u-email" placeholder="Email Address" class="w-full p-4 rounded-2xl text-sm">
+                <input type="password" id="u-pass" placeholder="Password" class="w-full p-4 rounded-2xl text-sm">
+                <div id="signup-only">
+                    <input type="text" id="ref-input" placeholder="Referral Code (Optional)" class="w-full p-4 rounded-2xl text-sm">
+                </div>
+                <button id="auth-btn" onclick="processAuth()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase tracking-widest text-sm mt-2">Sign Up</button>
+            </div>
+
+            <p class="text-center mt-6 text-xs text-gray-500">
+                <span id="auth-toggle-text">Already have an account?</span> 
+                <button onclick="toggleAuthMode()" class="text-yellow-500 font-bold ml-1 uppercase tracking-tighter" id="auth-toggle-btn">Login</button>
+            </p>
         </div>
     </section>
 
-    <main id="main-app" class="hidden-section">
-        <div class="flex justify-center p-2 bg-black/50">
+    <main id="main-app" class="hidden-section h-screen flex flex-col">
+        <div class="flex justify-center p-2 bg-black">
             <script type="text/javascript">
                 atOptions = {'key':'519ceac42444d69ac28ec1621467ee97','format':'iframe','height':50,'width':320,'params':{}};
             </script>
             <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
         </div>
 
-        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur-lg z-50">
+        <header class="p-6 flex justify-between items-center bg-[#050507]/90 backdrop-blur-lg">
             <div class="flex items-center gap-3">
                 <button onclick="showNotice()" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-yellow-500">
                     <i class="fas fa-bell"></i>
@@ -65,74 +81,66 @@
             </div>
         </header>
 
-        <div class="tab-content">
+        <div class="flex-1 overflow-y-auto pb-32">
             <section id="home-tab" class="px-6 space-y-6">
-                <button id="daily-btn" onclick="claimDaily()" class="w-full premium-card p-5 flex justify-between items-center border-l-4 border-yellow-500">
+                <button id="daily-btn" onclick="claimDaily()" class="w-full premium-card p-5 flex justify-between items-center border-l-4 border-yellow-500 animate__animated animate__pulse animate__infinite">
                     <div class="flex items-center gap-4">
-                        <i class="fas fa-gift text-2xl text-yellow-500"></i>
-                        <div class="text-left"><p class="font-black text-xs uppercase">Daily Reward</p><p class="text-[10px] text-gray-500">Tap to claim +10 pts</p></div>
+                        <i class="fas fa-calendar-check text-2xl text-yellow-500"></i>
+                        <div class="text-left"><p class="font-black text-xs uppercase">Daily Check-in</p><p class="text-[9px] text-gray-500">Claim your daily 10 points bonus</p></div>
                     </div>
-                    <i class="fas fa-chevron-right text-gray-700"></i>
                 </button>
 
-                <div id="captcha-box-wrap" class="premium-card p-8 text-center relative overflow-hidden shadow-xl">
+                <div id="captcha-box-wrap" class="premium-card p-8 text-center relative overflow-hidden">
                     <div id="timer-box">
-                        <div class="text-center"><p class="text-5xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-[3px] text-gray-500">Loading Ads...</p></div>
+                        <div class="text-center"><p class="text-5xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-[3px] text-gray-400">Loading Reward Ads</p></div>
                     </div>
-                    <div class="bg-black/40 py-12 rounded-3xl mb-6 border border-white/5 relative">
-                        <span id="captcha-code" class="text-4xl font-black tracking-[12px] opacity-20 italic">LOAD</span>
+                    <div class="bg-black/40 py-12 rounded-[32px] mb-6 border border-white/5">
+                        <span id="captcha-code" class="text-4xl font-black tracking-[15px] opacity-20 italic">0000</span>
                     </div>
-                    <input type="text" id="user-input" placeholder="Type Code Here" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl text-center font-black mb-4 outline-none uppercase text-yellow-500 text-lg">
-                    <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase">Verify & Earn</button>
+                    <input type="text" id="user-input" placeholder="Enter Captcha" class="w-full p-5 rounded-2xl text-center font-black mb-4 uppercase text-yellow-500 text-lg">
+                    <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase tracking-widest">Verify & Claim</button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="doTask('tg')" class="premium-card p-4 flex flex-col items-center gap-2 border-b-4 border-sky-500">
-                        <i class="fab fa-telegram text-2xl text-sky-500"></i>
-                        <span class="text-[10px] font-black uppercase">Telegram</span>
-                    </button>
-                    <button onclick="doTask('ig')" class="premium-card p-4 flex flex-col items-center gap-2 border-b-4 border-pink-500">
-                        <i class="fab fa-instagram text-2xl text-pink-500"></i>
-                        <span class="text-[10px] font-black uppercase">Instagram</span>
-                    </button>
+                    <button onclick="doTask('tg')" class="premium-card p-4 flex flex-col items-center gap-2"><i class="fab fa-telegram text-2xl text-sky-500"></i><span class="text-[9px] font-black uppercase">Telegram</span></button>
+                    <button onclick="doTask('ig')" class="premium-card p-4 flex flex-col items-center gap-2"><i class="fab fa-instagram text-2xl text-pink-500"></i><span class="text-[9px] font-black uppercase">Instagram</span></button>
                 </div>
-            </section>
-
-            <section id="leader-tab" class="hidden-section px-6">
-                <div id="leaderboard" class="space-y-3"></div>
             </section>
 
             <section id="partner-tab" class="hidden-section px-6 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="premium-card p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-2xl font-black">0</p></div>
-                    <div class="premium-card p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Earning</p><p id="comm-count" class="text-2xl font-black text-yellow-500">0.0</p></div>
+                    <div class="premium-card p-6 text-center"><p class="text-[9px] text-gray-500 uppercase mb-1">My Referrals</p><p id="inv-count" class="text-3xl font-black">0</p></div>
+                    <div class="premium-card p-6 text-center"><p class="text-[9px] text-gray-500 uppercase mb-1">Commission</p><p id="comm-count" class="text-3xl font-black text-yellow-500">0.0</p></div>
                 </div>
-                <div class="premium-card p-6 text-center">
-                    <p class="text-xs font-black uppercase mb-4">Refer & Earn 10 Pts</p>
-                    <button onclick="shareWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black uppercase flex items-center justify-center gap-3">
-                        <i class="fab fa-whatsapp text-xl"></i> Share on WhatsApp
-                    </button>
+                <div class="premium-card p-8 text-center bg-green-500/5 border-green-500/10">
+                    <i class="fab fa-whatsapp text-4xl text-green-500 mb-4"></i>
+                    <h3 class="font-black text-sm uppercase mb-2">Invite Friends</h3>
+                    <p class="text-[10px] text-gray-400 mb-6">Earn 10 points for every friend you invite!</p>
+                    <button onclick="shareWhatsApp()" class="w-full bg-green-600 py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Send WhatsApp Invite</button>
                 </div>
             </section>
 
             <section id="wallet-tab" class="hidden-section px-6 space-y-6">
-                <div class="premium-card p-6 space-y-4">
-                    <input type="text" id="upi" placeholder="Enter UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
-                    <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none font-bold text-yellow-500">
+                <div class="premium-card p-6 space-y-5">
+                    <div id="invite-lock-msg" class="bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-center">
+                        <p class="text-[10px] text-red-500 font-bold uppercase"><i class="fas fa-lock mr-2"></i>2 Invites Required to Withdraw</p>
+                    </div>
+                    <input type="text" id="upi" placeholder="Your UPI ID" class="w-full p-4 rounded-2xl text-sm">
+                    <select id="w-amt" class="w-full p-4 rounded-2xl text-sm font-bold text-yellow-500">
                         <option value="1000">1,000 Pts - ₹30</option>
-                        <option value="3000">3,000 Pts - ₹90</option>
                         <option value="5000">5,000 Pts - ₹150</option>
                         <option value="10000">10,000 Pts - ₹300</option>
                     </select>
-                    <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase">Withdraw</button>
+                    <button id="withdraw-btn" onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-2xl font-black uppercase tracking-widest">Withdraw Payout</button>
                 </div>
+                
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-[3px] ml-2">Payment History</p>
                 <div id="wdr-history" class="space-y-2"></div>
             </section>
         </div>
 
-        <nav class="fixed bottom-6 left-6 right-6 bg-black/80 backdrop-blur-xl border border-white/10 p-4 flex justify-around items-center z-[1000] rounded-[32px] shadow-2xl">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-grid-2"></i></button>
-            <button onclick="showTab('leader-tab')" id="n-leader" class="text-gray-600 text-xl"><i class="fas fa-trophy"></i></button>
+        <nav class="fixed bottom-6 left-6 right-6 bg-black/80 backdrop-blur-2xl border border-white/10 p-4 flex justify-around items-center z-[1000] rounded-[32px] shadow-2xl">
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-house"></i></button>
             <button onclick="showTab('partner-tab')" id="n-partner" class="text-gray-600 text-xl"><i class="fas fa-users"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
         </nav>
@@ -152,18 +160,42 @@
         const database = firebase.database();
         let currentUser = "";
         let userData = {};
+        let isLoginMode = false;
 
-        function handleAuth() {
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const refCode = params.get('ref');
+            if(refCode) document.getElementById('ref-input').value = refCode;
+
+            const saved = localStorage.getItem('aprilUser');
+            if(saved) { currentUser = saved; enterApp(); }
+        };
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title').innerText = isLoginMode ? "Welcome Back" : "Create Account";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "Login" : "Sign Up";
+            document.getElementById('auth-toggle-text').innerText = isLoginMode ? "Don't have an account?" : "Already have an account?";
+            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Sign Up" : "Login";
+            document.getElementById('signup-only').classList.toggle('hidden-section', isLoginMode);
+        }
+
+        function processAuth() {
             const email = document.getElementById('u-email').value;
             const pass = document.getElementById('u-pass').value;
-            if(!email || !pass) return alert("Fill fields");
+            const ref = document.getElementById('ref-input').value.trim();
+            if(!email || !pass) return alert("Please enter email and password");
+            
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
-                if(snap.exists()) {
-                    if(snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
-                    else alert("Wrong password");
+                if(isLoginMode) {
+                    if(snap.exists() && snap.val().password === pass) {
+                        currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
+                    } else alert("Invalid credentials!");
                 } else {
-                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, comm: 0, lastClaim: 0, wdrCount: 0 });
+                    if(snap.exists()) return alert("User already exists!");
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, comm: 0, lastClaim: 0, invitedBy: ref });
+                    if(ref && ref !== key) database.ref('users/'+ref).child('invites').set(firebase.database.ServerValue.increment(1));
                     currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
                 }
             });
@@ -172,9 +204,7 @@
         function enterApp() {
             document.getElementById('auth-page').classList.add('hidden-section');
             document.getElementById('main-app').classList.remove('hidden-section');
-            syncData();
-            generateCaptcha();
-            loadLeaderboard();
+            syncData(); generateCaptcha();
         }
 
         function syncData() {
@@ -183,14 +213,34 @@
                 document.getElementById('balance').innerText = Math.floor(userData.balance);
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
+                
+                const wBtn = document.getElementById('withdraw-btn');
+                const lockMsg = document.getElementById('invite-lock-msg');
+                if((userData.invites || 0) < 2) {
+                    wBtn.classList.add('withdraw-locked');
+                    lockMsg.classList.remove('hidden-section');
+                } else {
+                    wBtn.classList.remove('withdraw-locked');
+                    lockMsg.classList.add('hidden-section');
+                }
+            });
+            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
+                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
+                snap.forEach(s => {
+                    const d = s.val();
+                    hist.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold uppercase">${d.upi}</p><p class="opacity-40 text-[8px]">${d.date}</p></div>
+                        <div class="text-right"><p class="text-yellow-500 font-black">₹${d.amount/33.3}</p><p class="text-green-500 font-bold">${d.status}</p></div>
+                    </div>`;
+                });
             });
         }
 
         function claimDaily() {
             const now = Date.now();
-            if(now - (userData.lastClaim || 0) < 86400000) return alert("Come back tomorrow!");
+            if(now - (userData.lastClaim || 0) < 86400000) return alert("Reward already claimed. Come back tomorrow!");
             database.ref('users/' + currentUser).update({ balance: userData.balance + 10, lastClaim: now });
-            alert("10 Pts added to your wallet!");
+            alert("Daily Bonus 10 Pts added!");
         }
 
         function processCaptcha() {
@@ -205,7 +255,7 @@
                 window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
                 database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
                 generateCaptcha(); document.getElementById('user-input').value = "";
-            } else alert("Invalid Code");
+            } else alert("Invalid Captcha!");
         }
 
         function generateCaptcha() {
@@ -215,59 +265,33 @@
         }
 
         function shareWhatsApp() {
-            const link = window.location.origin + "?ref=" + currentUser;
-            const text = encodeURIComponent("Join APRIL EARNING and get 55 Pts Sign-up Bonus! Earn daily by completing simple tasks. Join here: " + link);
+            const link = window.location.origin + window.location.pathname + "?ref=" + currentUser;
+            const text = encodeURIComponent("Hey! Join APRIL EARNING and get 55 Pts Signup Bonus. Earn daily pocket money here: " + link);
             window.open("https://api.whatsapp.com/send?text=" + text);
         }
 
-        function doTask(type) {
-            const url = type === 'tg' ? 'https://t.me/yourchannel' : 'https://instagram.com/yourprofile';
-            window.open(url);
-            if(!userData[type]) {
-                database.ref('users/' + currentUser).update({ balance: userData.balance + 20, [type]: true });
-            }
-        }
-
-        function showNotice() {
-            alert("NOTICE:\n1. Minimum 2 Invites to withdraw.\n2. Sign-up Bonus: 55 Pts.\n3. Referral Bonus: 10 Pts.");
+        function handleWithdraw() {
+            if((userData.invites || 0) < 2) return alert("Unlock withdrawals by inviting at least 2 friends!");
+            const upi = document.getElementById('upi').value;
+            const amt = document.getElementById('w-amt').value;
+            if(!upi) return alert("Please enter UPI ID");
+            if(userData.balance < amt) return alert("Insufficient points!");
+            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'Pending', date: new Date().toLocaleDateString() });
+            database.ref('users/'+currentUser).update({ balance: userData.balance - amt });
+            alert("Withdrawal request sent successfully!");
         }
 
         function showTab(id) {
-            ['home-tab', 'leader-tab', 'partner-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
+            ['home-tab', 'partner-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
             document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home', 'leader-tab':'n-leader', 'partner-tab':'n-partner', 'wallet-tab':'n-wallet'};
+            const map = {'home-tab':'n-home', 'partner-tab':'n-partner', 'wallet-tab':'n-wallet'};
             document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
 
-        function handleWithdraw() {
-            if(userData.invites < 2) return alert("You need 2 invites first!");
-            const upi = document.getElementById('upi').value;
-            const amt = document.getElementById('w-amt').value;
-            if(!upi) return alert("Enter UPI ID");
-            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'Pending', date: new Date().toLocaleDateString() });
-            database.ref('users/'+currentUser).update({ balance: userData.balance - amt });
-            alert("Withdrawal Requested!");
-        }
-
-        function loadLeaderboard() {
-            database.ref('users').orderByChild('balance').limitToLast(10).on('value', snap => {
-                const lb = document.getElementById('leaderboard'); lb.innerHTML = "<h2 class='text-center text-xs font-black uppercase mb-6 opacity-30 tracking-[4px]'>Global Ranking</h2>";
-                let p = []; snap.forEach(s => p.push({ n: s.key.split('_')[0], b: s.val().balance }));
-                p.reverse().forEach((x, i) => {
-                    lb.innerHTML += `<div class="premium-card p-4 flex justify-between items-center mb-2 border-l-4 ${i<3?'border-yellow-500':'border-transparent'}">
-                        <span class="text-xs font-bold uppercase">${i+1}. ${x.n}</span>
-                        <b class="text-yellow-500 text-xs">${Math.floor(x.b)} PTS</b>
-                    </div>`;
-                });
-            });
-        }
-
-        window.onload = () => {
-            const saved = localStorage.getItem('aprilUser');
-            if(saved) { currentUser = saved; enterApp(); }
-        };
+        function showNotice() { alert("APRIL EARNING INFO:\n- Signup Bonus: 55 Pts\n- Referral Bonus: 10 Pts\n- Task Reward: 20 Pts\n- Min 2 Invites to Withdraw."); }
+        function doTask(type) { window.open(type === 'tg' ? 'https://t.me/yourchannel' : 'https://instagram.com/yourprofile'); }
     </script>
 </body>
     </html>
-    
+                    
