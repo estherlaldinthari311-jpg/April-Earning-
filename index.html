@@ -14,51 +14,54 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background: #08090d; color: #e2e8f0; margin: 0; overflow-x: hidden; }
-        .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); }
-        .premium-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(197, 160, 89, 0.15); backdrop-filter: blur(15px); border-radius: 20px; }
+        body { font-family: 'Poppins', sans-serif; background: #08090d; color: #e2e8f0; margin: 0; padding: 0; overflow-x: hidden; }
+        .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); color: #000; }
+        .premium-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(197, 160, 89, 0.15); backdrop-filter: blur(15px); border-radius: 20px; position: relative; z-index: 10; }
         .hidden-section { display: none !important; }
         .nav-active { color: #c5a059; text-shadow: 0 0 15px rgba(197, 160, 89, 0.6); }
-        .captcha-area { background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); background-color: #000; }
+        .captcha-area { background: #000; border: 1px solid rgba(255,255,255,0.05); }
         
-        /* Slide Auth */
-        .auth-container { position: relative; overflow: hidden; width: 100%; max-width: 400px; height: 550px; }
-        .auth-slider { display: flex; width: 200%; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .auth-form { width: 50%; padding: 30px; }
+        /* Slide Auth Fix */
+        .auth-container { position: relative; overflow: hidden; width: 100%; max-width: 400px; min-height: 550px; z-index: 100; }
+        .auth-slider { display: flex; width: 200%; transition: 0.5s ease; }
+        .auth-form { width: 50%; padding: 30px; box-sizing: border-box; }
         .show-register .auth-slider { transform: translateX(-50%); }
+        
+        input, select, button { position: relative; z-index: 110; cursor: pointer; }
+        nav button { cursor: pointer; padding: 10px; }
     </style>
 </head>
 <body>
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-6">
         <div id="auth-wrap" class="premium-card auth-container shadow-2xl">
-            <div class="flex border-b border-white/5 bg-white/5">
+            <div class="flex border-b border-white/5 bg-white/5 relative z-[120]">
                 <button onclick="switchAuth(false)" class="flex-1 py-5 font-bold uppercase tracking-widest text-[10px]">Sign In</button>
                 <button onclick="switchAuth(true)" class="flex-1 py-5 font-bold uppercase tracking-widest text-[10px]">Create Account</button>
             </div>
             <div class="auth-slider">
                 <div class="auth-form space-y-5">
-                    <h2 style="font-family: 'Playfair Display';" class="text-3xl text-center">Welcome</h2>
+                    <h2 style="font-family: 'Playfair Display';" class="text-3xl text-center text-[#c5a059]">APRIL EARNING</h2>
                     <input type="email" id="l-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-bold tracking-widest">LOGIN</button>
+                    <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-bold tracking-widest active:scale-95 transition">LOGIN</button>
                 </div>
                 <div class="auth-form space-y-5">
-                    <h2 style="font-family: 'Playfair Display';" class="text-3xl text-center">Join Us</h2>
+                    <h2 style="font-family: 'Playfair Display';" class="text-3xl text-center text-[#c5a059]">APRIL EARNING</h2>
                     <input type="email" id="r-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-xl border border-gold/30 outline-none text-yellow-500">
-                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-bold tracking-widest">REGISTER</button>
+                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-bold tracking-widest active:scale-95 transition">REGISTER</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <main id="main-app" class="hidden-section">
+    <main id="main-app" class="hidden-section pb-32">
         <header class="p-6 flex justify-between items-center">
             <h1 style="font-family: 'Playfair Display';" class="text-2xl">April <span class="text-[#c5a059]">Premium</span></h1>
             <div class="flex gap-4 items-center">
-                <button onclick="showNotice()" class="text-xl text-[#c5a059] relative"><i class="fas fa-envelope-open-text"></i></button>
+                <button onclick="showNotice()" class="text-xl text-[#c5a059]"><i class="fas fa-envelope-open-text"></i></button>
                 <div class="premium-card px-4 py-2 border-none bg-white/5 flex items-center gap-2">
                     <i class="fas fa-coins text-[#c5a059]"></i>
                     <span id="balance" class="font-bold">0</span>
@@ -66,11 +69,10 @@
             </div>
         </header>
 
-        <section id="home-tab" class="px-6 pb-24">
-            <div class="premium-card p-4 mb-6 border-gold/10">
+        <section id="home-tab" class="px-6">
+            <div class="premium-card p-4 mb-6">
                 <p class="text-[10px] font-black tracking-widest text-gray-500 uppercase mb-3"><i class="fas fa-crown text-yellow-500 mr-2"></i>Daily Leaderboard</p>
-                <div id="leaderboard" class="space-y-2 text-[11px]">
-                    </div>
+                <div id="leaderboard" class="space-y-2 text-[11px]"></div>
             </div>
 
             <div class="mb-6 flex justify-center">
@@ -80,89 +82,63 @@
                 <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
             </div>
 
-            <div class="premium-card p-6 text-center shadow-2xl border-gold/30">
-                <div class="captcha-area py-8 rounded-2xl mb-4 border border-white/5 relative">
-                    <span id="captcha-code" class="text-4xl font-black tracking-[12px] italic select-none opacity-60">LOAD...</span>
+            <div class="premium-card p-6 text-center border-gold/30">
+                <div class="captcha-area py-8 rounded-2xl mb-4 relative">
+                    <span id="captcha-code" class="text-4xl font-black tracking-[12px] italic opacity-60">LOAD...</span>
                     <button onclick="generateCaptcha()" class="absolute top-2 right-2 text-gray-600"><i class="fas fa-sync"></i></button>
                 </div>
                 <input type="text" id="user-input" placeholder="Type Verification Code" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none">
-                <button onclick="processCaptcha()" id="verify-btn" class="w-full classic-gold py-4 rounded-xl font-bold shadow-lg shadow-gold/20">VERIFY & CLAIM</button>
+                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-bold active:scale-95 transition">VERIFY & CLAIM</button>
             </div>
 
             <div class="mt-6 grid grid-cols-2 gap-4">
-                <a href="https://fktr.in/N7HSSDa" target="_blank" class="premium-card p-4 text-center bg-blue-500/5">
-                    <i class="fas fa-rocket mb-2 text-blue-400"></i>
-                    <p class="text-[10px] font-bold">EARNMORE 1</p>
-                </a>
-                <a href="https://fktr.in/AIzFn34" target="_blank" class="premium-card p-4 text-center bg-orange-500/5">
-                    <i class="fas fa-fire mb-2 text-orange-400"></i>
-                    <p class="text-[10px] font-bold">EARNMORE 2</p>
-                </a>
+                <a href="https://fktr.in/N7HSSDa" target="_blank" class="premium-card p-4 text-center"><p class="text-[10px] font-bold">EARNMORE 1</p></a>
+                <a href="https://fktr.in/AIzFn34" target="_blank" class="premium-card p-4 text-center"><p class="text-[10px] font-bold">EARNMORE 2</p></a>
             </div>
 
             <div class="mt-4 space-y-3">
                 <div class="premium-card p-4 flex justify-between items-center border-l-4 border-sky-500">
-                    <div><p class="text-xs font-bold">Join Telegram</p><p class="text-[9px] text-gray-500">+20 Coins Reward</p></div>
+                    <div><p class="text-xs font-bold">Telegram</p><p class="text-[9px] text-gray-500">+20 Coins</p></div>
                     <button onclick="handleSocial('tg', 'https://t.me/+ECYBETZqIrg0OGI1')" class="bg-sky-600 px-4 py-2 rounded-lg text-[9px] font-bold">JOIN</button>
-                </div>
-                <div class="premium-card p-4 flex justify-between items-center border-l-4 border-pink-500">
-                    <div><p class="text-xs font-bold">Follow Instagram</p><p class="text-[9px] text-gray-500">+20 Coins Reward</p></div>
-                    <button onclick="handleSocial('ig', 'https://www.instagram.com/best_nexus')" class="bg-pink-600 px-4 py-2 rounded-lg text-[9px] font-bold">JOIN</button>
                 </div>
             </div>
         </section>
 
-        <section id="refer-tab" class="hidden-section px-6 pb-24">
-            <h2 style="font-family: 'Playfair Display';" class="text-2xl mb-6">Partnership</h2>
+        <section id="refer-tab" class="hidden-section px-6">
+            <h2 style="font-family: 'Playfair Display';" class="text-2xl mb-6 text-[#c5a059]">Partnership</h2>
             <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="premium-card p-5 text-center">
-                    <p class="text-[9px] text-gray-500 uppercase">Invites</p>
-                    <p id="inv-count" class="text-2xl font-black">0</p>
-                </div>
-                <div class="premium-card p-5 text-center">
-                    <p class="text-[9px] text-gray-500 uppercase">Commission</p>
-                    <p id="ref-comm" class="text-2xl font-black text-gold">0.00</p>
-                </div>
+                <div class="premium-card p-5 text-center"><p class="text-[9px] uppercase">Invites</p><p id="inv-count" class="text-2xl font-black">0</p></div>
+                <div class="premium-card p-5 text-center"><p class="text-[9px] uppercase">Comm.</p><p id="ref-comm" class="text-2xl font-black text-[#c5a059]">0.00</p></div>
             </div>
-
-            <div class="premium-card p-6 mb-6 bg-yellow-500/5">
-                <p class="text-[10px] font-black uppercase mb-3">Redeem Gift Code</p>
+            <div class="premium-card p-6 mb-6">
+                <p class="text-[10px] uppercase mb-3">Redeem Gift Code</p>
                 <div class="flex gap-2">
                     <input type="text" id="gift-code" placeholder="Enter Code" class="flex-1 bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-xs">
                     <button onclick="claimGift()" class="bg-white text-black px-6 rounded-xl font-bold text-xs">CLAIM</button>
                 </div>
             </div>
-
             <div class="premium-card p-6 text-center border-dashed">
-                <p class="text-xs text-gray-400 mb-4 italic">Invite friends and earn 10 coins instantly + 0.12 commission on every captcha they solve!</p>
                 <div class="bg-black/50 p-3 rounded-xl text-[9px] mb-4 truncate" id="share-link">Loading...</div>
                 <button onclick="copyLink()" class="w-full classic-gold py-4 rounded-xl font-bold text-xs uppercase">Share Link</button>
             </div>
         </section>
 
-        <section id="wallet-tab" class="hidden-section px-6 pb-24">
-            <h2 style="font-family: 'Playfair Display';" class="text-2xl mb-6">Bank Vault</h2>
-            <div class="premium-card p-4 mb-6 border-l-4 border-gold bg-gold/5 text-[9px] text-gray-400">
-                <p>• 1,000 COINS = ₹30</p>
-                <p>• DAILY LIMIT: 3 TIMES</p>
-                <p>• REQUIRED: 2 INVITES TO UNLOCK</p>
-            </div>
-
-            <div class="premium-card p-6 space-y-4 shadow-2xl">
-                <input type="text" id="upi" placeholder="UPI ID (e.g., user@paytm)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none">
+        <section id="wallet-tab" class="hidden-section px-6">
+            <h2 style="font-family: 'Playfair Display';" class="text-2xl mb-6 text-[#c5a059]">Bank Vault</h2>
+            <div class="premium-card p-6 space-y-4">
+                <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none">
                 <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-gray-400">
                     <option value="1000">1,000 Coins (₹30)</option>
                     <option value="2000">2,000 Coins (₹60)</option>
                     <option value="5000">5,000 Coins (₹150)</option>
                     <option value="10000">10,000 Coins (₹300)</option>
                 </select>
-                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-bold shadow-xl">REQUEST WITHDRAWAL</button>
+                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-bold active:scale-95 transition">REQUEST WITHDRAWAL</button>
             </div>
-
-            <div id="wdr-history" class="mt-8 space-y-3"></div>
+            <div id="wdr-history" class="mt-8 space-y-3 pb-10"></div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-5 flex justify-around z-[100] rounded-t-[30px]">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-white/5 p-5 flex justify-around z-[100] rounded-t-[30px]">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-gem text-xl"></i></button>
             <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600"><i class="fas fa-handshake text-xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-vault text-xl"></i></button>
@@ -170,7 +146,6 @@
     </main>
 
     <script>
-        // CONFIG (Replace with your Firebase details)
         const firebaseConfig = {
             apiKey: "AIzaSyDk3yDT5QoTB6IP84bnklr_5PYXT9Zc9gE",
             authDomain: "arpi-earning.firebaseapp.com",
@@ -185,28 +160,24 @@
         let currentUser = "";
         let userData = {};
 
-        // INITIALIZE
         window.onload = () => {
             generateCaptcha();
-            const urlParams = new URLSearchParams(window.location.search);
-            const refFromUrl = urlParams.get('ref');
-            if(refFromUrl) {
-                switchAuth(true);
-                document.getElementById('refBy').value = refFromUrl;
-            }
-            
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
             loadLeaderboard();
         };
 
-        function switchAuth(isReg) { document.getElementById('auth-wrap').classList.toggle('show-register', isReg); }
+        function switchAuth(isReg) { 
+            const wrap = document.getElementById('auth-wrap');
+            if(isReg) wrap.classList.add('show-register');
+            else wrap.classList.remove('show-register');
+        }
 
         function handleAuth(isLogin) {
             const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
             const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
-            const ref = document.getElementById('refBy').value.trim();
-            if(!email || !pass) return alert("All fields required");
+            const ref = isLogin ? "" : document.getElementById('refBy').value.trim();
+            if(!email || !pass) return alert("Fill all fields");
 
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
@@ -215,11 +186,8 @@
                         currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
                     } else alert("Invalid credentials");
                 } else {
-                    if(snap.exists()) return alert("User already exists");
-                    database.ref('users/' + key).set({
-                        password: pass, balance: 55, invites: 0, invitedBy: ref, 
-                        commEarnings: 0, lastClaim: 0, tgJoined: false, igJoined: false
-                    });
+                    if(snap.exists()) return alert("User exists");
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, invitedBy: ref, commEarnings: 0 });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
                             if(s.exists()) database.ref('users/' + ref).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+10 });
@@ -244,14 +212,13 @@
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('ref-comm').innerText = (userData.commEarnings || 0).toFixed(2);
             });
-            // HISTORY
             database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
                 const h = document.getElementById('wdr-history'); h.innerHTML = "";
                 snap.forEach(c => {
                     const d = c.val();
-                    h.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px] border-white/5">
-                        <div><p class="font-bold uppercase tracking-widest">${d.status}</p><p class="text-gray-500">${d.date.split(',')[0]}</p></div>
-                        <p class="font-black text-gold">₹${d.amount/33.33 > 300 ? 300 : Math.floor(d.amount/33.33)}</p>
+                    h.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold">${d.status}</p><p class="text-gray-500">${d.date.split(',')[0]}</p></div>
+                        <p class="font-black text-[#c5a059]">₹${Math.floor(d.amount/33.3)}</p>
                     </div>`;
                 });
             });
@@ -264,67 +231,59 @@
             document.getElementById('captcha-code').innerText = res;
         }
 
-        let lastClick = 0;
-        async function processCaptcha() {
-            const now = Date.now();
-            if(now - lastClick < 1500) return alert("Slow down! Anti-Bot active.");
-            lastClick = now;
-
+        function processCaptcha() {
             const input = document.getElementById('user-input').value.toUpperCase();
             if(input === document.getElementById('captcha-code').innerText) {
                 window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
-                await database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
+                database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
                 if(userData.invitedBy) {
                     database.ref('users/' + userData.invitedBy).once('value', s => {
-                        if(s.exists()) {
-                            database.ref('users/' + userData.invitedBy).update({ 
-                                balance: (s.val().balance || 0) + 0.12,
-                                commEarnings: (s.val().commEarnings || 0) + 0.12
-                            });
-                        }
+                        if(s.exists()) database.ref('users/' + userData.invitedBy).update({ balance: (s.val().balance||0)+0.12, commEarnings: (s.val().commEarnings||0)+0.12 });
                     });
                 }
                 generateCaptcha(); document.getElementById('user-input').value = "";
-            } else alert("Verification Failed!");
-        }
-
-        function handleSocial(type, link) {
-            if(type === 'tg' && userData.tgJoined) return alert("Already claimed!");
-            if(type === 'ig' && userData.igJoined) return alert("Already claimed!");
-            window.open(link);
-            const update = {};
-            update['balance'] = userData.balance + 20;
-            update[type + 'Joined'] = true;
-            database.ref('users/' + currentUser).update(update);
-            alert("20 Coins added for joining!");
+            } else alert("Wrong!");
         }
 
         function handleWithdraw() {
             const amt = parseInt(document.getElementById('w-amt').value);
             const upi = document.getElementById('upi').value;
             const today = new Date().toLocaleDateString();
-
-            if(!upi) return alert("Enter UPI ID");
-            if(userData.invites < 2) return alert("Required: 2 Invites to unlock.");
+            if(!upi) return alert("Enter UPI");
+            if(userData.invites < 2) return alert("Need 2 Invites");
             
             database.ref('withdrawals').orderByChild('user').equalTo(currentUser).once('value', snap => {
                 let count = 0; snap.forEach(x => { if(x.val().date.includes(today)) count++; });
-                if(count >= 3) return alert("Daily limit reached (3/3)");
+                if(count >= 3) return alert("Limit 3/day");
                 if(userData.balance < amt) return alert("Insufficient coins");
-
                 window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
                 database.ref('users/' + currentUser).update({ balance: userData.balance - amt });
                 database.ref('withdrawals').push({ user: currentUser, amount: amt, upi: upi, status: "Pending", date: new Date().toLocaleString() });
-                alert("Withdrawal request recorded.");
+                alert("Success");
             });
+        }
+
+        function showTab(id) {
+            ['home-tab', 'refer-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const map = {'home-tab':'n-home', 'refer-tab':'n-refer', 'wallet-tab':'n-wallet'};
+            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
 
         function loadLeaderboard() {
             database.ref('users').orderByChild('balance').limitToLast(5).on('value', snap => {
                 const lb = document.getElementById('leaderboard'); lb.innerHTML = "";
-                let players = [];
-                snap.forEach(s => { players.push({name: s.key.split('_')[0], bal: s.val().balance}); });
-                players.reverse().forEach((p, i) => {
-                    lb.innerHTML += `<div class="flex justify-between items-center opacity-80">
-                        <span>${i+1}. ${p.name}</span>
-                    
+                let p = []; snap.forEach(s => p.push({n: s.key.split('_')[0], b: s.val().balance}));
+                p.reverse().forEach((x, i) => lb.innerHTML += `<div class="flex justify-between"><span>${i+1}. ${x.n}</span><b>${Math.floor(x.b)}</b></div>`);
+            });
+        }
+
+        function showNotice() {
+            database.ref('app_settings/notice').once('value', s => alert(s.val() || "No notice"));
+        }
+        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Copied"); }
+    </script>
+</body>
+    </html>
+                        
