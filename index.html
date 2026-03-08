@@ -5,25 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>APRIL EARNING</title>
     
-    <script src="https://landslidegraphsystems.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js"></script>
-    <script src="https://landslidegraphsystems.com/d9/07/49/d90749994ae7e79af413fd864fdead46.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
-        body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* LOGIN FIX - Layer chung berah kan dah */
-        button, input, select, a { 
-            position: relative !important; 
-            z-index: 1000 !important; 
-            pointer-events: auto !important; 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: #050507; 
+            color: #fff; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* HMEH THEI LO FIX - LAYER CHUNG BER */
+        #auth-page, #main-app, nav, button, input {
+            position: relative !important;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
             cursor: pointer !important;
+        }
+
+        /* ADS DALTU FIX */
+        iframe, .ads-container {
+            pointer-events: none !important; /* Ads kha a hmeh tlang theih turin */
+            z-index: 1 !important;
         }
 
         .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
@@ -31,48 +41,43 @@
         .hidden-section { display: none !important; }
         .nav-active { color: #c5a059; transform: scale(1.1); }
         
-        /* AUTH UI */
         .auth-container { width: 100%; max-width: 360px; min-height: 500px; overflow: hidden; margin: auto; }
         .auth-slider { display: flex; width: 200%; transition: 0.5s ease; }
         .auth-form { width: 50%; padding: 25px; }
         .show-register .auth-slider { transform: translateX(-50%); }
 
-        /* LEADERBOARD ANIMATION */
-        .rank-item { animation: bounceInRight; animation-duration: 0.8s; }
-        .rank-1 { background: linear-gradient(90deg, rgba(197, 160, 89, 0.2), transparent); border-left: 4px solid #c5a059; }
-
-        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; border-radius: 20px; }
+        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; border-radius: 20px; }
         .timer-active #timer-box { display: flex; }
     </style>
 </head>
 <body>
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-4">
-        <div id="auth-wrap" class="premium-card auth-container shadow-2xl">
+        <div id="auth-wrap" class="premium-card auth-container">
             <div class="flex bg-white/5 border-b border-white/5">
                 <button onclick="switchAuth(false)" class="flex-1 py-4 font-bold text-[10px] uppercase">Login</button>
                 <button onclick="switchAuth(true)" class="flex-1 py-4 font-bold text-[10px] uppercase text-gold">Register</button>
             </div>
             <div class="auth-slider">
                 <div class="auth-form space-y-6 pt-10">
-                    <div class="text-center"><h2 class="text-3xl font-black text-gold">APRIL EARNING</h2><p class="text-[9px] text-gray-500 uppercase">Welcome Back</p></div>
+                    <h2 class="text-3xl font-black text-gold text-center">APRIL</h2>
                     <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-black">SIGN IN</button>
                 </div>
                 <div class="auth-form space-y-4 pt-10">
-                    <div class="text-center"><h2 class="text-2xl font-black text-gold">SIGN UP</h2><p class="text-[9px] text-green-500">Bonus: 55 Coins</p></div>
+                    <h2 class="text-2xl font-black text-gold text-center">REGISTER</h2>
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-xl border border-gold/30 text-yellow-500">
-                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-black">REGISTER</button>
+                    <input type="text" id="refBy" placeholder="Refer Code" class="w-full bg-white/10 p-4 rounded-xl border border-gold/30 text-yellow-500">
+                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-black">CREATE</button>
                 </div>
             </div>
         </div>
     </section>
 
     <main id="main-app" class="hidden-section pb-28">
-        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur-lg z-50">
+        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur z-50">
             <h1 class="text-xl font-black italic text-gold">APRIL EARNING</h1>
             <div class="flex items-center gap-3">
                 <button onclick="showNotice()" class="text-gold"><i class="fas fa-bell"></i></button>
@@ -85,84 +90,50 @@
 
         <section id="home-tab" class="px-6">
             <button onclick="claimDaily()" class="w-full premium-card p-4 mb-6 flex justify-between items-center border-l-4 border-gold">
-                <div><p class="font-bold text-sm text-left">Daily Bonus</p><p class="text-[10px] text-gray-500">Claim 5 Coins</p></div>
+                <span class="font-bold text-sm">Daily Bonus (5 Coins)</span>
                 <i class="fas fa-gift text-gold"></i>
             </button>
 
-            <div class="mb-6 flex justify-center">
-                <script type="text/javascript">
-                    atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
-            </div>
-
             <div id="captcha-box-wrap" class="premium-card p-6 text-center relative overflow-hidden">
                 <div id="timer-box">
-                    <div class="text-center"><p class="text-4xl font-black text-gold" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-widest">Ads Syncing...</p></div>
+                    <div class="text-center"><p class="text-4xl font-black text-gold" id="timer-sec">15</p></div>
                 </div>
                 <div class="bg-black/50 py-8 rounded-2xl mb-4 border border-white/5 relative">
-                    <span id="captcha-code" class="text-4xl font-black tracking-[8px] opacity-20 italic">LOAD...</span>
+                    <span id="captcha-code" class="text-4xl font-black tracking-[8px] opacity-20">LOAD...</span>
                     <button onclick="generateCaptcha()" class="absolute top-2 right-2 text-gray-600"><i class="fas fa-sync"></i></button>
                 </div>
-                <input type="text" id="user-input" placeholder="Type Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none">
+                <input type="text" id="user-input" placeholder="Type Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase">
                 <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black">CLAIM 1.5 COINS</button>
-            </div>
-
-            <div class="mt-6 space-y-3">
-                <button onclick="joinSocial('tg')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-sky-500">
-                    <span class="text-xs font-bold">Join Telegram Group</span>
-                    <span id="tg-btn" class="bg-sky-600 px-4 py-1 rounded-lg text-[10px] font-bold">JOIN +20</span>
-                </button>
-                <button onclick="joinSocial('ig')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-pink-500">
-                    <span class="text-xs font-bold">Follow Instagram</span>
-                    <span id="ig-btn" class="bg-pink-600 px-4 py-1 rounded-lg text-[10px] font-bold">JOIN +20</span>
-                </button>
-            </div>
-
-            <div class="mt-8">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-4 text-center">Top Earners Today</p>
-                <div id="leaderboard" class="space-y-2"></div>
             </div>
         </section>
 
         <section id="refer-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6">Partnership</h2>
             <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
-                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Commission</p><p id="comm-count" class="text-xl font-black text-gold">0.0</p></div>
+                <div class="premium-card p-4 text-center text-xs">Invites: <b id="inv-count">0</b></div>
+                <div class="premium-card p-4 text-center text-xs">Comm: <b id="comm-count">0.0</b></div>
             </div>
-            <div class="premium-card p-6 text-center mb-6">
-                <div class="bg-black/50 p-4 rounded-xl mb-4 truncate text-[9px] font-mono border border-white/5" id="share-link">...</div>
-                <div class="flex gap-2">
-                    <button onclick="copyLink()" class="flex-1 bg-white text-black py-3 rounded-xl font-bold text-xs">COPY</button>
-                    <button onclick="shareWA()" class="flex-1 bg-green-600 py-3 rounded-xl font-bold text-xs">WHATSAPP</button>
-                </div>
-            </div>
-            <div class="premium-card p-6">
-                <p class="text-xs font-bold mb-4 text-center text-gold">GIFT CODE REDEEM</p>
-                <div class="flex gap-2">
-                    <input type="text" id="gift-code" placeholder="Enter Code" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none text-xs">
-                    <button onclick="redeemGift()" class="classic-gold px-4 py-3 rounded-xl font-bold text-xs">REDEEM</button>
-                </div>
+            <div class="premium-card p-4 text-center text-[10px] mb-4 truncate border-white/10" id="share-link">...</div>
+            <button onclick="copyLink()" class="w-full bg-white text-black py-3 rounded-xl font-bold mb-4">COPY LINK</button>
+            <div class="premium-card p-4">
+                <input type="text" id="gift-code" placeholder="Gift Code" class="w-full bg-white/5 p-3 rounded-xl mb-2 border border-white/10">
+                <button onclick="redeemGift()" class="w-full classic-gold py-3 rounded-xl font-bold">REDEEM</button>
             </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6">Withdrawal</h2>
             <div class="premium-card p-6 space-y-4">
-                <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none">
-                <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none">
+                <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                <select id="w-amt" class="w-full bg-white/5 p-4 rounded-xl border border-white/10">
                     <option value="1000">1,000 Coins (₹30)</option>
                     <option value="2000">2,000 Coins (₹60)</option>
                     <option value="5000">5,000 Coins (₹150)</option>
-                    <option value="10000">10,000 Coins (₹300)</option>
+                </option>
                 </select>
-                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black">WITHDRAW NOW</button>
+                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black">WITHDRAW</button>
             </div>
-            <div id="wdr-history" class="mt-6 space-y-2 pb-6"></div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[1500] rounded-t-3xl backdrop-blur-lg">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[10000] rounded-t-3xl">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
             <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600 text-xl"><i class="fas fa-gift"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
@@ -170,7 +141,6 @@
     </main>
 
     <script>
-        // FIREBASE CONFIG (I ta hi i hmang leh dâwn nia)
         const firebaseConfig = {
             apiKey: "AIzaSyDk3yDT5QoTB6IP84bnklr_5PYXT9Zc9gE",
             authDomain: "arpi-earning.firebaseapp.com",
@@ -187,13 +157,8 @@
 
         window.onload = () => {
             generateCaptcha();
-            const urlParams = new URLSearchParams(window.location.search);
-            const ref = urlParams.get('ref');
-            if(ref) { switchAuth(true); document.getElementById('refBy').value = ref; }
-
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
-            loadLeaderboard();
         };
 
         function switchAuth(isReg) { document.getElementById('auth-wrap').classList.toggle('show-register', isReg); }
@@ -201,23 +166,15 @@
         function handleAuth(isLogin) {
             const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
             const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
-            const ref = document.getElementById('refBy').value.trim();
-            if(!email || !pass) return alert("Fill all fields");
-
+            if(!email || !pass) return alert("Fill fields!");
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
                 if(isLogin) {
-                    if(snap.exists() && snap.val().password === pass) {
-                        currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
-                    } else alert("Error Login!");
+                    if(snap.exists() && snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
+                    else alert("Error!");
                 } else {
-                    if(snap.exists()) return alert("User exists");
-                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, invitedBy: ref, comm: 0, lastClaim: 0 });
-                    if(ref && ref !== key) {
-                        database.ref('users/' + ref).once('value', s => {
-                            if(s.exists()) database.ref('users/' + ref).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+10 });
-                        });
-                    }
+                    if(snap.exists()) return alert("Exists!");
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0 });
                     currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
                 }
             });
@@ -234,16 +191,6 @@
             database.ref('users/' + currentUser).on('value', snap => {
                 userData = snap.val();
                 document.getElementById('balance').innerText = Math.floor(userData.balance);
-                document.getElementById('inv-count').innerText = userData.invites || 0;
-                document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
-            });
-            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
-                snap.forEach(c => {
-                    hist.innerHTML += `<div class="premium-card p-3 flex justify-between items-center text-[10px]">
-                        <span>${c.val().status}</span><b class="text-gold">₹${Math.floor(c.val().amount/33.3)}</b>
-                    </div>`;
-                });
             });
         }
 
@@ -261,45 +208,12 @@
                 let sec = 15;
                 const t = setInterval(() => {
                     sec--; document.getElementById('timer-sec').innerText = sec;
-                    if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); document.getElementById('timer-sec').innerText = "15"; }
+                    if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); }
                 }, 1000);
-
                 window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
                 database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
-                if(userData.invitedBy) {
-                    database.ref('users/' + userData.invitedBy).once('value', s => {
-                        if(s.exists()) database.ref('users/' + userData.invitedBy).update({ balance: (s.val().balance||0)+0.3, comm: (s.val().comm||0)+0.3 });
-                    });
-                }
                 generateCaptcha(); document.getElementById('user-input').value = "";
             } else alert("Wrong!");
-        }
-
-        function handleWithdraw() {
-            const amt = parseInt(document.getElementById('w-amt').value);
-            const upi = document.getElementById('upi').value;
-            if(!upi) return alert("Enter UPI ID");
-            if(userData.invites < 2) return alert("Need 2 Invites");
-            if(userData.balance < amt) return alert("Insufficient balance");
-            
-            window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
-            database.ref('users/' + currentUser).update({ balance: userData.balance - amt });
-            database.ref('withdrawals').push({ user: currentUser, amount: amt, upi: upi, status: "Pending", date: new Date().toLocaleString() });
-            alert("Withdrawal Requested!");
-        }
-
-        function loadLeaderboard() {
-            database.ref('users').orderByChild('balance').limitToLast(3).on('value', snap => {
-                const lb = document.getElementById('leaderboard'); lb.innerHTML = "";
-                let players = []; snap.forEach(s => players.push({n: s.key.split('_')[0], b: s.val().balance}));
-                players.reverse().forEach((p, i) => {
-                    const icon = i===0 ? '🥇' : (i===1 ? '🥈' : '🥉');
-                    lb.innerHTML += `<div class="rank-item premium-card p-4 flex justify-between items-center ${i===0?'rank-1':''} animate__animated animate__bounceInRight">
-                        <div class="flex items-center gap-3"><span>${icon}</span><span class="font-bold text-xs">${p.n}</span></div>
-                        <b class="text-gold text-xs">${Math.floor(p.b)}</b>
-                    </div>`;
-                });
-            });
         }
 
         function showTab(id) {
@@ -310,11 +224,23 @@
             document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
 
-        function redeemGift() {
-            const code = document.getElementById('gift-code').value.toUpperCase();
-            database.ref('gift_codes/' + code).once('value', s => {
-                if(s.exists() && !userData['gift_'+code]) {
-                    database.ref('users/' + currentUser).update({ balance: userData.balance + s.val(), ['gift_'+code]: true });
-                    alert("Claimed " + s.val() + " Coins!");
-                } else alert("Invalid Code");
-            });
+        function handleWithdraw() {
+            window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
+            alert("Requested!");
+        }
+        
+        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Copied!"); }
+        function claimDaily() { alert("Claimed!"); }
+        function showNotice() { alert("Welcome!"); }
+    </script>
+
+    <div class="ads-container" style="display:flex; justify-content:center; margin-top:20px;">
+        <script type="text/javascript">
+            atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+        </script>
+        <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
+    </div>
+    <script src="https://landslidegraphsystems.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js" async></script>
+</body>
+                        </html>
+                
