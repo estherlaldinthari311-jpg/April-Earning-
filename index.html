@@ -6,7 +6,6 @@
     <title>APRIL EARNING</title>
     
     <script src="https://landslidegraphsystems.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,131 +15,107 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
         body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; overflow-x: hidden; }
         
-        /* THE FIX: Ensure buttons are clickable even with Ads on top */
-        button, input, select, nav, a { 
-            position: relative !important; 
-            z-index: 9999 !important; 
-            pointer-events: auto !important; 
-        }
-
-        .ads-wrapper { 
-            position: relative; 
-            z-index: 1; 
-            pointer-events: none; /* Allows clicking buttons underneath if they overlap */
-        }
-        .ads-wrapper iframe { pointer-events: auto; }
-
+        button, input, select, nav, a { position: relative !important; z-index: 50 !important; cursor: pointer !important; }
         .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
         .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); color: #000; }
         .hidden-section { display: none !important; }
         .nav-active { color: #c5a059; transform: scale(1.1); }
         
-        /* AUTH UI */
-        .auth-container { width: 100%; max-width: 360px; min-height: 500px; overflow: hidden; margin: auto; }
-        .auth-slider { display: flex; width: 200%; transition: 0.5s ease; }
-        .auth-form { width: 50%; padding: 25px; }
-        .show-register .auth-slider { transform: translateX(-50%); }
-
-        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 10000; border-radius: 20px; }
+        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; }
         .timer-active #timer-box { display: flex; }
 
-        /* LEADERBOARD */
-        .rank-1 { background: linear-gradient(90deg, rgba(197, 160, 89, 0.2), transparent); border-left: 4px solid #ffd700; }
-        .rank-2 { border-left: 4px solid #c0c0c0; }
-        .rank-3 { border-left: 4px solid #cd7f32; }
+        .rank-card { transition: 0.3s; border-left: 4px solid transparent; }
+        .rank-1 { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.05); }
     </style>
 </head>
 <body>
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-4">
-        <div id="auth-wrap" class="premium-card auth-container shadow-2xl">
-            <div class="flex bg-white/5">
-                <button onclick="switchAuth(false)" class="flex-1 py-4 font-bold text-[10px] uppercase">Login</button>
-                <button onclick="switchAuth(true)" class="flex-1 py-4 font-bold text-[10px] uppercase text-yellow-500">Register</button>
-            </div>
-            <div class="auth-slider">
-                <div class="auth-form space-y-6 pt-10 text-center">
-                    <h2 class="text-3xl font-black text-yellow-500">WELCOME</h2>
-                    <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Sign In</button>
-                </div>
-                <div class="auth-form space-y-4 pt-10 text-center">
-                    <h2 class="text-2xl font-black text-yellow-500">JOIN US</h2>
-                    <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                    <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-xl border border-yellow-500/30 text-yellow-500">
-                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-black uppercase">Create Account</button>
-                </div>
+        <div id="auth-wrap" class="premium-card w-full max-w-sm p-8 text-center">
+            <h2 class="text-3xl font-black text-yellow-500 mb-6 uppercase italic">April Earning</h2>
+            <div class="space-y-4">
+                <input type="email" id="u-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                <input type="password" id="u-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                <input type="text" id="refBy" placeholder="Refer Code (Optional)" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                <button onclick="handleAuth()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Start Earning</button>
             </div>
         </div>
     </section>
 
     <main id="main-app" class="hidden-section pb-28">
-        <div class="ads-wrapper flex justify-center p-2">
+        <div id="top-ad-container" class="flex justify-center p-2 bg-black/50">
             <script type="text/javascript">
-                atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                atOptions = {'key':'519ceac42444d69ac28ec1621467ee97','format':'iframe','height':50,'width':320,'params':{}};
             </script>
             <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
         </div>
 
-        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur-lg z-[500]">
-            <h1 class="text-xl font-black italic text-yellow-500">APRIL EARNING</h1>
+        <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur-lg z-50">
+            <h1 class="text-xl font-black italic text-yellow-500">APRIL</h1>
             <div class="flex items-center gap-4">
-                <button onclick="showNotice()" class="text-yellow-500 text-lg"><i class="fas fa-bullhorn"></i></button>
-                <div class="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
-                    <i class="fas fa-coins text-yellow-500 text-xs"></i>
-                    <span id="balance" class="font-bold text-sm">0</span>
+                <button onclick="showNotice()" class="text-yellow-500"><i class="fas fa-bullhorn"></i></button>
+                <div class="bg-white/5 px-4 py-1 rounded-full border border-white/10 flex items-center gap-2">
+                    <i class="fas fa-coins text-yellow-500"></i>
+                    <span id="balance" class="font-bold">0</span>
                 </div>
             </div>
         </header>
 
-        <section id="home-tab" class="px-6">
-            <button id="daily-btn" onclick="claimDaily()" class="w-full premium-card p-4 mb-6 flex justify-between items-center border-l-4 border-yellow-500">
-                <span class="font-bold text-sm">Daily Reward</span>
-                <i id="daily-icon" class="fas fa-gift text-yellow-500"></i>
-            </button>
-
+        <section id="home-tab" class="px-6 space-y-6">
             <div id="captcha-box-wrap" class="premium-card p-6 text-center relative overflow-hidden">
                 <div id="timer-box">
-                    <div class="text-center"><p class="text-4xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-widest">Processing Ads...</p></div>
+                    <div class="text-center"><p class="text-4xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase">Loading Reward Ads...</p></div>
                 </div>
-                <div class="bg-black/50 py-8 rounded-2xl mb-4 border border-white/5 relative">
-                    <span id="captcha-code" class="text-4xl font-black tracking-[8px] opacity-20">LOAD...</span>
-                    <button onclick="generateCaptcha()" class="absolute top-2 right-2 text-gray-600"><i class="fas fa-sync"></i></button>
+                <div class="bg-black/50 py-8 rounded-2xl mb-4 border border-white/5">
+                    <span id="captcha-code" class="text-4xl font-black tracking-[8px] opacity-30 italic">LOAD...</span>
                 </div>
-                <input type="text" id="user-input" placeholder="Enter Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase">
-                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Verify & Earn</button>
+                <input type="text" id="user-input" placeholder="Type Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase">
+                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black uppercase shadow-lg">Submit & Show Ads</button>
             </div>
 
-            <div class="mt-6 space-y-3">
-                <button onclick="joinSocial('tg')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-sky-500 text-xs font-bold uppercase">Join Telegram <span class="bg-sky-600 px-3 py-1 rounded text-[9px]">+20</span></button>
-                <button onclick="joinSocial('ig')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-pink-500 text-xs font-bold uppercase">Follow Instagram <span class="bg-pink-600 px-3 py-1 rounded text-[9px]">+20</span></button>
-            </div>
-
-            <div class="mt-10">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-4 text-center tracking-widest">Hall of Fame</p>
-                <div id="leaderboard" class="space-y-3"></div>
+            <div>
+                <p class="text-[10px] font-black text-gray-500 uppercase mb-4 tracking-widest text-center">Top 3 Earners</p>
+                <div id="leaderboard" class="space-y-2"></div>
             </div>
         </section>
 
-        <section id="wallet-tab" class="hidden-section px-6">
-            <div class="premium-card p-4 mb-6 bg-red-500/5 border-red-500/20">
-                <p class="text-[10px] font-bold text-red-500 uppercase mb-1"><i class="fas fa-info-circle mr-1"></i> Security Rules</p>
-                <p class="text-[9px] text-gray-400">• Minimum 2 active invites required.<br>• Max 3 withdrawals per 24 hours.</p>
+        <section id="refer-tab" class="hidden-section px-6 space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
+                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Comm</p><p id="comm-count" class="text-xl font-black text-yellow-500">0.0</p></div>
             </div>
+            <div class="premium-card p-4">
+                <p class="text-[10px] text-gray-500 uppercase mb-2">Your Link</p>
+                <div class="bg-black/40 p-3 rounded-lg truncate text-[10px] border border-white/5 mb-3" id="share-link">...</div>
+                <button onclick="copyLink()" class="w-full bg-white text-black py-3 rounded-xl font-bold text-xs uppercase">Copy Link</button>
+            </div>
+            <div class="premium-card p-4">
+                <p class="text-[10px] text-gray-500 uppercase mb-2">Redeem Gift Code</p>
+                <div class="flex gap-2">
+                    <input type="text" id="gift-code" placeholder="Code" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl text-xs outline-none">
+                    <button onclick="redeemGift()" class="classic-gold px-6 py-3 rounded-xl font-bold text-xs uppercase">Apply</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="wallet-tab" class="hidden-section px-6 space-y-6">
             <div class="premium-card p-6 space-y-4">
-                <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
-                <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
+                <input type="text" id="upi" placeholder="UPI ID (e.g. name@apl)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
+                <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-sm">
                     <option value="1000">1,000 Coins (₹30)</option>
                     <option value="5000">5,000 Coins (₹150)</option>
                 </select>
                 <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Withdraw</button>
             </div>
+            <div>
+                <p class="text-[10px] font-black text-gray-500 uppercase mb-3 tracking-widest">History</p>
+                <div id="wdr-history" class="space-y-2"></div>
+            </div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[10000] rounded-t-3xl">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[100] rounded-t-3xl backdrop-blur-xl">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
+            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600 text-xl"><i class="fas fa-users"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
         </nav>
     </main>
@@ -161,25 +136,24 @@
         let userData = {};
 
         window.onload = () => {
-            generateCaptcha();
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
             loadLeaderboard();
         };
 
-        function switchAuth(isReg) { document.getElementById('auth-wrap').classList.toggle('show-register', isReg); }
-
-        function handleAuth(isLogin) {
-            const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
-            const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
+        function handleAuth() {
+            const email = document.getElementById('u-email').value;
+            const pass = document.getElementById('u-pass').value;
+            const ref = document.getElementById('refBy').value.trim();
             if(!email || !pass) return alert("Fill fields");
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
-                if(isLogin) {
-                    if(snap.exists() && snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
-                    else alert("Wrong Login!");
+                if(snap.exists()) {
+                    if(snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
+                    else alert("Wrong password");
                 } else {
-                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, lastClaim: 0 });
+                    database.ref('users/' + key).set({ password: pass, balance: 50, invites: 0, comm: 0, invitedBy: ref });
+                    if(ref) database.ref('users/'+ref).child('invites').set(firebase.database.ServerValue.increment(1));
                     currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
                 }
             });
@@ -188,6 +162,7 @@
         function enterApp() {
             document.getElementById('auth-page').classList.add('hidden-section');
             document.getElementById('main-app').classList.remove('hidden-section');
+            document.getElementById('share-link').innerText = window.location.origin + window.location.pathname + "?ref=" + currentUser;
             syncData();
         }
 
@@ -195,19 +170,20 @@
             database.ref('users/' + currentUser).on('value', snap => {
                 userData = snap.val();
                 document.getElementById('balance').innerText = Math.floor(userData.balance);
-                const btn = document.getElementById('daily-btn');
-                if(Date.now() - (userData.lastClaim || 0) < 86400000) {
-                    btn.style.opacity = "0.5";
-                    btn.querySelector('span').innerText = "Claimed ✓";
-                }
+                document.getElementById('inv-count').innerText = userData.invites || 0;
+                document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
             });
-        }
-
-        function generateCaptcha() {
-            const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let res = "";
-            for(let i=0; i<6; i++) res += c.charAt(Math.floor(Math.random()*c.length));
-            document.getElementById('captcha-code').innerText = res;
+            // WITHDRAW HISTORY
+            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
+                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
+                snap.forEach(s => {
+                    const data = s.val();
+                    hist.innerHTML += `<div class="premium-card p-3 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold">${data.upi}</p><p class="opacity-50">${data.date}</p></div>
+                        <div class="text-right"><p class="text-yellow-500 font-black">₹${data.amount/33.3}</p><p class="text-green-500">${data.status}</p></div>
+                    </div>`;
+                });
+            });
         }
 
         function processCaptcha() {
@@ -219,51 +195,70 @@
                     sec--; document.getElementById('timer-sec').innerText = sec;
                     if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); }
                 }, 1000);
-                window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
+
+                // TRIGGER ADS
+                window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e");
+                
                 database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
+                if(userData.invitedBy) {
+                    database.ref('users/' + userData.invitedBy).update({ 
+                        balance: firebase.database.ServerValue.increment(0.3),
+                        comm: firebase.database.ServerValue.increment(0.3)
+                    });
+                }
                 generateCaptcha(); document.getElementById('user-input').value = "";
             } else alert("Invalid Code");
+        }
+
+        function generateCaptcha() {
+            const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let res = ""; for(let i=0; i<6; i++) res += c.charAt(Math.floor(Math.random()*c.length));
+            document.getElementById('captcha-code').innerText = res;
         }
 
         function loadLeaderboard() {
             database.ref('users').orderByChild('balance').limitToLast(3).on('value', snap => {
                 const lb = document.getElementById('leaderboard'); lb.innerHTML = "";
-                let p = []; snap.forEach(s => p.push({n: s.key.split('_')[0], b: s.val().balance}));
-                p.reverse().forEach((x, i) => {
-                    const rClass = i===0 ? 'rank-1' : (i===1 ? 'rank-2' : 'rank-3');
-                    lb.innerHTML += `<div class="${rClass} premium-card p-4 flex justify-between items-center">
-                        <span class="font-bold text-xs uppercase">${x.n}</span>
-                        <b class="text-yellow-500 text-xs">${Math.floor(x.b)} pts</b>
+                let players = []; snap.forEach(s => players.push({ n: s.key.split('_')[0], b: s.val().balance }));
+                players.reverse().forEach((p, i) => {
+                    lb.innerHTML += `<div class="premium-card p-4 flex justify-between items-center rank-card ${i===0?'rank-1':''}">
+                        <span class="text-xs font-bold uppercase">${i+1}. ${p.n}</span>
+                        <b class="text-yellow-500 text-xs">${Math.floor(p.b)} pts</b>
                     </div>`;
                 });
             });
         }
 
-        function claimDaily() {
-            const now = Date.now();
-            if(now - (userData.lastClaim||0) < 86400000) return alert("Already claimed!");
-            database.ref('users/' + currentUser).update({ balance: userData.balance + 5, lastClaim: now });
-            alert("5 Coins added!");
+        function handleWithdraw() {
+            const upi = document.getElementById('upi').value;
+            const amt = document.getElementById('w-amt').value;
+            if(!upi) return alert("Enter UPI");
+            if(userData.balance < amt) return alert("Insufficient Balance");
+            if(userData.invites < 2) return alert("Need 2 Invites");
+            
+            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'Pending', date: new Date().toLocaleDateString() });
+            database.ref('users/'+currentUser).update({ balance: userData.balance - amt });
+            alert("Withdrawal Requested!");
         }
 
         function showTab(id) {
-            document.getElementById('home-tab').classList.add('hidden-section');
-            document.getElementById('wallet-tab').classList.add('hidden-section');
+            ['home-tab', 'refer-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const map = {'home-tab':'n-home', 'refer-tab':'n-refer', 'wallet-tab':'n-wallet'};
+            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
 
-        function showNotice() {
-            database.ref('app_settings/notice').once('value', s => {
-                alert("ANNOUNCEMENT:\n\n" + (s.val() || "Welcome to April Earning! Stay tuned for updates."));
-            });
+        function generateCaptcha() {
+            const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let res = ""; for(let i=0; i<6; i++) res += c.charAt(Math.floor(Math.random()*c.length));
+            document.getElementById('captcha-code').innerText = res;
         }
 
-        function joinSocial(t) { window.open(t === 'tg' ? 'https://t.me/...' : 'https://ig.com/...'); }
-        function handleWithdraw() { 
-            if(userData.invites < 2) return alert("Need 2 invites first!");
-            alert("Requested!"); 
-        }
+        function showNotice() { alert("Welcome to April Earning! Minimum 2 invites to withdraw."); }
+        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Copied!"); }
+        function redeemGift() { alert("Invalid Code"); }
     </script>
 </body>
-                    </html>
-    
+    </html>
+                    
