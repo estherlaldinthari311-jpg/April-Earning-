@@ -21,8 +21,7 @@
         .hidden-section { display: none !important; }
         .nav-active { color: #ffd700; transform: scale(1.1); }
         
-        /* SLIDING AUTH STYLES */
-        #auth-container { width: 200%; display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        #auth-container { width: 200%; display: flex; transition: transform 0.5s ease; }
         .auth-view { width: 50%; padding: 20px; }
         .auth-wrapper { overflow: hidden; width: 100%; max-width: 380px; }
 
@@ -34,26 +33,22 @@
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-4">
         <div class="auth-wrapper premium-card p-6">
-            <div class="text-center mb-6">
-                <h2 class="text-4xl font-black text-yellow-500 italic uppercase">APRIL</h2>
-            </div>
-            
+            <div class="text-center mb-6"><h2 class="text-4xl font-black text-yellow-500 italic uppercase">APRIL</h2></div>
             <div id="auth-container">
                 <div class="auth-view space-y-4">
-                    <p class="text-center text-[10px] uppercase tracking-[3px] text-gray-500">Welcome Back</p>
+                    <p class="text-center text-[10px] uppercase tracking-[3px] text-gray-500">Login</p>
                     <input type="email" id="login-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
                     <input type="password" id="login-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                    <button onclick="handleLogin()" class="w-full classic-gold py-4 rounded-2xl uppercase shadow-lg">Login</button>
-                    <p class="text-center text-xs text-gray-400 mt-4">Don't have an account? <button onclick="slideAuth('signup')" class="text-yellow-500 font-bold">Sign Up</button></p>
+                    <button onclick="handleLogin()" class="w-full classic-gold py-4 rounded-2xl uppercase">Login</button>
+                    <p class="text-center text-xs text-gray-400 mt-4">New here? <button onclick="slideAuth('signup')" class="text-yellow-500 font-bold">Sign Up</button></p>
                 </div>
-
                 <div class="auth-view space-y-4">
-                    <p class="text-center text-[10px] uppercase tracking-[3px] text-gray-500">Create Account</p>
-                    <input type="email" id="reg-email" placeholder="New Email" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                    <input type="password" id="reg-pass" placeholder="Create Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                    <input type="text" id="ref-input" placeholder="Referral Code (Optional)" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
-                    <button onclick="handleSignup()" class="w-full classic-gold py-4 rounded-2xl uppercase shadow-lg">Register</button>
-                    <p class="text-center text-xs text-gray-400 mt-4">Already a member? <button onclick="slideAuth('login')" class="text-yellow-500 font-bold">Login</button></p>
+                    <p class="text-center text-[10px] uppercase tracking-[3px] text-gray-500">Register</p>
+                    <input type="email" id="reg-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
+                    <input type="password" id="reg-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
+                    <input type="text" id="ref-input" placeholder="Referral Code" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 outline-none">
+                    <button onclick="handleSignup()" class="w-full classic-gold py-4 rounded-2xl uppercase">Register</button>
+                    <p class="text-center text-xs text-gray-400 mt-4">Have account? <button onclick="slideAuth('login')" class="text-yellow-500 font-bold">Login</button></p>
                 </div>
             </div>
         </div>
@@ -61,7 +56,10 @@
 
     <main id="main-app" class="hidden-section h-screen flex flex-col">
         <header class="p-6 flex justify-between items-center bg-[#050507]/90 backdrop-blur-lg">
-            <h1 class="text-xl font-black italic text-yellow-500">APRIL</h1>
+            <div class="flex items-center gap-3">
+                <button onclick="showNotice()" class="text-yellow-500 text-xl"><i class="fas fa-bell"></i></button>
+                <h1 class="text-xl font-black italic text-yellow-500">APRIL</h1>
+            </div>
             <div class="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
                 <i class="fas fa-coins text-yellow-500 text-xs"></i>
                 <span id="balance" class="font-bold text-sm">0</span>
@@ -70,56 +68,60 @@
 
         <div class="flex-1 overflow-y-auto pb-32">
             <section id="home-tab" class="px-6 space-y-6">
-                <div class="premium-card p-4 border-l-4 border-yellow-500 flex justify-between items-center">
-                    <div><p class="font-black text-xs uppercase">Daily Bonus</p><p class="text-[9px] text-gray-500">Claim +10 Points</p></div>
-                    <button onclick="claimDaily()" class="classic-gold px-4 py-2 rounded-xl text-[10px]">CLAIM</button>
-                </div>
-
                 <div id="captcha-box-wrap" class="premium-card p-8 text-center relative overflow-hidden">
                     <div id="timer-box">
-                        <div class="text-center"><p class="text-5xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase text-gray-400">Processing...</p></div>
+                        <div class="text-center"><p class="text-5xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase text-gray-400">Loading Ad...</p></div>
                     </div>
                     <div class="bg-black/40 py-10 rounded-3xl mb-4 border border-white/5"><span id="captcha-code" class="text-3xl font-black tracking-[10px] opacity-20">LOAD</span></div>
-                    <input type="text" id="user-input" placeholder="Enter Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-black mb-4 outline-none uppercase text-yellow-500 text-lg">
-                    <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-2xl uppercase">Submit & Earn 1.5</button>
+                    <input type="text" id="user-input" placeholder="Enter Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-black mb-4 outline-none uppercase text-yellow-500">
+                    <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-2xl uppercase">Earn 1.5 Pts</button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" class="premium-card p-4 flex flex-col items-center gap-2"><i class="fab fa-telegram text-2xl text-sky-500"></i><span class="text-[9px] font-black uppercase">Telegram</span></a>
-                    <a href="https://www.instagram.com/aprilearning_official" target="_blank" class="premium-card p-4 flex flex-col items-center gap-2"><i class="fab fa-instagram text-2xl text-pink-500"></i><span class="text-[9px] font-black uppercase">Instagram</span></a>
+                <div class="premium-card p-5 space-y-4">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Earn More</p>
+                    <a href="https://topdeal.app.link/VITldpVQk1b" target="_blank" class="flex items-center justify-between bg-white/5 p-4 rounded-xl border border-white/5">
+                        <span class="text-xs font-bold">TopDeal Offers</span><i class="fas fa-external-link-alt text-yellow-500 text-xs"></i>
+                    </a>
+                    <a href="https://fktr.in/53n9d6n" target="_blank" class="flex items-center justify-between bg-white/5 p-4 rounded-xl border border-white/5">
+                        <span class="text-xs font-bold">Flipkart Special</span><i class="fas fa-shopping-cart text-yellow-500 text-xs"></i>
+                    </a>
+                </div>
+
+                <div class="premium-card p-5">
+                    <p class="text-[10px] font-black uppercase mb-3 text-gray-500">Redeem Gift Code</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="gift-code" placeholder="GIFT-CODE" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl text-xs outline-none">
+                        <button onclick="redeemGift()" class="classic-gold px-4 rounded-xl text-[10px]">APPLY</button>
+                    </div>
                 </div>
             </section>
 
             <section id="partner-tab" class="hidden-section px-6 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="premium-card p-6 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-3xl font-black">0</p></div>
-                    <div class="premium-card p-6 text-center"><p class="text-[9px] text-gray-500 uppercase">Earnings</p><p id="comm-count" class="text-3xl font-black text-yellow-500">0.0</p></div>
+                    <div class="premium-card p-6 text-center"><p class="text-[9px] text-gray-500 uppercase">Commission</p><p id="comm-count" class="text-3xl font-black text-yellow-500">0.0</p></div>
                 </div>
-                <div class="premium-card p-6 text-center">
-                    <p class="text-xs font-bold uppercase mb-4">Share with friends for 10 pts</p>
-                    <button onclick="shareWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-3"><i class="fab fa-whatsapp"></i> WhatsApp Invite</button>
-                </div>
+                <button onclick="shareWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black flex items-center justify-center gap-3 uppercase text-xs"><i class="fab fa-whatsapp text-lg"></i> Share on WhatsApp</button>
             </section>
 
             <section id="wallet-tab" class="hidden-section px-6 space-y-6">
                 <div class="premium-card p-6 space-y-4">
-                    <p class="text-[10px] text-center uppercase text-red-500">Need 2 Invites to Withdraw</p>
                     <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
                     <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl font-bold text-yellow-500">
                         <option value="1000">1,000 Pts - ₹30</option>
                         <option value="5000">5,000 Pts - ₹150</option>
-                        <option value="10000">10,000 Pts - ₹300</option>
                     </select>
-                    <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-2xl uppercase">Withdraw Now</button>
+                    <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-2xl uppercase">Withdraw</button>
                 </div>
-                <div id="wdr-history" class="space-y-2"></div>
+                <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest">History</p>
+                <div id="history-list" class="space-y-2"></div>
             </section>
         </div>
 
         <nav class="fixed bottom-6 left-6 right-6 bg-black/80 backdrop-blur-xl border border-white/10 p-4 flex justify-around items-center z-[1000] rounded-[32px]">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
             <button onclick="showTab('partner-tab')" id="n-partner" class="text-gray-600 text-xl"><i class="fas fa-users"></i></button>
-            <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
+            <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-history"></i></button>
         </nav>
     </main>
 
@@ -138,53 +140,47 @@
         let currentUser = "";
         let userData = {};
 
-        function slideAuth(mode) {
-            document.getElementById('auth-container').style.transform = mode === 'signup' ? 'translateX(-50%)' : 'translateX(0)';
-        }
+        function slideAuth(mode) { document.getElementById('auth-container').style.transform = mode === 'signup' ? 'translateX(-50%)' : 'translateX(0)'; }
 
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            if(params.get('ref')) {
-                slideAuth('signup');
-                document.getElementById('ref-input').value = params.get('ref');
-            }
+            if(params.get('ref')) { slideAuth('signup'); document.getElementById('ref-input').value = params.get('ref'); }
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
         };
-
-        function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
-            if(!email || !pass) return alert("Fill all fields");
-            const key = email.replace(/[.#$[\]]/g, "_");
-            database.ref('users/' + key).once('value', snap => {
-                if(snap.exists() && snap.val().password === pass) {
-                    currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
-                } else alert("Invalid credentials!");
-            });
-        }
 
         function handleSignup() {
             const email = document.getElementById('reg-email').value;
             const pass = document.getElementById('reg-pass').value;
             const ref = document.getElementById('ref-input').value.trim();
-            if(!email || !pass) return alert("Fill all fields");
+            if(!email || !pass) return alert("Fill fields");
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
-                if(snap.exists()) return alert("User exists!");
-                database.ref('users/' + key).set({ password: pass, balance: 10, invites: 0, comm: 0, lastClaim: 0 });
+                if(snap.exists()) return alert("Exists!");
+                database.ref('users/' + key).set({ password: pass, balance: 10, invites: 0, comm: 0 });
                 if(ref && ref !== key) {
-                    database.ref('users/' + ref).once('value', rSnap => {
-                        if(rSnap.exists()){
-                            database.ref('users/' + ref).update({
-                                balance: rSnap.val().balance + 10,
-                                invites: (rSnap.val().invites || 0) + 1,
-                                comm: (rSnap.val().comm || 0) + 10
+                    database.ref('users/' + ref).once('value', r => {
+                        if(r.exists()){
+                            database.ref('users/' + ref).update({ 
+                                balance: r.val().balance + 10.3, 
+                                invites: (r.val().invites || 0) + 1,
+                                comm: (r.val().comm || 0) + 0.3 
                             });
+                            addHistory(ref, "Referral Bonus", "+10.3");
                         }
                     });
                 }
                 currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
+            });
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            const key = email.replace(/[.#$[\]]/g, "_");
+            database.ref('users/' + key).once('value', snap => {
+                if(snap.exists() && snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
+                else alert("Wrong Login!");
             });
         }
 
@@ -201,22 +197,15 @@
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
             });
-            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
+            database.ref('history/' + currentUser).limitToLast(10).on('value', snap => {
+                const list = document.getElementById('history-list'); list.innerHTML = "";
                 snap.forEach(s => {
-                    const d = s.val();
-                    hist.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
-                        <span>${d.date}</span><b class="text-yellow-500">₹${d.amount/33.3}</b><span class="text-green-500">${d.status}</span>
+                    const h = s.val();
+                    list.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
+                        <span>${h.type}</span><b class="text-yellow-500">${h.pts} Pts</b>
                     </div>`;
                 });
             });
-        }
-
-        function claimDaily() {
-            const now = Date.now();
-            if(now - (userData.lastClaim || 0) < 86400000) return alert("Already claimed today!");
-            database.ref('users/' + currentUser).update({ balance: userData.balance + 10, lastClaim: now });
-            alert("10 Points added!");
         }
 
         function processCaptcha() {
@@ -228,11 +217,22 @@
                     if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); }
                 }, 1000);
                 window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
-                database.ref('users/' + currentUser).update({ balance: (userData.balance || 0) + 1.5 });
+                database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
+                addHistory(currentUser, "Captcha Solve", "+1.5");
                 generateCaptcha(); document.getElementById('user-input').value = "";
-            } else alert("Invalid Code!");
+            } else alert("Wrong Code");
         }
 
+        function redeemGift() {
+            const code = document.getElementById('gift-code').value.toUpperCase();
+            if(code === "APRIL2026" && !userData.giftUsed) {
+                database.ref('users/' + currentUser).update({ balance: userData.balance + 50, giftUsed: true });
+                addHistory(currentUser, "Gift Code", "+50");
+                alert("50 Pts Added!");
+            } else alert("Invalid or used code!");
+        }
+
+        function addHistory(user, type, pts) { database.ref('history/' + user).push({ type, pts, date: new Date().toLocaleDateString() }); }
         function generateCaptcha() {
             const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
             let res = ""; for(let i=0; i<4; i++) res += c.charAt(Math.floor(Math.random()*c.length));
@@ -241,20 +241,10 @@
 
         function shareWhatsApp() {
             const link = window.location.origin + window.location.pathname + "?ref=" + currentUser;
-            window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent("Join APRIL EARNING and get 10 Pts Bonus! Start earning daily pocket money here: " + link));
+            window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent("Join APRIL EARNING and get free pocket money! Join here: " + link));
         }
 
-        function handleWithdraw() {
-            if(userData.invites < 2) return alert("Invite 2 friends to unlock!");
-            const upi = document.getElementById('upi').value;
-            const amt = document.getElementById('w-amt').value;
-            if(!upi) return alert("Enter UPI ID");
-            if(userData.balance < amt) return alert("Insufficient balance");
-            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'Pending', date: new Date().toLocaleDateString() });
-            database.ref('users/'+currentUser).update({ balance: userData.balance - amt });
-            alert("Request Sent!");
-        }
-
+        function showNotice() { alert("WELCOME TO APRIL EARNING!\n- 10 Pts Signup Bonus\n- 10.3 Pts per Referral\n- 1.5 Pts per Captcha\n- Min 2 Invites to withdraw."); }
         function showTab(id) {
             ['home-tab', 'partner-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
@@ -264,5 +254,5 @@
         }
     </script>
 </body>
-                        </html>
-                        
+    </html>
+    
