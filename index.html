@@ -15,54 +15,48 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; overflow: hidden; height: 100vh; }
         
-        /* CLICK FIX - Hemi hian hmeh thei tura a siam ang */
-        button, input, a, select { 
-            position: relative; 
-            z-index: 999 !important; 
-            cursor: pointer; 
-            pointer-events: auto !important;
-        }
+        /* CLICKABLE FIX */
+        button, input, a, select { position: relative; z-index: 100 !important; cursor: pointer; pointer-events: auto !important; }
 
-        .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border-radius: 24px; }
+        .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .classic-gold { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; font-weight: 900; }
         .hidden-section { display: none !important; }
         
         #auth-container { width: 200%; display: flex; transition: transform 0.5s ease; }
         .auth-view { width: 50%; padding: 20px; }
-        
-        .nav-btn { color: #555; font-size: 1.5rem; transition: 0.3s; }
         .nav-active { color: #ffd700; transform: scale(1.1); }
 
-        /* Ad box area */
-        .ad-space { width: 100%; height: 60px; background: #000; display: flex; justify-content: center; align-items: center; border-bottom: 1px solid #111; }
+        /* Modal / Notice Style */
+        .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-active { display: flex; }
     </style>
 </head>
 <body>
 
-    <div class="ad-space">
-        <script type="text/javascript">
-            atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
+    <div id="notice-modal" class="modal-bg">
+        <div class="premium-card p-8 w-full max-w-sm text-center space-y-4 bg-[#0a0a0c]">
+            <h3 class="text-xl font-black text-yellow-500 italic">OFFICIAL NOTICE</h3>
+            <p class="text-xs text-gray-400 leading-relaxed">Signup Bonus: 55<br>Refer Bonus: 10 + 0.3 Comm<br>Min. Withdraw: 1,000<br>Note: Invite 2 friends to unlock withdraw.</p>
+            <button onclick="closeNotice()" class="w-full classic-gold py-3 rounded-xl uppercase text-xs">I Understand</button>
+        </div>
     </div>
 
-    <section id="auth-page" class="h-[85vh] flex flex-col items-center justify-center p-4">
+    <section id="auth-page" class="h-screen flex flex-col items-center justify-center p-4">
         <div class="w-full max-w-[380px] premium-card p-6 overflow-hidden">
             <h2 class="text-4xl font-black text-center text-yellow-500 italic mb-8">APRIL</h2>
-            
             <div id="auth-container">
                 <div class="auth-view space-y-4">
                     <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
                     <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
-                    <button onclick="handleLogin()" class="w-full classic-gold py-4 rounded-2xl uppercase shadow-lg">Login</button>
-                    <p class="text-center text-xs text-gray-500 mt-4">No account? <span onclick="slide('signup')" class="text-yellow-500 font-bold underline cursor-pointer">Sign Up</span></p>
+                    <button onclick="handleLogin()" class="w-full classic-gold py-4 rounded-2xl uppercase">Login</button>
+                    <p class="text-center text-xs text-gray-500 mt-4">New? <span onclick="slide('signup')" class="text-yellow-500 font-bold underline">Create Account</span></p>
                 </div>
                 <div class="auth-view space-y-4">
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
-                    <input type="text" id="r-ref" placeholder="Referral Code (Optional)" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
-                    <button onclick="handleSignup()" class="w-full classic-gold py-4 rounded-2xl uppercase shadow-lg">Register & Get 55</button>
-                    <p class="text-center text-xs text-gray-500 mt-4">Back? <span onclick="slide('login')" class="text-yellow-500 font-bold underline cursor-pointer">Login</span></p>
+                    <input type="text" id="r-ref" placeholder="Referral Code" class="w-full bg-white/5 p-4 rounded-2xl border border-white/10 text-white">
+                    <button onclick="handleSignup()" class="w-full classic-gold py-4 rounded-2xl uppercase">Get 55 Bonus</button>
+                    <p class="text-center text-xs text-gray-500 mt-4">Back? <span onclick="slide('login')" class="text-yellow-500 font-bold underline">Login</span></p>
                 </div>
             </div>
         </div>
@@ -72,65 +66,64 @@
         <header class="p-6 flex justify-between items-center border-b border-white/5">
             <h1 class="text-2xl font-black italic text-yellow-500">APRIL</h1>
             <div class="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
-                <i class="fas fa-coins text-yellow-500"></i>
+                <i class="fas fa-wallet text-yellow-500 text-xs"></i>
                 <span id="ui-balance" class="font-bold">0</span>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-6 pb-32 space-y-6">
-            <div id="home-tab" class="space-y-6">
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" class="premium-card p-5 text-center flex flex-col items-center gap-2">
-                        <i class="fab fa-telegram text-3xl text-blue-400"></i>
-                        <span class="text-[10px] font-bold">TELEGRAM</span>
-                    </a>
-                    <a href="https://www.instagram.com/aprilearning_official" target="_blank" class="premium-card p-5 text-center flex flex-col items-center gap-2">
-                        <i class="fab fa-instagram text-3xl text-pink-500"></i>
-                        <span class="text-[10px] font-bold">INSTAGRAM</span>
-                    </a>
-                </div>
-
+        <div class="flex-1 overflow-y-auto p-6 pb-40 space-y-6">
+            <div id="tab-home" class="space-y-6">
                 <div class="premium-card p-8 text-center space-y-5">
                     <div class="bg-black/40 py-10 rounded-3xl border border-white/5">
-                        <span id="captcha-display" class="text-3xl font-black tracking-[10px] text-white/20 italic">0000</span>
+                        <span id="cap-code" class="text-3xl font-black tracking-[10px] text-white/20">0000</span>
                     </div>
-                    <input type="text" id="captcha-input" placeholder="Enter Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-black text-yellow-500 text-xl">
-                    <button onclick="checkCaptcha()" class="w-full classic-gold py-4 rounded-2xl uppercase shadow-lg">Claim 1.5</button>
+                    <input type="text" id="cap-input" placeholder="ENTER CODE" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-center font-black text-yellow-500">
+                    <button onclick="verifyCap()" class="w-full classic-gold py-4 rounded-2xl uppercase">Verify & Earn 1.5</button>
                 </div>
             </div>
 
-            <div id="partner-tab" class="hidden-section space-y-6">
-                <div class="premium-card p-6 text-center">
-                    <p class="text-xs text-gray-500 uppercase mb-2">My Invites</p>
-                    <h3 id="ui-invites" class="text-5xl font-black">0</h3>
+            <div id="tab-partner" class="hidden-section space-y-6">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="premium-card p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><h3 id="ui-inv" class="text-2xl font-black">0</h3></div>
+                    <div class="premium-card p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Comm</p><h3 id="ui-comm" class="text-2xl font-black text-yellow-500">0.0</h3></div>
                 </div>
                 <div class="premium-card p-6 space-y-4">
-                    <p class="text-center text-[10px] font-bold text-gray-400">SHARE LINK (Bonus 10)</p>
-                    <input type="text" id="ui-reflink" readonly class="w-full bg-white/5 p-3 rounded-xl text-[10px] outline-none">
-                    <button onclick="copyRef()" class="w-full bg-white/10 py-3 rounded-xl font-bold">COPY LINK</button>
+                    <p class="text-[10px] font-bold text-gray-400">GIFT CODE</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="gift-input" placeholder="CODE" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none uppercase">
+                        <button onclick="useGift()" class="classic-gold px-6 rounded-xl text-[10px] font-bold">APPLY</button>
+                    </div>
+                </div>
+                <div class="premium-card p-6 space-y-4 text-center">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase">Your Invite Link</p>
+                    <input type="text" id="ui-link" readonly class="w-full bg-white/5 p-3 rounded-xl text-[10px] text-gray-500 outline-none">
+                    <button onclick="copyLink()" class="w-full bg-white/10 py-3 rounded-xl font-bold text-xs">COPY LINK</button>
                 </div>
             </div>
 
-            <div id="wallet-tab" class="hidden-section space-y-6">
-                <div id="withdraw-lock" class="bg-red-500/10 border border-red-500/20 p-4 rounded-2xl text-center text-[10px] text-red-500 font-bold uppercase">
-                    <i class="fas fa-lock mr-2"></i> 2 Invites needed to unlock
+            <div id="tab-wallet" class="hidden-section space-y-6">
+                <div id="w-lock" class="bg-red-500/10 border border-red-500/20 p-4 rounded-2xl text-center text-[10px] text-red-500 font-bold uppercase">
+                    <i class="fas fa-lock mr-2"></i> 2 Invites needed to withdraw
                 </div>
                 <div class="premium-card p-6 space-y-4">
-                    <input type="text" id="upi-id" placeholder="Enter UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
-                    <select id="withdraw-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl font-bold text-yellow-500 outline-none">
+                    <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none">
+                    <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl font-bold text-yellow-500 outline-none">
                         <option value="1000">1,000 = ₹30</option>
                         <option value="2000">2,000 = ₹60</option>
-                        <option value="5000">5,000 = ₹150</option>
                     </select>
-                    <button id="withdraw-btn" onclick="handleWithdraw()" class="w-full bg-zinc-800 text-gray-500 py-4 rounded-2xl font-black uppercase pointer-events-none opacity-50">Withdraw</button>
+                    <button id="w-btn" onclick="requestWdr()" class="w-full bg-zinc-800 text-gray-600 py-4 rounded-2xl font-black uppercase pointer-events-none opacity-50">Withdraw</button>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-[10px] font-black text-gray-500 uppercase ml-2">Recent History</p>
+                    <div id="ui-hist" class="space-y-2"></div>
                 </div>
             </div>
         </div>
 
-        <nav class="fixed bottom-6 left-6 right-6 bg-zinc-900/90 border border-white/10 p-4 flex justify-around rounded-[32px] shadow-2xl">
-            <button onclick="tab('home')" id="n-home" class="nav-btn nav-active"><i class="fas fa-home"></i></button>
-            <button onclick="tab('partner')" id="n-partner" class="nav-btn"><i class="fas fa-users"></i></button>
-            <button onclick="tab('wallet')" id="n-wallet" class="nav-btn"><i class="fas fa-wallet"></i></button>
+        <nav class="fixed bottom-6 left-6 right-6 bg-zinc-900/95 border border-white/10 p-4 flex justify-around rounded-[32px]">
+            <button onclick="tab('home')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
+            <button onclick="tab('partner')" id="n-partner" class="text-zinc-600 text-xl"><i class="fas fa-users"></i></button>
+            <button onclick="tab('wallet')" id="n-wallet" class="text-zinc-600 text-xl"><i class="fas fa-history"></i></button>
         </nav>
     </main>
 
@@ -142,104 +135,120 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        let userKey = "";
-        let userData = {};
+        let uKey = ""; let uData = {};
 
-        function slide(mode) {
-            document.getElementById('auth-container').style.transform = mode === 'signup' ? 'translateX(-50%)' : 'translateX(0)';
-        }
+        function slide(m) { document.getElementById('auth-container').style.transform = m==='signup'?'translateX(-50%)':'translateX(0)'; }
+        function closeNotice() { document.getElementById('notice-modal').classList.remove('modal-active'); }
 
         window.onload = () => {
             const r = new URLSearchParams(window.location.search).get('ref');
             if(r) { slide('signup'); document.getElementById('r-ref').value = r; }
-            const saved = localStorage.getItem('apr_user');
-            if(saved) { userKey = saved; startApp(); }
+            const s = localStorage.getItem('apr_u');
+            if(s) { uKey = s; launch(); }
         };
 
         function handleSignup() {
             const e = document.getElementById('r-email').value, p = document.getElementById('r-pass').value, r = document.getElementById('r-ref').value;
-            if(!e || !p) return alert("Fill fields!");
+            if(!e || !p) return alert("Fill all fields");
             const k = e.replace(/[.#$[\]]/g, "_");
             db.ref('users/'+k).once('value', s => {
-                if(s.exists()) return alert("Exists!");
-                db.ref('users/'+k).set({ password: p, balance: 55, invites: 0 });
+                if(s.exists()) return alert("Email exists");
+                db.ref('users/'+k).set({ p:p, b:55, i:0, c:0, gift:false });
                 if(r && r !== k) {
                     db.ref('users/'+r).once('value', v => {
-                        if(v.exists()) db.ref('users/'+r).update({ balance: (v.val().balance||0)+10.3, invites: (v.val().invites||0)+1 });
+                        if(v.exists()){
+                            db.ref('users/'+r).update({ b:(v.val().b||0)+10.3, i:(v.val().i||0)+1, c:(v.val().c||0)+0.3 });
+                        }
                     });
                 }
-                userKey = k; localStorage.setItem('apr_user', k); startApp();
+                uKey = k; localStorage.setItem('apr_u', k); launch();
             });
         }
 
         function handleLogin() {
             const e = document.getElementById('l-email').value, p = document.getElementById('l-pass').value;
-            if(!e) return alert("Enter email");
             const k = e.replace(/[.#$[\]]/g, "_");
             db.ref('users/'+k).once('value', s => {
-                if(s.exists() && s.val().password === p) { userKey = k; localStorage.setItem('apr_user', k); startApp(); }
-                else alert("Wrong Login!");
+                if(s.exists() && s.val().p === p) { uKey = k; localStorage.setItem('apr_u', k); launch(); }
+                else alert("Incorrect!");
             });
         }
 
-        function startApp() {
+        function launch() {
             document.getElementById('auth-page').classList.add('hidden-section');
             document.getElementById('main-app').classList.remove('hidden-section');
-            document.getElementById('ui-reflink').value = window.location.origin + window.location.pathname + "?ref=" + userKey;
-            syncData(); genCap();
+            document.getElementById('notice-modal').classList.add('modal-active');
+            document.getElementById('ui-link').value = window.location.origin + window.location.pathname + "?ref=" + uKey;
+            sync(); gen();
         }
 
-        function syncData() {
-            db.ref('users/'+userKey).on('value', s => {
-                userData = s.val(); if(!userData) return;
-                document.getElementById('ui-balance').innerText = Math.floor(userData.balance || 0);
-                document.getElementById('ui-invites').innerText = userData.invites || 0;
-                
-                const btn = document.getElementById('withdraw-btn');
-                const lock = document.getElementById('withdraw-lock');
-                if((userData.invites || 0) >= 2) {
-                    btn.classList.remove('bg-zinc-800', 'text-gray-500', 'pointer-events-none', 'opacity-50');
-                    btn.classList.add('classic-gold', 'text-black');
-                    lock.classList.add('hidden-section');
+        function sync() {
+            db.ref('users/'+uKey).on('value', s => {
+                uData = s.val(); if(!uData) return;
+                document.getElementById('ui-balance').innerText = Math.floor(uData.b || 0);
+                document.getElementById('ui-inv').innerText = uData.i || 0;
+                document.getElementById('ui-comm').innerText = (uData.c || 0).toFixed(1);
+                const btn = document.getElementById('w-btn'), lock = document.getElementById('w-lock');
+                if((uData.i || 0) >= 2) {
+                    btn.classList.remove('bg-zinc-800','text-gray-600','pointer-events-none','opacity-50');
+                    btn.classList.add('classic-gold'); lock.classList.add('hidden-section');
                 }
+            });
+            db.ref('withdrawals').orderByChild('u').equalTo(uKey).on('value', s => {
+                const h = document.getElementById('ui-hist'); h.innerHTML = "";
+                s.forEach(x => {
+                    const d = x.val();
+                    h.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold">${d.upi}</p><p class="text-gray-600">${d.status}</p></div>
+                        <div class="text-yellow-500 font-bold">₹${d.a/33.3}</div>
+                    </div>`;
+                });
             });
         }
 
-        function checkCaptcha() {
-            if(document.getElementById('captcha-input').value.toUpperCase() === document.getElementById('captcha-display').innerText) {
-                db.ref('users/'+userKey).update({ balance: (userData.balance || 0) + 1.5 });
+        function verifyCap() {
+            if(document.getElementById('cap-input').value.toUpperCase() === document.getElementById('cap-code').innerText) {
+                db.ref('users/'+uKey).update({ b: (uData.b || 0) + 1.5 });
                 window.open("https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e", "_blank");
-                document.getElementById('captcha-input').value = ""; genCap();
-            } else alert("Wrong Code!");
+                document.getElementById('cap-input').value = ""; gen();
+            } else alert("Wrong!");
         }
 
-        function handleWithdraw() {
-            const upi = document.getElementById('upi-id').value, amt = document.getElementById('withdraw-amt').value;
-            if(!upi) return alert("Enter UPI ID");
-            if(userData.balance < amt) return alert("Low balance");
-            db.ref('withdrawals').push({ user: userKey, upi: upi, amount: amt, status: 'Pending' });
-            db.ref('users/'+userKey).update({ balance: userData.balance - amt });
-            alert("Success!");
+        function useGift() {
+            const code = document.getElementById('gift-input').value.toUpperCase();
+            if(code === "APRIL55" && !uData.gift) {
+                db.ref('users/'+uKey).update({ b: (uData.b || 0) + 55, gift: true });
+                alert("55 Bonus Added!");
+            } else alert("Invalid or Used!");
         }
 
-        function genCap() {
+        function requestWdr() {
+            const upi = document.getElementById('upi').value, amt = document.getElementById('w-amt').value;
+            if(!upi) return alert("Enter UPI");
+            if(uData.b < amt) return alert("Low balance");
+            db.ref('withdrawals').push({ u:uKey, upi:upi, a:amt, status:'Pending' });
+            db.ref('users/'+uKey).update({ b: uData.b - amt });
+            alert("Request Sent!");
+        }
+
+        function gen() {
             const c = "ABC123XYZ789"; let r = "";
             for(let i=0; i<4; i++) r += c.charAt(Math.floor(Math.random()*c.length));
-            document.getElementById('captcha-display').innerText = r;
+            document.getElementById('cap-code').innerText = r;
         }
 
         function tab(t) {
-            ['home-tab', 'partner-tab', 'wallet-tab'].forEach(x => document.getElementById(x).classList.add('hidden-section'));
-            document.getElementById(t+'-tab').classList.remove('hidden-section');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
-            document.getElementById('n-'+t).classList.add('nav-active');
+            ['home', 'partner', 'wallet'].forEach(x => document.getElementById('tab-'+x).classList.add('hidden-section'));
+            document.getElementById('tab-'+t).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('text-yellow-500', 'text-zinc-600'));
+            document.getElementById('n-'+t).classList.replace('text-zinc-600', 'text-yellow-500');
         }
 
-        function copyRef() {
-            const l = document.getElementById('ui-reflink'); l.select();
+        function copyLink() {
+            const l = document.getElementById('ui-link'); l.select();
             navigator.clipboard.writeText(l.value); alert("Copied!");
         }
     </script>
 </body>
-    </html>
+                                                                                                                           </html>
                 
