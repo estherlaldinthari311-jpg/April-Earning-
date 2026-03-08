@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>APRIL EARNING</title>
     
+    <script src="https://landslidegraphsystems.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,132 +17,156 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
         body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* THE "HMEH THEI LO" FIX */
-        #auth-page, #main-app, nav, button, input { position: relative !important; z-index: 100 !important; pointer-events: auto !important; cursor: pointer !important; }
+        button, input, select, nav { position: relative !important; z-index: 100 !important; cursor: pointer !important; }
         
         .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
         .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); color: #000; }
         .hidden-section { display: none !important; }
         .nav-active { color: #c5a059; transform: scale(1.1); }
         
-        /* LEADERBOARD ANIMATION */
-        .lb-rank { animation: zoomIn; animation-duration: 0.6s; }
-        .rank-1 { background: linear-gradient(90deg, rgba(197, 160, 89, 0.2), transparent); border-left: 4px solid #c5a059; }
-
-        /* AUTH UI */
+        /* AUTH SLIDER */
         .auth-container { width: 100%; max-width: 360px; min-height: 500px; overflow: hidden; margin: auto; }
         .auth-slider { display: flex; width: 200%; transition: 0.5s ease; }
         .auth-form { width: 50%; padding: 25px; }
         .show-register .auth-slider { transform: translateX(-50%); }
 
+        /* LEADERBOARD DESIGN */
+        .rank-1 { background: linear-gradient(90deg, rgba(197, 160, 89, 0.25), transparent); border-left: 4px solid #ffd700; }
+        .rank-2 { border-left: 4px solid #c0c0c0; }
+        .rank-3 { border-left: 4px solid #cd7f32; }
+
         #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 200; border-radius: 20px; }
         .timer-active #timer-box { display: flex; }
+        
+        .claimed-btn { background: rgba(255,255,255,0.05) !important; color: #555 !important; border: 1px dashed #333 !important; }
     </style>
 </head>
 <body>
 
     <section id="auth-page" class="min-h-screen flex items-center justify-center p-4">
         <div id="auth-wrap" class="premium-card auth-container shadow-2xl">
-            <div class="flex bg-white/5 border-b border-white/5">
+            <div class="flex bg-white/5">
                 <button onclick="switchAuth(false)" class="flex-1 py-4 font-bold text-[10px] uppercase">Login</button>
-                <button onclick="switchAuth(true)" class="flex-1 py-4 font-bold text-[10px] uppercase text-gold">Register</button>
+                <button onclick="switchAuth(true)" class="flex-1 py-4 font-bold text-[10px] uppercase text-yellow-500">Register</button>
             </div>
             <div class="auth-slider">
                 <div class="auth-form space-y-6 pt-10">
-                    <div class="text-center"><h2 class="text-3xl font-black text-gold">APRIL</h2><p class="text-[9px] text-gray-500 uppercase">Welcome Back</p></div>
-                    <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none text-sm">
-                    <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none text-sm">
-                    <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-black">SIGN IN</button>
+                    <h2 class="text-3xl font-black text-center text-yellow-500">SIGN IN</h2>
+                    <input type="email" id="l-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                    <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                    <button onclick="handleAuth(true)" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Login</button>
                 </div>
                 <div class="auth-form space-y-4 pt-10">
-                    <div class="text-center"><h2 class="text-2xl font-black text-gold uppercase">Register</h2><p class="text-[9px] text-green-500 uppercase">Bonus: 55 Coins</p></div>
-                    <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none text-sm">
-                    <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none text-sm">
-                    <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-xl border border-gold/30 text-yellow-500 text-sm">
-                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-black">CREATE ACCOUNT</button>
+                    <h2 class="text-2xl font-black text-center text-yellow-500 uppercase">Sign Up</h2>
+                    <input type="email" id="r-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                    <input type="password" id="r-pass" placeholder="Create Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
+                    <input type="text" id="refBy" placeholder="Referral Code (Optional)" class="w-full bg-white/10 p-4 rounded-xl border border-yellow-500/30 text-yellow-500 outline-none">
+                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-xl font-black uppercase">Create Account</button>
                 </div>
             </div>
         </div>
     </section>
 
     <main id="main-app" class="hidden-section pb-28">
+        <div class="flex justify-center p-2 bg-[#050507]">
+            <script type="text/javascript">
+                atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
+        </div>
+
         <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/90 backdrop-blur-lg z-50">
-            <h1 class="text-xl font-black italic text-gold">APRIL EARNING</h1>
+            <h1 class="text-xl font-black italic text-yellow-500">APRIL EARNING</h1>
             <div class="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
-                <i class="fas fa-coins text-gold text-xs"></i>
+                <i class="fas fa-coins text-yellow-500 text-xs"></i>
                 <span id="balance" class="font-bold text-sm">0</span>
             </div>
         </header>
 
-        <section id="home-tab" class="px-6">
-            <button onclick="claimDaily()" class="w-full premium-card p-4 mb-6 flex justify-between items-center border-l-4 border-gold">
-                <span class="font-bold text-sm">Daily Reward</span>
-                <i class="fas fa-gift text-gold"></i>
+        <section id="home-tab" class="px-6 animate__animated animate__fadeIn">
+            <button id="daily-btn" onclick="claimDaily()" class="w-full premium-card p-4 mb-6 flex justify-between items-center border-l-4 border-yellow-500">
+                <div class="text-left"><p class="font-bold text-sm">Daily Reward</p><p class="text-[10px] text-gray-500">+5 Coins Every 24h</p></div>
+                <i id="daily-icon" class="fas fa-gift text-yellow-500"></i>
             </button>
 
             <div id="captcha-box-wrap" class="premium-card p-6 text-center relative overflow-hidden">
                 <div id="timer-box">
-                    <div class="text-center"><p class="text-4xl font-black text-gold" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-widest">Syncing Ads...</p></div>
+                    <div class="text-center"><p class="text-4xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-widest">Syncing Data...</p></div>
                 </div>
                 <div class="bg-black/50 py-8 rounded-2xl mb-4 border border-white/5 relative">
                     <span id="captcha-code" class="text-4xl font-black tracking-[8px] opacity-20 italic">LOAD...</span>
                     <button onclick="generateCaptcha()" class="absolute top-2 right-2 text-gray-600"><i class="fas fa-sync"></i></button>
                 </div>
-                <input type="text" id="user-input" placeholder="Type Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase">
-                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black shadow-lg">CLAIM 1.5 COINS</button>
+                <input type="text" id="user-input" placeholder="Enter Captcha Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase">
+                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black shadow-lg uppercase">Claim 1.5 Coins</button>
             </div>
 
             <div class="mt-6 space-y-3">
                 <button onclick="joinSocial('tg')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-sky-500">
-                    <span class="text-xs font-bold">Join Telegram</span>
+                    <span class="text-xs font-bold uppercase">Join Telegram Group</span>
                     <span id="tg-btn" class="bg-sky-600 px-4 py-1 rounded-lg text-[10px] font-bold">JOIN +20</span>
                 </button>
                 <button onclick="joinSocial('ig')" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-pink-500">
-                    <span class="text-xs font-bold">Follow Instagram</span>
+                    <span class="text-xs font-bold uppercase">Follow Instagram</span>
                     <span id="ig-btn" class="bg-pink-600 px-4 py-1 rounded-lg text-[10px] font-bold">FOLLOW +20</span>
                 </button>
             </div>
 
-            <div class="mt-8">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-4 text-center tracking-widest">Top 3 Earners</p>
-                <div id="leaderboard" class="space-y-2"></div>
+            <div class="mt-10">
+                <p class="text-[10px] font-black text-gray-500 uppercase mb-4 text-center tracking-widest">Top 3 Rankers</p>
+                <div id="leaderboard" class="space-y-3"></div>
             </div>
         </section>
 
-        <section id="refer-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6">Partner</h2>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
-                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Comm</p><p id="comm-count" class="text-xl font-black text-gold">0.0</p></div>
+        <section id="refer-tab" class="hidden-section px-6 animate__animated animate__fadeIn">
+            <h2 class="text-2xl font-black mb-6">Partner Program</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Direct Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
+                <div class="premium-card p-4 text-center"><p class="text-[9px] text-gray-500 uppercase">Comm. Earned</p><p id="comm-count" class="text-xl font-black text-yellow-500">0.0</p></div>
             </div>
-            <div class="premium-card p-4 text-center text-[10px] truncate mb-4" id="share-link">...</div>
-            <button onclick="copyLink()" class="w-full bg-white text-black py-4 rounded-xl font-bold text-xs uppercase mb-6">Copy Link</button>
+            <div class="premium-card p-6 text-center mb-6 border-dashed border-yellow-500/20">
+                <p class="text-[10px] text-gray-500 mb-4 italic uppercase">Your Invitation Link</p>
+                <div class="bg-black/40 p-3 rounded-xl mb-4 truncate text-[9px] font-mono border border-white/5" id="share-link">...</div>
+                <button onclick="copyLink()" class="w-full bg-white text-black py-4 rounded-xl font-bold text-xs uppercase shadow-xl">Copy Link</button>
+            </div>
             <div class="premium-card p-6">
-                <p class="text-xs font-bold mb-4 text-center text-gold">GIFT CODE</p>
+                <p class="text-xs font-bold mb-4 text-center text-yellow-500 uppercase">Redeem Gift Code</p>
                 <div class="flex gap-2">
-                    <input type="text" id="gift-code" placeholder="Code" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none text-xs">
-                    <button onclick="redeemGift()" class="classic-gold px-6 py-3 rounded-xl font-bold text-xs">REDEEM</button>
+                    <input type="text" id="gift-code" placeholder="Enter Code" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none text-xs">
+                    <button onclick="redeemGift()" class="classic-gold px-6 py-3 rounded-xl font-bold text-xs uppercase">Redeem</button>
                 </div>
             </div>
         </section>
 
-        <section id="wallet-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6">Withdraw</h2>
+        <section id="wallet-tab" class="hidden-section px-6 animate__animated animate__fadeIn">
+            <h2 class="text-2xl font-black mb-4">Payouts</h2>
+            
+            <div class="premium-card p-4 mb-6 bg-red-500/5 border-red-500/20">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-shield-halved text-red-500 mt-1"></i>
+                    <div class="space-y-1">
+                        <p class="text-[11px] font-black uppercase text-red-500">Withdrawal Policy</p>
+                        <p class="text-[10px] text-gray-400">1. At least <b>2 Active Invites</b> required.</p>
+                        <p class="text-[10px] text-gray-400">2. Maximum <b>3 Withdrawals</b> per 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="premium-card p-6 space-y-4">
-                <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none">
+                <input type="text" id="upi" placeholder="Enter UPI ID (e.g. name@paytm)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
                 <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
                     <option value="1000">1,000 Coins (₹30)</option>
                     <option value="5000">5,000 Coins (₹150)</option>
                     <option value="10000">10,000 Coins (₹300)</option>
                 </select>
-                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black">WITHDRAW NOW</button>
+                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black uppercase shadow-lg">Request Withdrawal</button>
             </div>
-            <div id="wdr-history" class="mt-6 space-y-2 pb-10"></div>
+            <div id="wdr-history" class="mt-8 space-y-2 pb-6"></div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-[#050507]/95 border-t border-white/5 p-4 flex justify-around items-center z-[100] rounded-t-3xl backdrop-blur-xl">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
-            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600 text-xl"><i class="fas fa-gift"></i></button>
+        <nav class="fixed bottom-0 left-0 right-0 bg-[#050507]/95 border-t border-white/5 p-4 flex justify-around items-center z-[150] rounded-t-3xl backdrop-blur-xl shadow-2xl">
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-house"></i></button>
+            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600 text-xl"><i class="fas fa-users"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
         </nav>
     </main>
@@ -177,16 +203,16 @@
             const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
             const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
             const ref = document.getElementById('refBy').value.trim();
-            if(!email || !pass) return alert("Hming leh Pass ziak rawh");
+            if(!email || !pass) return alert("Please fill all details.");
 
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
                 if(isLogin) {
                     if(snap.exists() && snap.val().password === pass) {
                         currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
-                    } else alert("Email/Password a dik lo");
+                    } else alert("Invalid Credentials!");
                 } else {
-                    if(snap.exists()) return alert("User an awm tawh");
+                    if(snap.exists()) return alert("User already exists!");
                     database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, invitedBy: ref, comm: 0, lastClaim: 0 });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
@@ -211,14 +237,17 @@
                 document.getElementById('balance').innerText = Math.floor(userData.balance);
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
-            });
-            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
-                snap.forEach(c => {
-                    hist.innerHTML += `<div class="premium-card p-3 flex justify-between items-center text-[10px]">
-                        <span>${c.val().status}</span><b class="text-gold">₹${Math.floor(c.val().amount/33.3)}</b>
-                    </div>`;
-                });
+                
+                // UPDATE DAILY CLAIM UI
+                const now = Date.now();
+                const btn = document.getElementById('daily-btn');
+                const icon = document.getElementById('daily-icon');
+                if(now - (userData.lastClaim || 0) < 86400000) {
+                    btn.classList.add('claimed-btn');
+                    btn.querySelector('p').innerText = "Claimed";
+                    btn.querySelector('p:last-child').innerText = "Next available in 24h";
+                    icon.className = "fas fa-check-circle text-gray-500";
+                }
             });
         }
 
@@ -232,7 +261,6 @@
         function processCaptcha() {
             const input = document.getElementById('user-input').value.toUpperCase();
             if(input === document.getElementById('captcha-code').innerText) {
-                // TIMER FOR ANTI-BLOCK
                 document.getElementById('captcha-box-wrap').classList.add('timer-active');
                 let sec = 15;
                 const t = setInterval(() => {
@@ -240,10 +268,7 @@
                     if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); }
                 }, 1000);
 
-                // DIRECT ADS POPUP
                 window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
-                
-                // ADD COINS
                 database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
                 if(userData.invitedBy) {
                     database.ref('users/' + userData.invitedBy).once('value', s => {
@@ -251,7 +276,7 @@
                     });
                 }
                 generateCaptcha(); document.getElementById('user-input').value = "";
-            } else alert("A dik lo!");
+            } else alert("Invalid Captcha!");
         }
 
         function loadLeaderboard() {
@@ -259,45 +284,30 @@
                 const lb = document.getElementById('leaderboard'); lb.innerHTML = "";
                 let p = []; snap.forEach(s => p.push({n: s.key.split('_')[0], b: s.val().balance}));
                 p.reverse().forEach((x, i) => {
-                    const icon = i===0 ? '🥇' : (i===1 ? '🥈' : '🥉');
-                    lb.innerHTML += `<div class="lb-rank premium-card p-4 flex justify-between items-center ${i===0?'rank-1':''} animate__animated animate__zoomIn">
-                        <div class="flex items-center gap-3"><span>${icon}</span><span class="font-bold text-xs uppercase">${x.n}</span></div>
-                        <b class="text-gold text-xs">${Math.floor(x.b)}</b>
+                    const badge = i===0 ? '🥇 GOLD' : (i===1 ? '🥈 SILVER' : '🥉 BRONZE');
+                    const rankClass = i===0 ? 'rank-1' : (i===1 ? 'rank-2' : 'rank-3');
+                    lb.innerHTML += `<div class="${rankClass} premium-card p-4 flex justify-between items-center animate__animated animate__fadeInUp">
+                        <div class="flex flex-col"><span class="text-[9px] font-black tracking-widest text-gray-500">${badge}</span><span class="font-black text-xs uppercase">${x.n}</span></div>
+                        <div class="text-right"><span class="text-[9px] text-gray-500 block">POINTS</span><b class="text-yellow-500 text-xs">${Math.floor(x.b)}</b></div>
                     </div>`;
                 });
             });
         }
 
+        function handleWithdraw() {
+            if(userData.invites < 2) return alert("Security Check: You need at least 2 invites to withdraw.");
+            window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
+            alert("Withdrawal Requested! Processing takes up to 24 hours.");
+        }
+
+        function claimDaily() {
+            const now = Date.now();
+            if(now - (userData.lastClaim||0) < 86400000) return alert("You have already claimed your daily reward!");
+            database.ref('users/' + currentUser).update({ balance: userData.balance + 5, lastClaim: now });
+            alert("5 Coins claimed successfully!");
+        }
+
         function showTab(id) {
             ['home-tab', 'refer-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
-            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home', 'refer-tab':'n-refer', 'wallet-tab':'n-wallet'};
-            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
-        }
-
-        function joinSocial(type) {
-            const link = type === 'tg' ? 'https://t.me/+ECYBETZqIrg0OGI1' : 'https://instagram.com/aprilearning_official';
-            window.open(link);
-            if(!userData[type]) {
-                database.ref('users/' + currentUser).update({ balance: userData.balance + 20, [type]: true });
-            }
-        }
-
-        function handleWithdraw() {
-            window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
-            alert("Sent! Please wait 24h.");
-        }
-        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Link Copied!"); }
-        function claimDaily() { alert("Claimed!"); }
-    </script>
-
-    <div style="text-align:center; margin: 10px 0;">
-        <script type="text/javascript">
-            atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="https://landslidegraphsystems.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
-    </div>
-</body>
-        </html>
-    
+            document.querySelectorAll('nav button').forEach(b => b
