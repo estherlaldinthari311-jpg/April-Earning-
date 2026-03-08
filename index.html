@@ -7,6 +7,7 @@
     
     <script src="https://pl28844683.effectivegatecpm.com/d9/07/49/d90749994ae7e79af413fd864fdead46.js"></script>
     <script async="async" data-cfasync="false" src="https://pl28844431.effectivegatecpm.com/a37aaa93ed45ea8b66f8fb60e58eb230/invoke.js"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,7 +21,7 @@
         .hidden-section { display: none !important; }
         
         /* Slide Auth Styles */
-        .auth-container { position: relative; overflow: hidden; width: 100%; max-width: 400px; height: 480px; }
+        .auth-container { position: relative; overflow: hidden; width: 100%; max-width: 400px; height: 500px; }
         .auth-slider { display: flex; width: 200%; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .auth-form { width: 50%; padding: 20px; }
         .show-register .auth-slider { transform: translateX(-50%); }
@@ -46,11 +47,11 @@
                     <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">LOGIN</button>
                 </div>
                 <div class="auth-form space-y-4">
-                    <h2 class="text-2xl font-black mb-6">Create Account</h2>
+                    <h2 class="text-2xl font-black mb-6 uppercase italic text-pink-500">Free 55 Coins!</h2>
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="text" id="refBy" placeholder="Referral Code (Optional)" class="w-full bg-white/10 p-4 rounded-2xl outline-none border border-pink-500/30">
-                    <button onclick="handleAuth(false)" class="w-full april-gradient py-4 rounded-2xl font-black">REGISTER</button>
+                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-2xl font-black">CREATE ACCOUNT</button>
                 </div>
             </div>
         </div>
@@ -60,6 +61,10 @@
         <header class="p-6 flex justify-between items-center">
             <h1 class="text-xl font-black uppercase tracking-tighter">April <span class="text-pink-500">Coins</span></h1>
             <div class="flex items-center gap-3">
+                <button onclick="showNotice()" class="w-10 h-10 glass flex items-center justify-center text-yellow-500 relative">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-dot" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                </button>
                 <div class="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
                     <i class="fas fa-coins text-yellow-500"></i>
                     <span id="balance" class="font-black">0</span>
@@ -68,6 +73,13 @@
         </header>
 
         <section id="home-tab" class="px-6">
+            <div class="mb-4 flex justify-center">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
+            </div>
+
             <button onclick="claimDaily()" class="w-full glass p-5 mb-6 flex justify-between items-center border-l-4 border-green-500">
                 <div><p class="font-bold text-sm">Daily Reward</p><p class="text-[10px] text-gray-400">Claim 1.3 Coins Every Day</p></div>
                 <i class="fas fa-gift text-green-500 text-xl"></i>
@@ -88,21 +100,11 @@
                     <i class="fab fa-telegram text-2xl text-sky-500 mb-2"></i>
                     <p class="text-[10px] font-bold uppercase">Telegram</p>
                 </a>
-                <a href="https://www.instagram.com/best_nexus?igsh=aHQwbGp6a2I4aWQy" target="_blank" class="glass p-4 text-center border-b-4 border-pink-500">
-                    <i class="fab fa-instagram text-2xl text-pink-500 mb-2"></i>
-                    <p class="text-[10px] font-bold uppercase">Instagram</p>
+                <a href="https://fktr.in/7exwXfn" target="_blank" class="glass p-4 text-center border-b-4 border-orange-500">
+                    <i class="fas fa-shopping-bag text-2xl text-orange-500 mb-2"></i>
+                    <p class="text-[10px] font-bold uppercase">Offer 1</p>
                 </a>
             </div>
-
-            <div class="glass p-4 mb-6">
-                <p class="text-[10px] font-black text-gray-500 uppercase mb-3">Special Offers</p>
-                <div class="space-y-2">
-                    <a href="https://topdeal.app.link/VITldpVQk1b" target="_blank" class="block bg-white/5 p-3 rounded-xl text-[10px] border border-white/5 truncate">https://topdeal.app.link/VITldpVQk1b</a>
-                    <a href="https://fktr.in/7exwXfn" target="_blank" class="block bg-white/5 p-3 rounded-xl text-[10px] border border-white/5 truncate">https://fktr.in/7exwXfn</a>
-                </div>
-            </div>
-            
-            <div class="ad-container"><div id="container-a37aaa93ed45ea8b66f8fb60e58eb230"></div></div>
         </section>
 
         <section id="refer-tab" class="hidden-section px-6">
@@ -118,7 +120,7 @@
                 </div>
             </div>
             <div class="glass p-6 border-2 border-dashed border-pink-500/20 text-center">
-                <p class="text-xs text-gray-400 mb-6">Earn 10 Coins per refer + 0.3 Commission on every captcha solve!</p>
+                <p class="text-xs text-gray-400 mb-6">Earn 10 Coins per refer + 0.3 Commission on every solve!</p>
                 <div class="bg-black/50 p-4 rounded-xl mb-4 border border-white/5 truncate text-[10px]" id="share-link">Loading...</div>
                 <div class="flex gap-2">
                     <button onclick="copyLink()" class="flex-1 bg-white text-black py-3 rounded-xl font-bold text-xs uppercase">Copy</button>
@@ -128,13 +130,13 @@
         </section>
 
         <section id="wallet-tab" class="hidden-section px-6">
-            <h2 class="text-2xl font-black mb-6">WITHDRAWAL</h2>
+            <h2 class="text-2xl font-black mb-4">WITHDRAWAL</h2>
             <div class="glass p-4 mb-6 border-l-4 border-pink-500 text-[9px] text-gray-400">
-                <p>• 1000 COINS = ₹100 | MAX: 4000 COINS (₹400)</p>
-                <p>• DAILY LIMIT: 2 REQUESTS</p>
-                <p>• MUST HAVE 2 INVITES TO UNLOCK</p>
+                <p>• MIN: 1000 | MAX: 4000 COINS</p>
+                <p>• DAILY LIMIT: 2 TIMES | NEED 2 INVITES</p>
             </div>
-            <div class="glass p-6 space-y-4">
+            
+            <div class="glass p-6 space-y-4 mb-8">
                 <input type="text" id="upi" placeholder="UPI ID" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                 <select id="w-amt" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10 text-gray-400">
                     <option value="1000">1000 Coins (₹100)</option>
@@ -144,9 +146,13 @@
                 </select>
                 <button onclick="handleWithdraw()" class="w-full april-gradient py-4 rounded-2xl font-black uppercase">WITHDRAW NOW</button>
             </div>
+
+            <h3 class="text-xs font-black text-gray-500 uppercase mb-4">Withdrawal History</h3>
+            <div id="wdr-history" class="space-y-2">
+                </div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-3xl border-t border-white/5 p-5 flex justify-around items-center z-50 rounded-t-[35px]">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-5 flex justify-around items-center z-50 rounded-t-[35px]">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-th-large text-xl"></i></button>
             <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-500"><i class="fas fa-users text-xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-500"><i class="fas fa-wallet text-xl"></i></button>
@@ -154,7 +160,6 @@
     </main>
 
     <script>
-        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDk3yDT5QoTB6IP84bnklr_5PYXT9Zc9gE",
             authDomain: "arpi-earning.firebaseapp.com",
@@ -173,11 +178,10 @@
             generateCaptcha();
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
+            checkNoticeDot();
         };
 
-        function switchAuth(isReg) {
-            document.getElementById('auth-wrap').classList.toggle('show-register', isReg);
-        }
+        function switchAuth(isReg) { document.getElementById('auth-wrap').classList.toggle('show-register', isReg); }
 
         function handleAuth(isLogin) {
             const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
@@ -193,7 +197,8 @@
                     } else alert("Invalid Login");
                 } else {
                     if(snap.exists()) return alert("User exists");
-                    database.ref('users/' + key).set({ password: pass, balance: 10, invites: 0, invitedBy: ref, lastClaim: 0 });
+                    // SIGNUP BONUS 55 ADDED HERE
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, invitedBy: ref, lastClaim: 0 });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
                             if(s.exists()) database.ref('users/' + ref).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+10 });
@@ -217,6 +222,19 @@
                 document.getElementById('balance').innerText = Math.floor(userData.balance || 0);
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('ref-income').innerText = (userData.invites * 10).toFixed(0);
+            });
+            // WITHDRAW HISTORY SYNC
+            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
+                const hist = document.getElementById('wdr-history');
+                hist.innerHTML = "";
+                snap.forEach(c => {
+                    const d = c.val();
+                    const color = d.status === "Success" ? "text-green-500" : (d.status === "Rejected" ? "text-red-500" : "text-orange-500");
+                    hist.innerHTML += `<div class="glass p-4 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold">${d.date.split(',')[0]}</p><p class="text-gray-500">${d.upi}</p></div>
+                        <div class="text-right font-black"><p>₹${d.amount/10}</p><p class="${color} uppercase">${d.status}</p></div>
+                    </div>`;
+                });
             });
         }
 
@@ -277,10 +295,22 @@
             document.getElementById(map[id]).classList.replace('text-gray-500', 'nav-active');
         }
 
+        function showNotice() {
+            database.ref('app_settings/notice').once('value', s => {
+                alert(s.val() || "No new announcements.");
+                document.getElementById('notif-dot').classList.add('hidden');
+            });
+        }
+
+        function checkNoticeDot() {
+            database.ref('app_settings/notice').on('value', s => {
+                if(s.exists()) document.getElementById('notif-dot').classList.remove('hidden');
+            });
+        }
+
         function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Copied!"); }
         function shareWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Join and Earn Coins: " + document.getElementById('share-link').innerText)); }
-        function showNotice() { alert("1000 Coins = ₹100. Withdrawals processed within 24h."); }
     </script>
 </body>
-                    </html>
-                
+                        </html>
+                        
