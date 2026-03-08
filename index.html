@@ -6,84 +6,47 @@
     <title>APRIL EARNING</title>
     
     <script src="https://landslidegraphsystems.com/e8/05/8f/e8058f59b323b04bd8e64295ac0638c0.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap');
         body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; overflow-x: hidden; }
         
-        button, input, select, nav { position: relative !important; z-index: 50 !important; cursor: pointer !important; }
-        
+        button, input, select, nav { position: relative !important; z-index: 100 !important; cursor: pointer !important; }
         .premium-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); backdrop-filter: blur(15px); border-radius: 20px; }
         .classic-gold { background: linear-gradient(135deg, #c5a059, #8e6d2f); color: #000; }
         .hidden-section { display: none !important; }
         .nav-active { color: #c5a059; transform: scale(1.1); }
         
-        /* SIDEBAR */
-        #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #0a0a0c; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid rgba(255,255,255,0.05); }
-        #sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.8); }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 1900; }
-        .overlay.show { display: block; }
+        /* LEADERBOARD ANIMATION */
+        .rank-bar { border-left: 4px solid transparent; transition: 0.4s; }
+        .rank-1 { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.05); }
+        .rank-2 { border-left-color: #c0c0c0; }
+        .rank-3 { border-left-color: #cd7f32; }
 
-        /* LEADERBOARD PODIUM */
-        .rank-bar { transition: 0.5s ease; animation: fadeInUp; animation-duration: 0.8s; }
-        .rank-1 { background: linear-gradient(180deg, #ffd70033, #ffd70000); border-top: 3px solid #ffd700; }
-        .rank-2 { border-top: 3px solid #c0c0c0; }
-        .rank-3 { border-top: 3px solid #cd7f32; }
-
-        /* NOTICE MODAL */
-        #notice-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-show { display: flex !important; }
-
-        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; }
+        #timer-box { position: absolute; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 200; border-radius: 20px; }
         .timer-active #timer-box { display: flex; }
     </style>
 </head>
 <body>
 
-    <div id="notice-modal">
-        <div class="premium-card p-8 w-full max-w-xs text-center animate__animated animate__zoomIn">
-            <i class="fas fa-bullhorn text-yellow-500 text-3xl mb-4"></i>
-            <h2 class="text-xl font-black mb-2 uppercase">Official Notice</h2>
-            <p id="notice-text" class="text-xs text-gray-400 leading-relaxed mb-6">Welcome to April Earning! Invite 2 friends to unlock withdrawals. Max 3 payout requests daily.</p>
-            <button onclick="closeNotice()" class="w-full classic-gold py-3 rounded-xl font-bold uppercase">Got it</button>
-        </div>
-    </div>
-
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-    <div id="sidebar" class="p-8">
-        <h2 class="text-2xl font-black text-yellow-500 italic mb-8">PARTNER</h2>
-        <div class="space-y-6">
-            <div class="premium-card p-4">
-                <p class="text-[10px] text-gray-500 uppercase">Referral Link</p>
-                <p id="share-link" class="text-[9px] truncate opacity-40 my-2">...</p>
-                <button onclick="copyLink()" class="w-full bg-white text-black py-2 rounded-lg font-bold text-[10px] uppercase">Copy</button>
-            </div>
-            <div class="premium-card p-4">
-                <p class="text-[10px] text-gray-500 uppercase">Redeem Code</p>
-                <input type="text" id="gift-code" placeholder="ENTER CODE" class="w-full bg-white/5 p-3 mt-2 rounded-lg text-xs outline-none">
-                <button onclick="redeemCode()" class="w-full classic-gold py-2 mt-2 rounded-lg font-bold text-[10px] uppercase">Redeem</button>
-            </div>
-        </div>
-    </div>
-
-    <section id="auth-page" class="min-h-screen flex items-center justify-center p-6">
-        <div class="premium-card w-full max-w-sm p-8 text-center shadow-2xl">
+    <section id="auth-page" class="min-h-screen flex items-center justify-center p-6 text-center">
+        <div class="premium-card w-full max-w-sm p-8 shadow-2xl">
             <h2 class="text-3xl font-black text-yellow-500 mb-8 italic uppercase">April Earning</h2>
             <div class="space-y-4">
                 <input type="email" id="u-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
                 <input type="password" id="u-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none">
-                <button onclick="handleAuth()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Sign In / Register</button>
+                <button onclick="handleAuth()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Login / Register</button>
             </div>
         </div>
     </section>
 
     <main id="main-app" class="hidden-section pb-32">
-        <div class="flex justify-center p-2 bg-black">
+        <div class="flex justify-center p-2 bg-black border-b border-white/5">
             <script type="text/javascript">
                 atOptions = {'key':'519ceac42444d69ac28ec1621467ee97','format':'iframe','height':50,'width':320,'params':{}};
             </script>
@@ -91,63 +54,77 @@
         </div>
 
         <header class="p-6 flex justify-between items-center sticky top-0 bg-[#050507]/95 backdrop-blur-md z-50">
-            <button onclick="toggleSidebar()" class="text-xl text-yellow-500"><i class="fas fa-bars-staggered"></i></button>
             <h1 class="text-xl font-black italic text-yellow-500">APRIL</h1>
-            <div class="flex items-center gap-3">
-                <button onclick="openNotice()" class="text-yellow-500"><i class="fas fa-circle-info"></i></button>
-                <div class="bg-white/5 px-4 py-1 rounded-full border border-white/10 flex items-center gap-2">
-                    <i class="fas fa-coins text-yellow-500 text-xs"></i>
-                    <span id="balance" class="font-bold text-sm">0</span>
-                </div>
+            <div class="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
+                <i class="fas fa-coins text-yellow-500 text-xs"></i>
+                <span id="balance" class="font-bold text-sm">0</span>
             </div>
         </header>
 
         <section id="home-tab" class="px-6 space-y-6">
-            <button id="daily-claim-btn" onclick="claimDaily()" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-yellow-500 animate__animated animate__pulse animate__infinite">
-                <div class="text-left"><p class="font-bold text-sm uppercase">Daily Bonus</p><p class="text-[10px] text-gray-500">Claim +10 Points</p></div>
-                <i class="fas fa-calendar-check text-yellow-500 text-xl"></i>
+            <button id="daily-claim-btn" onclick="claimDaily()" class="w-full premium-card p-4 flex justify-between items-center border-l-4 border-yellow-500">
+                <span class="font-bold text-xs uppercase">Daily Bonus</span>
+                <span class="bg-yellow-500 text-black text-[10px] px-3 py-1 rounded-full font-bold">+10 PTS</span>
             </button>
 
             <div id="captcha-box-wrap" class="premium-card p-6 text-center relative overflow-hidden">
                 <div id="timer-box">
-                    <div class="text-center"><p class="text-4xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase">Syncing Reward...</p></div>
+                    <div class="text-center"><p class="text-4xl font-black text-yellow-500" id="timer-sec">15</p><p class="text-[9px] uppercase tracking-widest text-gray-500">Verifying Payout...</p></div>
                 </div>
-                <div class="bg-black/50 py-10 rounded-2xl mb-4 border border-white/5">
+                <div class="bg-black/50 py-10 rounded-2xl mb-4 border border-white/5 relative">
                     <span id="captcha-code" class="text-4xl font-black tracking-[10px] opacity-20 italic">LOAD...</span>
+                    <button onclick="generateCaptcha()" class="absolute top-2 right-2 text-gray-700"><i class="fas fa-sync"></i></button>
                 </div>
-                <input type="text" id="user-input" placeholder="Enter Captcha Code" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase text-yellow-500">
-                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black uppercase shadow-lg">Submit & View Ads</button>
+                <input type="text" id="user-input" placeholder="Type Captcha" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-center font-bold mb-4 outline-none uppercase text-yellow-500">
+                <button onclick="processCaptcha()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Verify & Earn 1.5</button>
             </div>
+        </section>
 
-            <div class="pt-4">
-                <p class="text-[10px] font-black text-gray-500 uppercase text-center mb-6 tracking-[4px]">Top Ranking</p>
-                <div id="leaderboard" class="space-y-3"></div>
+        <section id="leader-tab" class="hidden-section px-6 space-y-4">
+            <h2 class="text-center text-xs font-black uppercase tracking-[5px] text-gray-500">Global Ranking</h2>
+            <div id="leaderboard" class="space-y-3"></div>
+        </section>
+
+        <section id="partner-tab" class="hidden-section px-6 space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="premium-card p-5 text-center">
+                    <p class="text-[9px] text-gray-500 uppercase mb-1">Total Invites</p>
+                    <p id="inv-count" class="text-2xl font-black">0</p>
+                </div>
+                <div class="premium-card p-5 text-center">
+                    <p class="text-[9px] text-gray-500 uppercase mb-1">Commission</p>
+                    <p id="comm-count" class="text-2xl font-black text-yellow-500">0.0</p>
+                </div>
+            </div>
+            <div class="premium-card p-6">
+                <p class="text-[10px] text-gray-500 uppercase mb-3">Invite Link (10 Pts/Ref)</p>
+                <div id="share-link" class="bg-black/40 p-3 rounded-lg truncate text-[10px] border border-white/5 mb-4 font-mono">...</div>
+                <button onclick="copyLink()" class="w-full bg-white text-black py-3 rounded-xl font-bold text-xs uppercase">Copy Link</button>
             </div>
         </section>
 
         <section id="wallet-tab" class="hidden-section px-6 space-y-6">
-            <div class="premium-card p-6 bg-red-500/5 border-red-500/10">
-                <p class="text-red-500 text-[10px] font-black uppercase mb-1">Security Policy</p>
-                <p class="text-[9px] text-gray-500">1. Need 2 active invites to withdraw.<br>2. Daily limit: 3 successful requests.</p>
-            </div>
-            
             <div class="premium-card p-6 space-y-4">
-                <input type="text" id="upi" placeholder="UPI ID (name@paytm)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
+                <p class="text-[10px] font-black uppercase text-red-500"><i class="fas fa-shield-alt mr-2"></i>Withdrawal Rules</p>
+                <p class="text-[9px] text-gray-500">• 2 Invites Required<br>• Max 3 Times Daily</p>
+                
+                <input type="text" id="upi" placeholder="Enter UPI ID" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm">
                 <select id="w-amt" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-sm font-bold text-yellow-500">
                     <option value="1000">1,000 Pts (₹30)</option>
                     <option value="3000">3,000 Pts (₹90)</option>
                     <option value="5000">5,000 Pts (₹150)</option>
                     <option value="10000">10,000 Pts (₹300)</option>
                 </select>
-                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Withdraw Now</button>
+                <button onclick="handleWithdraw()" class="w-full classic-gold py-4 rounded-xl font-black uppercase">Withdraw Payout</button>
             </div>
-
             <div id="wdr-history" class="space-y-2 pb-10"></div>
         </section>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[1000] rounded-t-3xl backdrop-blur-xl">
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 p-4 flex justify-around items-center z-[1000] rounded-t-3xl backdrop-blur-xl shadow-2xl">
             <button onclick="showTab('home-tab')" id="n-home" class="nav-active text-xl"><i class="fas fa-home"></i></button>
-            <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet-pouch"></i></button>
+            <button onclick="showTab('leader-tab')" id="n-leader" class="text-gray-600 text-xl"><i class="fas fa-trophy"></i></button>
+            <button onclick="showTab('partner-tab')" id="n-partner" class="text-gray-600 text-xl"><i class="fas fa-users"></i></button>
+            <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600 text-xl"><i class="fas fa-wallet"></i></button>
         </nav>
     </main>
 
@@ -173,22 +150,17 @@
             loadLeaderboard();
         };
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('show');
-        }
-
         function handleAuth() {
             const email = document.getElementById('u-email').value;
             const pass = document.getElementById('u-pass').value;
-            if(!email || !pass) return alert("Fill all details");
+            if(!email || !pass) return alert("Fill fields");
             const key = email.replace(/[.#$[\]]/g, "_");
             database.ref('users/' + key).once('value', snap => {
                 if(snap.exists()) {
                     if(snap.val().password === pass) { currentUser = key; localStorage.setItem('aprilUser', key); enterApp(); }
-                    else alert("Wrong Login!");
+                    else alert("Wrong password");
                 } else {
-                    database.ref('users/' + key).set({ password: pass, balance: 50, invites: 0, lastClaim: 0, wdrCount: 0 });
+                    database.ref('users/' + key).set({ password: pass, balance: 50, invites: 0, comm: 0, lastClaim: 0, wdrCount: 0 });
                     currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
                 }
             });
@@ -205,28 +177,32 @@
             database.ref('users/' + currentUser).on('value', snap => {
                 userData = snap.val();
                 document.getElementById('balance').innerText = Math.floor(userData.balance);
-                const dailyBtn = document.getElementById('daily-claim-btn');
-                if(Date.now() - (userData.lastClaim || 0) < 86400000) {
-                    dailyBtn.classList.remove('animate__infinite');
-                    dailyBtn.style.opacity = "0.5";
-                    dailyBtn.querySelector('p:last-child').innerText = "Already Claimed Today";
-                }
+                document.getElementById('inv-count').innerText = userData.invites || 0;
+                document.getElementById('comm-count').innerText = (userData.comm || 0).toFixed(1);
             });
             database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const h = document.getElementById('wdr-history'); h.innerHTML = "";
+                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
                 snap.forEach(s => {
                     const d = s.val();
-                    h.innerHTML += `<div class="premium-card p-3 flex justify-between items-center text-[10px]">
-                        <span>${d.date}</span><b class="text-yellow-500">₹${d.amount/33.3}</b><span class="text-green-500">${d.status}</span>
+                    hist.innerHTML += `<div class="premium-card p-4 flex justify-between items-center text-[10px]">
+                        <div><p class="font-bold uppercase">${d.upi}</p><p class="opacity-40 text-[8px]">${d.date}</p></div>
+                        <div class="text-right"><p class="text-yellow-500 font-black">₹${d.amount/33.3}</p><p class="text-green-500 font-bold">${d.status}</p></div>
                     </div>`;
                 });
             });
         }
 
         function claimDaily() {
-            if(Date.now() - (userData.lastClaim || 0) < 86400000) return alert("Come back tomorrow!");
-            database.ref('users/' + currentUser).update({ balance: userData.balance + 10, lastClaim: Date.now() });
-            alert("10 Points Claimed!");
+            const now = Date.now();
+            if(now - (userData.lastClaim || 0) < 86400000) return alert("Come back in 24 hours!");
+            database.ref('users/' + currentUser).update({ balance: userData.balance + 10, lastClaim: now });
+            alert("10 Pts Claimed!");
+        }
+
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let code = ""; for(let i=0; i<6; i++) code += chars.charAt(Math.floor(Math.random()*chars.length));
+            document.getElementById('captcha-code').innerText = code;
         }
 
         function processCaptcha() {
@@ -239,55 +215,49 @@
                     if(sec <= 0) { clearInterval(t); document.getElementById('captcha-box-wrap').classList.remove('timer-active'); }
                 }, 1000);
                 window.location.href = "https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e";
-                database.ref('users/' + currentUser).update({ balance: userData.balance + 1.5 });
+                database.ref('users/' + currentUser).update({ balance: (userData.balance || 0) + 1.5 });
                 generateCaptcha(); document.getElementById('user-input').value = "";
             } else alert("Invalid Code");
         }
 
         function loadLeaderboard() {
-            database.ref('users').orderByChild('balance').limitToLast(3).on('value', snap => {
+            database.ref('users').orderByChild('balance').limitToLast(10).on('value', snap => {
                 const lb = document.getElementById('leaderboard'); lb.innerHTML = "";
-                let players = []; snap.forEach(s => players.push({ n: s.key.split('_')[0], b: s.val().balance }));
-                players.reverse().forEach((p, i) => {
-                    const badge = i===0 ? '🥇 GOLD' : (i===1 ? '🥈 SILVER' : '🥉 BRONZE');
-                    lb.innerHTML += `<div class="premium-card p-4 flex justify-between items-center rank-bar rank-${i+1} animate__animated animate__fadeInUp">
-                        <div class="flex flex-col"><span class="text-[8px] font-black opacity-50">${badge}</span><span class="text-xs font-bold uppercase">${p.n}</span></div>
-                        <b class="text-yellow-500 text-xs">${Math.floor(p.b)} PTS</b>
+                let p = []; snap.forEach(s => p.push({ n: s.key.split('_')[0], b: s.val().balance }));
+                p.reverse().forEach((x, i) => {
+                    const rClass = i===0 ? 'rank-1' : (i===1 ? 'rank-2' : (i===2 ? 'rank-3' : ''));
+                    lb.innerHTML += `<div class="premium-card p-4 flex justify-between items-center rank-bar ${rClass}">
+                        <span class="text-xs font-bold uppercase">${i+1}. ${x.n}</span>
+                        <b class="text-yellow-500 text-xs">${Math.floor(x.b)} PTS</b>
                     </div>`;
                 });
             });
         }
 
         function handleWithdraw() {
-            if(userData.invites < 2) return alert("You need at least 2 invites to unlock withdrawals!");
-            if((userData.wdrCount || 0) >= 3) return alert("Daily limit reached! (Max 3/day)");
+            if(userData.invites < 2) return alert("At least 2 invites required!");
+            if((userData.wdrCount || 0) >= 3) return alert("Daily limit (3) reached!");
             
             const upi = document.getElementById('upi').value;
             const amt = document.getElementById('w-amt').value;
             if(!upi) return alert("Enter UPI ID");
             if(userData.balance < amt) return alert("Low balance");
 
-            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'Pending', date: new Date().toLocaleDateString() });
+            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: 'PENDING', date: new Date().toLocaleDateString() });
             database.ref('users/'+currentUser).update({ balance: userData.balance - amt, wdrCount: (userData.wdrCount || 0) + 1 });
-            alert("Request Sent!");
+            alert("Requested successfully!");
         }
 
-        function generateCaptcha() {
-            const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let res = ""; for(let i=0; i<6; i++) res += c.charAt(Math.floor(Math.random()*c.length));
-            document.getElementById('captcha-code').innerText = res;
-        }
-
-        function openNotice() { document.getElementById('notice-modal').classList.add('modal-show'); }
-        function closeNotice() { document.getElementById('notice-modal').classList.remove('modal-show'); }
         function showTab(id) {
-            document.getElementById('home-tab').classList.add('hidden-section');
-            document.getElementById('wallet-tab').classList.add('hidden-section');
+            ['home-tab', 'leader-tab', 'partner-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const map = {'home-tab':'n-home', 'leader-tab':'n-leader', 'partner-tab':'n-partner', 'wallet-tab':'n-wallet'};
+            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
         }
+
         function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Link Copied!"); }
-        function redeemCode() { alert("Invalid Code"); }
     </script>
 </body>
-                </html>
-    
+                    </html>
+                
