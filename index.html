@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>April Premium - Earn More</title>
+    <title>April Premium - Pro Rewards</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -14,15 +14,22 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
         body { font-family: 'Outfit', sans-serif; background: #050507; color: #fff; margin: 0; height: 100vh; overflow: hidden; }
         .april-gradient { background: linear-gradient(135deg, #ff0055, #ff8000); }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 30px; }
         .hidden-section { display: none !important; }
         #main-app { height: 100vh; display: flex; flex-direction: column; }
         .content-area { flex: 1; overflow-y: auto; padding-bottom: 120px; }
-        .auth-container { width: 100%; max-width: 400px; height: 550px; overflow: hidden; position: relative; }
+        .nav-active { color: #ff0055; transform: scale(1.2); text-shadow: 0 0 15px rgba(255, 0, 85, 0.5); }
+        
+        /* Scratch Card Style */
+        .scratch-box { width: 100%; height: 120px; background: #1a1a1a; border-radius: 20px; position: relative; overflow: hidden; display: flex; items-center; justify-content: center; }
+        .scratch-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; display: flex; align-items: center; justify-content: center; z-index: 2; cursor: pointer; transition: 0.5s; }
+        .scratched .scratch-overlay { transform: translateY(-100%); }
+
+        /* Auth slider */
+        .auth-container { width: 100%; max-width: 400px; height: 560px; overflow: hidden; position: relative; }
         .auth-slider { display: flex; width: 200%; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .auth-form { width: 50%; padding: 30px; }
         .show-register .auth-slider { transform: translateX(-50%); }
-        .nav-active { color: #ff0055; transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -30,23 +37,23 @@
     <section id="auth-page" class="h-screen flex items-center justify-center p-6">
         <div id="auth-wrap" class="glass auth-container shadow-2xl">
             <div class="flex border-b border-white/5">
-                <button onclick="switchAuth(false)" class="flex-1 py-5 font-bold uppercase text-xs tracking-widest">Login</button>
-                <button onclick="switchAuth(true)" class="flex-1 py-5 font-bold uppercase text-xs tracking-widest">Register</button>
+                <button onclick="switchAuth(false)" class="flex-1 py-5 font-bold uppercase text-[10px] tracking-widest">Login</button>
+                <button onclick="switchAuth(true)" class="flex-1 py-5 font-bold uppercase text-[10px] tracking-widest text-pink-500">Register</button>
             </div>
             <div class="auth-slider">
                 <div class="auth-form space-y-5">
-                    <h2 class="text-3xl font-black mt-4 italic">Welcome</h2>
-                    <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
+                    <h2 class="text-3xl font-black mt-4 italic uppercase tracking-tighter">Welcome</h2>
+                    <input type="email" id="l-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
-                    <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">LOGIN</button>
+                    <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black shadow-lg">LOGIN</button>
                 </div>
                 <div class="auth-form space-y-5">
-                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic">Join Us</h2>
-                    <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Bonus: 55 Coins</p>
-                    <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
+                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic uppercase">Join Pro</h2>
+                    <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Instant 55 Coins Reward</p>
+                    <input type="email" id="r-email" placeholder="Email Address" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-2xl outline-none border border-pink-500/30">
-                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-2xl font-black">GET 55 COINS</button>
+                    <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-2xl font-black uppercase">Start Earning</button>
                 </div>
             </div>
         </div>
@@ -62,7 +69,7 @@
 
         <header class="p-8 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <button onclick="showNotice()" class="w-10 h-10 glass flex items-center justify-center text-yellow-500">
+                <button onclick="showNotice()" class="w-11 h-11 glass flex items-center justify-center text-yellow-500 shadow-lg">
                     <i class="fas fa-bell"></i>
                 </button>
                 <h1 class="text-2xl font-black uppercase tracking-tighter italic">April<span class="text-pink-500">Coins</span></h1>
@@ -75,57 +82,74 @@
 
         <div class="content-area">
             <section id="home-tab" class="px-6 space-y-6">
-                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Earn More Rewards</p>
                 <div class="grid grid-cols-2 gap-4">
-                    <a href="https://fktr.in/0x6se99" target="_blank" class="glass p-5 text-center border-t-4 border-orange-500">
-                        <i class="fas fa-shopping-bag text-2xl text-orange-500 mb-2"></i>
-                        <p class="text-[9px] font-black uppercase">Extra Deal</p>
+                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" class="glass p-5 text-center flex flex-col items-center border-b-4 border-sky-500">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="w-10 h-10 mb-2">
+                        <p class="text-[9px] font-black uppercase text-sky-500">Join Telegram</p>
                     </a>
-                    <a href="https://topdeal.app.link/VITldpVQk1b" target="_blank" class="glass p-5 text-center border-t-4 border-green-500">
-                        <i class="fas fa-rocket text-2xl text-green-500 mb-2"></i>
-                        <p class="text-[9px] font-black uppercase">Top Bonus</p>
+                    <a href="https://www.instagram.com/aprilearning_official" target="_blank" class="glass p-5 text-center flex flex-col items-center border-b-4 border-pink-500">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="w-10 h-10 mb-2">
+                        <p class="text-[9px] font-black uppercase text-pink-500">Follow Instagram</p>
                     </a>
                 </div>
 
-                <button onclick="claimDaily()" class="w-full glass p-5 flex justify-between items-center border-l-4 border-yellow-500">
-                    <div class="text-left"><p class="font-black text-sm uppercase">Daily Check-in</p><p class="text-[10px] text-gray-500">Claim 5 Coins</p></div>
-                    <i class="fas fa-calendar-check text-yellow-500 text-2xl"></i>
-                </button>
+                <div class="glass p-6 text-center">
+                    <p class="text-[10px] font-black text-yellow-500 uppercase mb-3 tracking-widest">Vanduai Thleuna</p>
+                    <div id="scratch-container" class="scratch-box">
+                        <div class="scratch-overlay" onclick="handleScratch()">
+                            <p class="font-black text-xs uppercase tracking-widest">Tap to Scratch</p>
+                        </div>
+                        <p class="font-black text-2xl text-white">+ <span id="scratch-amt">0</span> Coins</p>
+                    </div>
+                </div>
 
                 <div class="glass p-8 text-center relative overflow-hidden">
-                    <div class="p-10 rounded-[35px] bg-white/5 border border-white/10 mb-6 relative">
-                        <span id="captcha-code" class="text-4xl font-mono font-black tracking-[15px] opacity-40 italic">LOAD</span>
+                    <p class="text-[10px] font-black text-gray-500 uppercase mb-5 tracking-widest">Captcha Mining</p>
+                    <div class="p-10 rounded-[40px] bg-white/5 border border-white/10 mb-6 relative">
+                        <span id="captcha-code" class="text-4xl font-mono font-black tracking-[15px] opacity-30 italic">LOAD</span>
                         <button onclick="generateCaptcha()" class="absolute right-6 top-6 text-gray-600"><i class="fas fa-sync-alt"></i></button>
                     </div>
-                    <input type="text" id="user-input" placeholder="Enter Code" class="w-full bg-black/40 border border-white/10 p-5 rounded-2xl text-center font-bold mb-6 outline-none uppercase text-xl">
+                    <input type="text" id="user-input" placeholder="CODE HERE" class="w-full bg-black/40 border border-white/10 p-5 rounded-2xl text-center font-bold mb-6 outline-none uppercase text-xl focus:border-pink-500">
                     <a href="https://www.effectivegatecpm.com/cqe02cy3?key=31a8988e6d29708985288e0dedb7cd3e" target="_blank" onclick="processCaptcha()">
-                        <button class="w-full april-gradient py-5 rounded-2xl font-black uppercase shadow-2xl">Solve & Earn 1.5</button>
+                        <button class="w-full april-gradient py-5 rounded-3xl font-black uppercase shadow-2xl tracking-widest">Earn 1.5 Coins</button>
                     </a>
                 </div>
             </section>
 
             <section id="refer-tab" class="hidden-section px-6 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Invites</p><p id="inv-count" class="text-2xl font-black">0</p></div>
-                    <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Comm.</p><p id="ref-income" class="text-2xl font-black text-green-500">0.0</p></div>
+                    <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Total Invites</p><p id="inv-count" class="text-3xl font-black">0</p></div>
+                    <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Earnings</p><p id="ref-income" class="text-3xl font-black text-green-500">0.0</p></div>
                 </div>
-                <div class="glass p-8 text-center border-2 border-dashed border-pink-500/20">
-                    <p class="text-[10px] text-pink-500 font-black mb-4 uppercase">10 Bonus + 0.4 Comm.</p>
-                    <div class="bg-black/50 p-4 rounded-2xl mb-6 border border-white/5 truncate text-xs" id="share-link">Loading...</div>
+
+                <div class="glass p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-ticket-alt text-pink-500"></i>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Claim Gift Code</p>
+                    </div>
                     <div class="flex gap-2">
-                        <button onclick="copyLink()" class="flex-1 bg-white text-black py-4 rounded-2xl font-black text-xs uppercase">Copy</button>
-                        <button onclick="shareInvite()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl font-black text-xs uppercase">WhatsApp</button>
+                        <input type="text" id="gift-input" placeholder="ENTER CODE" class="flex-1 bg-white/5 border border-white/10 p-4 rounded-xl outline-none font-black text-pink-500 tracking-widest">
+                        <button onclick="claimGift()" class="april-gradient px-6 rounded-xl text-xs font-bold uppercase">Claim</button>
+                    </div>
+                </div>
+
+                <div class="glass p-8 text-center border-2 border-dashed border-pink-500/20">
+                    <p class="text-[11px] text-pink-500 font-black mb-5 uppercase tracking-widest">10 Bonus + 0.4 Commission</p>
+                    <div class="bg-black/50 p-4 rounded-2xl mb-6 border border-white/5 truncate text-xs font-mono" id="share-link">Loading...</div>
+                    <div class="flex gap-3">
+                        <button onclick="copyLink()" class="flex-1 bg-white text-black py-4 rounded-2xl font-black text-xs uppercase">Copy Link</button>
+                        <button onclick="shareInvite()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl font-black text-xs uppercase"><i class="fab fa-whatsapp mr-2"></i>Share</button>
                     </div>
                 </div>
             </section>
 
             <section id="wallet-tab" class="hidden-section px-6 space-y-6">
-                <div id="w-lock-msg" class="glass p-5 border-l-4 border-red-500 text-xs font-bold text-red-400 uppercase">
-                    <i class="fas fa-lock mr-2"></i> 2 Invites needed to unlock
+                <div id="w-lock-msg" class="glass p-5 border-l-4 border-red-500 text-[10px] font-black text-red-400 uppercase flex items-center gap-3">
+                    <i class="fas fa-lock"></i> Unlock after 2 invites
                 </div>
                 <div class="glass p-8 space-y-5">
                     <input type="text" id="upi" placeholder="Your UPI ID" class="w-full bg-white/5 p-5 rounded-2xl outline-none border border-white/10 font-bold">
-                    <select id="w-amt" class="w-full bg-white/5 p-5 rounded-2xl outline-none border border-white/10 font-bold">
+                    <select id="w-amt" class="w-full bg-white/5 p-5 rounded-2xl outline-none border border-white/10 font-bold uppercase text-xs">
                         <option value="1000">1000 Coins (₹30)</option>
                         <option value="2000">2000 Coins (₹60)</option>
                         <option value="5000">5000 Coins (₹150)</option>
@@ -137,9 +161,9 @@
             </section>
         </div>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-6 flex justify-around items-center z-50 rounded-t-[40px] shadow-2xl">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home text-2xl"></i></button>
-            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600"><i class="fas fa-users text-2xl"></i></button>
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-6 flex justify-around items-center z-50 rounded-t-[45px] shadow-2xl">
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-grid-2 text-2xl"></i><i class="fas fa-house text-2xl"></i></button>
+            <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600"><i class="fas fa-user-plus text-2xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-wallet text-2xl"></i></button>
         </nav>
     </main>
@@ -157,14 +181,8 @@
 
         window.onload = () => {
             generateCaptcha();
-            // CHECK FOR AUTO-FILL REF IN URL
             const urlParams = new URLSearchParams(window.location.search);
-            const refCode = urlParams.get('ref');
-            if(refCode) {
-                switchAuth(true); // Switch to Register
-                document.getElementById('refBy').value = refCode;
-            }
-
+            if(urlParams.get('ref')) { switchAuth(true); document.getElementById('refBy').value = urlParams.get('ref'); }
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
         };
@@ -185,7 +203,7 @@
                     } else alert("Invalid Login");
                 } else {
                     if(snap.exists()) return alert("User exists");
-                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0 });
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0, lastScratch: 0, giftUsed: false });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
                             if(s.exists()) database.ref('users/' + ref).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+10 });
@@ -248,16 +266,25 @@
             }
         }
 
-        function claimDaily() {
+        function handleScratch() {
             const now = Date.now();
-            if(now - (userData.lastDaily || 0) < 86400000) return alert("Wait 24h!");
-            database.ref('users/' + currentUser).update({ balance: userData.balance + 5, lastDaily: now });
-            alert("5 Coins Added!");
+            if(now - (userData.lastScratch || 0) < 86400000) return alert("Wait 24h for next scratch!");
+            const amt = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('scratch-amt').innerText = amt;
+            document.getElementById('scratch-container').classList.add('scratched');
+            database.ref('users/' + currentUser).update({ balance: userData.balance + amt, lastScratch: now });
+            setTimeout(() => alert(`You won ${amt} Coins!`), 600);
         }
 
-        function showNotice() {
-            database.ref('settings/notice').once('value', s => alert(s.val() || "Welcome to April Premium!"));
+        function claimGift() {
+            const code = document.getElementById('gift-input').value.toUpperCase();
+            if(code === "APRIL55" && !userData.giftUsed) {
+                database.ref('users/' + currentUser).update({ balance: userData.balance + 55, giftUsed: true });
+                alert("55 Coins Claimed!");
+            } else alert("Invalid or Used!");
         }
+
+        function showNotice() { database.ref('settings/notice').once('value', s => alert(s.val() || "Welcome!")); }
 
         function handleWithdraw() {
             const amt = parseInt(document.getElementById('w-amt').value);
@@ -266,20 +293,10 @@
             if(userData.balance < amt) return alert("Low balance");
             database.ref('withdrawals').push({ user: currentUser, amount: amt, upi: upi, status: "Pending", date: new Date().toLocaleString() });
             database.ref('users/' + currentUser).update({ balance: userData.balance - amt });
-            alert("Success!");
+            alert("Requested!");
         }
 
         function showTab(id) {
             ['home-tab', 'refer-tab', 'wallet-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
             document.getElementById(id).classList.remove('hidden-section');
-            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home', 'refer-tab':'n-refer', 'wallet-tab':'n-wallet'};
-            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
-        }
-
-        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Link Copied!"); }
-        function shareInvite() { window.open(`whatsapp://send?text=Join April Premium and get 55 Coins bonus: ${document.getElementById('share-link').innerText}`); }
-    </script>
-</body>
-                                                           </html>
-    
+            document.querySelectorAll('nav
