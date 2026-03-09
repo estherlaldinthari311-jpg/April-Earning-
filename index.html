@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>April Premium - Coins</title>
+    <title>April Premium - Earn More</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -35,7 +35,7 @@
             </div>
             <div class="auth-slider">
                 <div class="auth-form space-y-5">
-                    <h2 class="text-3xl font-black mt-4">Welcome</h2>
+                    <h2 class="text-3xl font-black mt-4 italic">Welcome</h2>
                     <input type="email" id="l-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="l-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">LOGIN</button>
@@ -45,7 +45,7 @@
                     <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Bonus: 55 Coins</p>
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
-                    <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-2xl outline-none border border-pink-500/20">
+                    <input type="text" id="refBy" placeholder="Referral Code" class="w-full bg-white/10 p-4 rounded-2xl outline-none border border-pink-500/30">
                     <button onclick="handleAuth(false)" class="w-full bg-white text-black py-4 rounded-2xl font-black">GET 55 COINS</button>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                 </button>
                 <h1 class="text-2xl font-black uppercase tracking-tighter italic">April<span class="text-pink-500">Coins</span></h1>
             </div>
-            <div class="bg-white/5 px-5 py-2 rounded-full border border-white/10 flex items-center gap-2">
+            <div class="bg-white/5 px-5 py-2 rounded-full border border-white/10 flex items-center gap-2 shadow-inner">
                 <i class="fas fa-coins text-yellow-500"></i>
                 <span id="balance" class="font-black text-lg">0</span>
             </div>
@@ -75,21 +75,22 @@
 
         <div class="content-area">
             <section id="home-tab" class="px-6 space-y-6">
-                <button onclick="claimDaily()" class="w-full glass p-5 flex justify-between items-center border-l-4 border-yellow-500">
-                    <div class="text-left"><p class="font-black text-sm uppercase">Daily Reward</p><p class="text-[10px] text-gray-500">Claim 5 Coins</p></div>
-                    <i class="fas fa-gift text-yellow-500 text-2xl"></i>
-                </button>
-
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Earn More Rewards</p>
                 <div class="grid grid-cols-2 gap-4">
-                    <a href="https://t.me/+ECYBETZqIrg0OGI1" target="_blank" class="glass p-5 text-center border-b-4 border-sky-500">
-                        <i class="fab fa-telegram text-2xl text-sky-500"></i>
-                        <p class="text-[9px] font-bold mt-2 uppercase">Telegram</p>
+                    <a href="https://fktr.in/0x6se99" target="_blank" class="glass p-5 text-center border-t-4 border-orange-500">
+                        <i class="fas fa-shopping-bag text-2xl text-orange-500 mb-2"></i>
+                        <p class="text-[9px] font-black uppercase">Extra Deal</p>
                     </a>
-                    <a href="https://www.instagram.com/aprilearning_official" target="_blank" class="glass p-5 text-center border-b-4 border-pink-500">
-                        <i class="fab fa-instagram text-2xl text-pink-500"></i>
-                        <p class="text-[9px] font-bold mt-2 uppercase">Instagram</p>
+                    <a href="https://topdeal.app.link/VITldpVQk1b" target="_blank" class="glass p-5 text-center border-t-4 border-green-500">
+                        <i class="fas fa-rocket text-2xl text-green-500 mb-2"></i>
+                        <p class="text-[9px] font-black uppercase">Top Bonus</p>
                     </a>
                 </div>
+
+                <button onclick="claimDaily()" class="w-full glass p-5 flex justify-between items-center border-l-4 border-yellow-500">
+                    <div class="text-left"><p class="font-black text-sm uppercase">Daily Check-in</p><p class="text-[10px] text-gray-500">Claim 5 Coins</p></div>
+                    <i class="fas fa-calendar-check text-yellow-500 text-2xl"></i>
+                </button>
 
                 <div class="glass p-8 text-center relative overflow-hidden">
                     <div class="p-10 rounded-[35px] bg-white/5 border border-white/10 mb-6 relative">
@@ -108,19 +109,12 @@
                     <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Invites</p><p id="inv-count" class="text-2xl font-black">0</p></div>
                     <div class="glass p-6 text-center"><p class="text-[10px] text-gray-500 uppercase font-bold">Comm.</p><p id="ref-income" class="text-2xl font-black text-green-500">0.0</p></div>
                 </div>
-                <div class="glass p-6">
-                    <p class="text-[10px] font-black text-gray-400 mb-3 uppercase tracking-widest">Redeem Gift</p>
-                    <div class="flex gap-2">
-                        <input type="text" id="gift-input" placeholder="CODE" class="flex-1 bg-white/5 border border-white/10 p-4 rounded-xl outline-none font-bold text-pink-500">
-                        <button onclick="claimGift()" class="april-gradient px-6 rounded-xl text-xs font-bold">APPLY</button>
-                    </div>
-                </div>
                 <div class="glass p-8 text-center border-2 border-dashed border-pink-500/20">
                     <p class="text-[10px] text-pink-500 font-black mb-4 uppercase">10 Bonus + 0.4 Comm.</p>
                     <div class="bg-black/50 p-4 rounded-2xl mb-6 border border-white/5 truncate text-xs" id="share-link">Loading...</div>
                     <div class="flex gap-2">
                         <button onclick="copyLink()" class="flex-1 bg-white text-black py-4 rounded-2xl font-black text-xs uppercase">Copy</button>
-                        <button onclick="shareInvite()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl font-black text-xs uppercase">Share</button>
+                        <button onclick="shareInvite()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl font-black text-xs uppercase">WhatsApp</button>
                     </div>
                 </div>
             </section>
@@ -134,7 +128,6 @@
                     <select id="w-amt" class="w-full bg-white/5 p-5 rounded-2xl outline-none border border-white/10 font-bold">
                         <option value="1000">1000 Coins (₹30)</option>
                         <option value="2000">2000 Coins (₹60)</option>
-                        <option value="3000">3000 Coins (₹90)</option>
                         <option value="5000">5000 Coins (₹150)</option>
                         <option value="10000">10000 Coins (₹300)</option>
                     </select>
@@ -144,8 +137,8 @@
             </section>
         </div>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-6 flex justify-around items-center z-50 rounded-t-[40px]">
-            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-th-large text-2xl"></i></button>
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-3xl border-t border-white/5 p-6 flex justify-around items-center z-50 rounded-t-[40px] shadow-2xl">
+            <button onclick="showTab('home-tab')" id="n-home" class="nav-active"><i class="fas fa-home text-2xl"></i></button>
             <button onclick="showTab('refer-tab')" id="n-refer" class="text-gray-600"><i class="fas fa-users text-2xl"></i></button>
             <button onclick="showTab('wallet-tab')" id="n-wallet" class="text-gray-600"><i class="fas fa-wallet text-2xl"></i></button>
         </nav>
@@ -164,6 +157,14 @@
 
         window.onload = () => {
             generateCaptcha();
+            // CHECK FOR AUTO-FILL REF IN URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if(refCode) {
+                switchAuth(true); // Switch to Register
+                document.getElementById('refBy').value = refCode;
+            }
+
             const saved = localStorage.getItem('aprilUser');
             if(saved) { currentUser = saved; enterApp(); }
         };
@@ -184,7 +185,7 @@
                     } else alert("Invalid Login");
                 } else {
                     if(snap.exists()) return alert("User exists");
-                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0, giftUsed: false });
+                    database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0 });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
                             if(s.exists()) database.ref('users/' + ref).update({ invites: (s.val().invites||0)+1, balance: (s.val().balance||0)+10 });
@@ -258,14 +259,6 @@
             database.ref('settings/notice').once('value', s => alert(s.val() || "Welcome to April Premium!"));
         }
 
-        function claimGift() {
-            const code = document.getElementById('gift-input').value.toUpperCase();
-            if(code === "APRIL55" && !userData.giftUsed) {
-                database.ref('users/' + currentUser).update({ balance: userData.balance + 55, giftUsed: true });
-                alert("55 Coins Added!");
-            } else alert("Already used or Invalid!");
-        }
-
         function handleWithdraw() {
             const amt = parseInt(document.getElementById('w-amt').value);
             const upi = document.getElementById('upi').value;
@@ -285,8 +278,8 @@
         }
 
         function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Link Copied!"); }
-        function shareInvite() { window.open(`whatsapp://send?text=Earn 100+ daily! Get 55 bonus link: ${document.getElementById('share-link').innerText}`); }
+        function shareInvite() { window.open(`whatsapp://send?text=Join April Premium and get 55 Coins bonus: ${document.getElementById('share-link').innerText}`); }
     </script>
 </body>
-    </html>
+                                                           </html>
     
