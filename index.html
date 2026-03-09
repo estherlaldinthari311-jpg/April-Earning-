@@ -24,7 +24,6 @@
         .auth-slider { display: flex; width: 200%; transition: 0.5s ease-in-out; }
         .auth-form { width: 50%; padding: 25px; }
         .show-register .auth-slider { transform: translateX(-50%); }
-        input, select { color: white !important; }
     </style>
 </head>
 <body>
@@ -43,7 +42,7 @@
                     <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">LOGIN</button>
                 </div>
                 <div class="auth-form space-y-5">
-                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic uppercase">Join Pro</h2>
+                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic">JOIN PRO</h2>
                     <p class="text-[9px] text-gray-400 font-bold">BONUS: 55 COINS</p>
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
@@ -56,13 +55,6 @@
 
     <main id="main-app" class="hidden-section">
         
-        <div class="w-full flex justify-center bg-black/50 py-2 border-b border-white/5" style="min-height: 60px;">
-            <script type="text/javascript">
-                atOptions = { 'key' : '519ceac42444d69ac28ec1621467ee97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/519ceac42444d69ac28ec1621467ee97/invoke.js"></script>
-        </div>
-
         <header class="p-6 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <button onclick="showNotice()" class="w-10 h-10 glass flex items-center justify-center text-yellow-500"><i class="fas fa-bell"></i></button>
@@ -105,49 +97,40 @@
 
             <section id="refer-tab" class="hidden-section px-6 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass p-5 text-center"><p class="text-[9px] text-gray-500 uppercase font-black">Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
-                    <div class="glass p-5 text-center"><p class="text-[9px] text-gray-500 uppercase font-black">Comm.</p><p id="ref-income" class="text-xl font-black text-green-500">0.0</p></div>
+                    <div class="glass p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Invites</p><p id="inv-count" class="text-xl font-black">0</p></div>
+                    <div class="glass p-5 text-center"><p class="text-[9px] text-gray-500 uppercase">Commission</p><p id="ref-income" class="text-xl font-black text-green-500">0.0</p></div>
                 </div>
-
                 <div class="glass p-8 text-center border-t-2 border-pink-500">
                     <h3 class="font-black uppercase text-sm mb-2">Invite Friends</h3>
                     <p class="text-[10px] text-gray-400 mb-6 uppercase tracking-widest">+10 Bonus | +0.3 Comm.</p>
                     <div class="bg-black/50 p-4 rounded-xl mb-4 border border-white/5 truncate text-[9px] font-mono text-pink-400" id="share-link">Generating Link...</div>
                     <button onclick="copyLink()" class="w-full april-gradient py-4 rounded-2xl font-black text-xs uppercase"><i class="fas fa-copy mr-2"></i> Copy Invite Link</button>
                 </div>
-
-                <div class="glass p-5 text-center">
-                    <p class="text-[9px] font-black text-gray-500 mb-3 uppercase">Gift Code</p>
-                    <div class="flex gap-2">
-                        <input type="text" id="gift-input" placeholder="ENTER CODE" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none font-bold text-pink-500 text-xs uppercase">
-                        <button onclick="claimGift()" class="april-gradient px-5 rounded-xl text-[10px] font-black uppercase">Apply</button>
-                    </div>
-                </div>
             </section>
 
-            <section id="leader-tab" class="hidden-section px-6 pb-20">
-                <div class="text-center py-6">
-                    <i class="fas fa-crown text-3xl text-yellow-500 mb-2"></i>
-                    <h2 class="text-lg font-black uppercase italic tracking-widest">Top 5 Legends</h2>
+            <section id="leader-tab" class="hidden-section px-6 pb-10">
+                <div class="flex flex-col items-center py-6">
+                    <i class="fas fa-crown text-4xl text-yellow-500 mb-2"></i>
+                    <h2 class="font-black uppercase italic text-2xl text-pink-500">Top 10 Leaders</h2>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Elite Earners of AprilCoins</p>
                 </div>
-                <div id="leader-list" class="space-y-3"></div>
+                <div id="leader-list" class="space-y-3">
+                    </div>
             </section>
 
             <section id="wallet-tab" class="hidden-section px-6 space-y-6">
                 <div id="w-lock-msg" class="glass p-4 border-l-4 border-red-500 text-[10px] font-black text-red-400">
                     <i class="fas fa-lock mr-2"></i> 2 INVITES NEEDED TO UNLOCK
                 </div>
-                <div class="glass p-8 space-y-4 text-center">
-                    <input type="text" id="upi" placeholder="UPI ID (e.g. name@apl)" class="w-full bg-white/5 p-4 rounded-xl outline-none border border-white/10 font-bold text-pink-500">
-                    <select id="w-amt" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 font-black text-sm text-white">
-                        <option value="1000">1000 Coins (₹30)</option>
-                        <option value="2000">2000 Coins (₹60)</option>
-                        <option value="5000">5000 Coins (₹150)</option>
-                        <option value="10000">10000 Coins (₹300)</option>
+                <div class="glass p-8 space-y-4">
+                    <input type="text" id="upi" placeholder="UPI ID (e.g. name@apl)" class="w-full bg-white/5 p-4 rounded-xl outline-none border border-white/10 font-bold">
+                    <select id="w-amt" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 font-bold text-white">
+                        <option value="1000" class="bg-black text-white">1000 Coins (₹30)</option>
+                        <option value="5000" class="bg-black text-white">5000 Coins (₹150)</option>
                     </select>
                     <button id="w-btn" onclick="handleWithdraw()" class="w-full bg-zinc-800 text-gray-600 py-4 rounded-xl font-black uppercase pointer-events-none opacity-50">Withdraw</button>
                 </div>
-                <div id="wdr-history" class="space-y-2 pb-10"></div>
+                <div id="wdr-history" class="space-y-2"></div>
             </section>
         </div>
 
@@ -180,19 +163,19 @@
         function switchAuth(isReg) { document.getElementById('auth-wrap').classList.toggle('show-register', isReg); }
 
         function handleAuth(isLogin) {
-            const email = (isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value).trim();
-            const pass = (isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value).trim();
+            const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
+            const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
             const ref = document.getElementById('refBy').value.trim();
-            if(!email || !pass) return alert("Fill all fields!");
+            if(!email || !pass) return alert("Please fill all fields!");
             const key = email.replace(/[.#$[\]]/g, "_");
 
             database.ref('users/' + key).once('value', snap => {
                 if(isLogin) {
                     if(snap.exists() && snap.val().password === pass) {
                         currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
-                    } else alert("Wrong details!");
+                    } else alert("Wrong email or password!");
                 } else {
-                    if(snap.exists()) return alert("User exists!");
+                    if(snap.exists()) return alert("User already exists!");
                     database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0, giftUsed: false });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
@@ -218,35 +201,48 @@
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('ref-income').innerText = (userData.commission || 0).toFixed(1);
                 if((userData.invites || 0) >= 2) {
-                    const btn = document.getElementById('w-btn');
-                    btn.className = "w-full april-gradient py-4 rounded-xl font-black uppercase text-sm shadow-lg pointer-events-auto opacity-100";
+                    document.getElementById('w-btn').className = "w-full april-gradient py-4 rounded-xl font-black uppercase text-sm shadow-lg text-white";
                     document.getElementById('w-lock-msg').classList.add('hidden-section');
                 }
-            });
-            database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
-                snap.forEach(c => {
-                    const d = c.val();
-                    hist.innerHTML += `<div class="glass p-4 flex justify-between items-center text-[10px] border-l-2 border-pink-500 mb-2">
-                        <div><p class="font-black text-yellow-500 uppercase">${d.status}</p><p class="text-gray-500">${d.date}</p></div>
-                        <p class="font-black text-white">₹${(d.amount/33.3).toFixed(0)}</p>
-                    </div>`;
-                });
             });
         }
 
         function loadLeaderboard() {
             database.ref('users').orderByChild('balance').limitToLast(10).once('value', snap => {
-                const list = document.getElementById('leader-list'); list.innerHTML = "";
-                let arr = []; snap.forEach(c => arr.push({id: c.key, ...c.val()}));
-                arr.reverse().slice(0, 5).forEach((u, i) => {
-                    const rankColor = i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-300" : i === 2 ? "text-orange-400" : "text-pink-500";
-                    list.innerHTML += `<div class="glass p-5 flex justify-between items-center border ${u.id===currentUser?'border-pink-500 bg-pink-500/10':'border-white/5'}">
-                        <div class="flex items-center gap-4"><span class="text-xl font-black ${rankColor}">#${i+1}</span>
-                        <p class="text-[11px] font-bold">${u.id.replace(/_/g,'.')}</p></div>
-                        <p class="font-black text-yellow-500">${Math.floor(u.balance)}</p></div>`;
+                const list = document.getElementById('leader-list');
+                list.innerHTML = "";
+                let arr = [];
+                snap.forEach(c => arr.push({id: c.key, ...c.val()}));
+                
+                arr.reverse().forEach((u, i) => {
+                    let displayName = u.id.replace(/_/g,'.').split('@')[0];
+                    let rankColor = i === 0 ? 'text-yellow-500' : (i === 1 ? 'text-gray-300' : (i === 2 ? 'text-orange-400' : 'text-gray-500'));
+                    
+                    list.innerHTML += `
+                        <div class="glass p-4 flex justify-between items-center ${u.id===currentUser ? 'border-pink-500 bg-pink-500/10' : ''}">
+                            <div class="flex items-center gap-4">
+                                <span class="text-xl font-black ${rankColor}">#${i+1}</span>
+                                <div>
+                                    <p class="text-[12px] font-black uppercase tracking-wider">${displayName}</p>
+                                    <p class="text-[8px] text-gray-500 uppercase tracking-widest">Active Member</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-black text-yellow-500 text-lg">${Math.floor(u.balance)}</p>
+                                <p class="text-[7px] text-gray-400 uppercase font-bold">Total Coins</p>
+                            </div>
+                        </div>`;
                 });
             });
+        }
+
+        function showTab(id) {
+            ['home-tab', 'refer-tab', 'wallet-tab', 'leader-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const map = {'home-tab':'n-home','refer-tab':'n-refer','wallet-tab':'n-wallet','leader-tab':'n-leader'};
+            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
+            if(id === 'leader-tab') loadLeaderboard();
         }
 
         function generateCaptcha() {
@@ -268,38 +264,26 @@
             } else alert("Wrong Captcha!");
         }
 
-        function claimGift() {
-            const code = document.getElementById('gift-input').value.toUpperCase().trim();
-            if (!code) return alert("Enter code!");
-            database.ref('settings/gift_codes/' + code).once('value', snap => {
-                const gift = snap.val();
-                if (snap.exists() && gift.active) {
-                    if (gift.used_by && gift.used_by[currentUser]) return alert("I hmang tawh!");
-                    database.ref('users/' + currentUser).update({ balance: (userData.balance||0) + gift.value });
-                    database.ref('settings/gift_codes/' + code + '/used_by/' + currentUser).set(true);
-                    alert("Claimed!");
-                } else alert("Invalid Code!");
-            });
+        function claimDaily() {
+            const now = Date.now();
+            if(now - (userData.lastDaily || 0) < 86400000) return alert("Wait 24h");
+            database.ref('users/' + currentUser).update({ balance: (userData.balance||0)+5, lastDaily: now });
+            alert("5 Coins Added!");
         }
 
         function handleWithdraw() {
-            const upi = document.getElementById('upi').value.trim();
+            const upi = document.getElementById('upi').value;
             const amt = parseInt(document.getElementById('w-amt').value);
             if(!upi) return alert("Enter UPI ID");
             if(userData.balance < amt) return alert("Insufficient Balance");
             database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: "Pending", date: new Date().toLocaleDateString() });
             database.ref('users/' + currentUser).update({ balance: userData.balance - amt });
-            alert("Requested!");
+            alert("Withdrawal Requested!");
         }
 
-        function showTab(id) {
-            ['home-tab', 'refer-tab', 'wallet-tab', 'leader-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
-            document.getElementById(id).classList.remove('hidden-section');
-            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home','refer-tab':'n-refer','wallet-tab':'n-wallet','leader-tab':'n-leader'};
-            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
-            if(id === 'leader-tab') loadLeaderboard();
-        }
-
-        function claimDaily() {
-            con
+        function showNotice() { database.ref('settings/notice').once('value', s => alert(s.val() || "Welcome!")); }
+        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Referral Link Copied!"); }
+    </script>
+</body>
+                </html>
+    
