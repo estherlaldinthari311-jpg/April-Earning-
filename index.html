@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>April Premium - Final</title>
+    <title>April Premium - Pro</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -42,7 +42,7 @@
                     <button onclick="handleAuth(true)" class="w-full april-gradient py-4 rounded-2xl font-black">LOGIN</button>
                 </div>
                 <div class="auth-form space-y-5">
-                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic">JOIN PRO</h2>
+                    <h2 class="text-3xl font-black mt-4 text-pink-500 italic uppercase">Join Pro</h2>
                     <p class="text-[9px] text-gray-400 font-bold">BONUS: 55 COINS</p>
                     <input type="email" id="r-email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
                     <input type="password" id="r-pass" placeholder="Password" class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10">
@@ -116,7 +116,7 @@
                 </div>
 
                 <div class="glass p-5">
-                    <p class="text-[9px] font-black text-gray-500 mb-3 uppercase">Have a Gift Code?</p>
+                    <p class="text-[9px] font-black text-gray-500 mb-3 uppercase text-center">Gift Code</p>
                     <div class="flex gap-2">
                         <input type="text" id="gift-input" placeholder="ENTER CODE" class="flex-1 bg-white/5 border border-white/10 p-3 rounded-xl outline-none font-bold text-pink-500 text-xs uppercase">
                         <button onclick="claimGift()" class="april-gradient px-5 rounded-xl text-[10px] font-black uppercase">Apply</button>
@@ -124,24 +124,29 @@
                 </div>
             </section>
 
-            <section id="leader-tab" class="hidden-section px-6 pb-10">
-                <h2 class="text-center font-black uppercase italic text-pink-500 py-6">Leaderboard</h2>
-                <div id="leader-list" class="space-y-2"></div>
+            <section id="leader-tab" class="hidden-section px-6 pb-20">
+                <div class="text-center py-8">
+                    <i class="fas fa-crown text-3xl text-yellow-500 mb-2"></i>
+                    <h2 class="text-xl font-black uppercase italic tracking-widest">Top 5 Legends</h2>
+                </div>
+                <div id="leader-list" class="space-y-3"></div>
             </section>
 
             <section id="wallet-tab" class="hidden-section px-6 space-y-6">
-                <div id="w-lock-msg" class="glass p-4 border-l-4 border-red-500 text-[10px] font-black text-red-400">
-                    <i class="fas fa-lock mr-2"></i> 2 INVITES NEEDED TO UNLOCK
+                <div id="w-lock-msg" class="glass p-4 border-l-4 border-red-500 text-[10px] font-black text-red-400 uppercase">
+                    <i class="fas fa-lock mr-2"></i> 2 Invites needed to unlock
                 </div>
-                <div class="glass p-8 space-y-4">
-                    <input type="text" id="upi" placeholder="UPI ID (e.g. name@apl)" class="w-full bg-white/5 p-4 rounded-xl outline-none border border-white/10 font-bold">
-                    <select id="w-amt" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 font-bold">
-                        <option value="1000">1000 Coins (₹30)</option>
-                        <option value="5000">5000 Coins (₹150)</option>
+                <div class="glass p-8 space-y-5">
+                    <input type="text" id="upi" placeholder="UPI ID (example@upi)" class="w-full bg-white/5 p-4 rounded-xl outline-none border border-white/10 font-bold text-pink-500">
+                    <select id="w-amt" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 font-black text-sm outline-none">
+                        <option value="1000">1000 Coins - ₹30</option>
+                        <option value="2000">2000 Coins - ₹60</option>
+                        <option value="5000">5000 Coins - ₹150</option>
+                        <option value="10000">10000 Coins - ₹300</option>
                     </select>
-                    <button id="w-btn" onclick="handleWithdraw()" class="w-full bg-zinc-800 text-gray-600 py-4 rounded-xl font-black uppercase pointer-events-none opacity-50">Withdraw</button>
+                    <button id="w-btn" onclick="handleWithdraw()" class="w-full bg-zinc-800 text-gray-600 py-5 rounded-2xl font-black uppercase pointer-events-none opacity-50 shadow-xl">Withdraw</button>
                 </div>
-                <div id="wdr-history" class="space-y-2"></div>
+                <div id="wdr-history" class="space-y-2 pb-10"></div>
             </section>
         </div>
 
@@ -177,16 +182,16 @@
             const email = isLogin ? document.getElementById('l-email').value : document.getElementById('r-email').value;
             const pass = isLogin ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
             const ref = document.getElementById('refBy').value.trim();
-            if(!email || !pass) return alert("Please fill all fields!");
+            if(!email || !pass) return alert("Fill fields!");
             const key = email.replace(/[.#$[\]]/g, "_");
 
             database.ref('users/' + key).once('value', snap => {
                 if(isLogin) {
                     if(snap.exists() && snap.val().password === pass) {
                         currentUser = key; localStorage.setItem('aprilUser', key); enterApp();
-                    } else alert("Wrong email or password!");
+                    } else alert("Wrong credentials!");
                 } else {
-                    if(snap.exists()) return alert("User already exists!");
+                    if(snap.exists()) return alert("User exists!");
                     database.ref('users/' + key).set({ password: pass, balance: 55, invites: 0, commission: 0, invitedBy: ref, lastDaily: 0, giftUsed: false });
                     if(ref && ref !== key) {
                         database.ref('users/' + ref).once('value', s => {
@@ -212,20 +217,48 @@
                 document.getElementById('inv-count').innerText = userData.invites || 0;
                 document.getElementById('ref-income').innerText = (userData.commission || 0).toFixed(1);
                 if((userData.invites || 0) >= 2) {
-                    document.getElementById('w-btn').className = "w-full april-gradient py-4 rounded-xl font-black uppercase text-sm shadow-lg";
+                    const btn = document.getElementById('w-btn');
+                    btn.className = "w-full april-gradient py-5 rounded-2xl font-black uppercase text-sm shadow-xl text-white pointer-events-auto opacity-100";
                     document.getElementById('w-lock-msg').classList.add('hidden-section');
                 }
             });
+
             database.ref('withdrawals').orderByChild('user').equalTo(currentUser).on('value', snap => {
-                const hist = document.getElementById('wdr-history'); hist.innerHTML = "";
+                const hist = document.getElementById('wdr-history');
+                hist.innerHTML = '<p class="text-[9px] font-black text-gray-600 uppercase mb-2">History</p>';
                 snap.forEach(c => {
                     const d = c.val();
-                    hist.innerHTML += `<div class="glass p-4 flex justify-between items-center text-[10px] border-l-2 border-pink-500">
-                        <div><p class="font-black">${d.status}</p><p class="text-gray-500">${d.date}</p></div>
-                        <p class="font-black text-pink-500">₹${(d.amount/33.3).toFixed(0)}</p>
+                    hist.innerHTML += `<div class="glass p-4 flex justify-between items-center border-l-2 border-pink-500 mb-2">
+                        <div><p class="text-[10px] font-black uppercase text-yellow-500">${d.status}</p><p class="text-[8px] text-gray-500">${d.date}</p></div>
+                        <p class="font-black text-white text-sm">₹${(d.amount/33.3).toFixed(0)}</p>
                     </div>`;
                 });
             });
+        }
+
+        function loadLeaderboard() {
+            database.ref('users').orderByChild('balance').limitToLast(10).once('value', snap => {
+                const list = document.getElementById('leader-list'); list.innerHTML = "";
+                let arr = []; snap.forEach(c => arr.push({id: c.key, ...c.val()}));
+                arr.reverse().forEach((u, i) => {
+                    const rankColor = i === 0 ? "text-yellow-400" : i === 1 ? "text-gray-300" : i === 2 ? "text-orange-400" : "text-pink-500";
+                    if(i < 5) {
+                        list.innerHTML += `<div class="glass p-5 flex justify-between items-center border ${u.id===currentUser?'border-pink-500 bg-pink-500/10':'border-white/5'}">
+                            <div class="flex items-center gap-4"><span class="text-xl font-black ${rankColor}">#${i+1}</span>
+                            <p class="text-[11px] font-bold">${u.id.replace(/_/g,'.')}</p></div>
+                            <p class="font-black text-yellow-500">${Math.floor(u.balance)}</p></div>`;
+                    }
+                });
+            });
+        }
+
+        function showTab(id) {
+            ['home-tab', 'refer-tab', 'wallet-tab', 'leader-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
+            const map = {'home-tab':'n-home','refer-tab':'n-refer','wallet-tab':'n-wallet','leader-tab':'n-leader'};
+            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
+            if(id === 'leader-tab') loadLeaderboard();
         }
 
         function generateCaptcha() {
@@ -250,59 +283,4 @@
         function claimGift() {
             const code = document.getElementById('gift-input').value.toUpperCase().trim();
             if (!code) return alert("Enter code!");
-            database.ref('settings/gift_codes/' + code).once('value', snap => {
-                const gift = snap.val();
-                if (snap.exists() && gift.active) {
-                    if (gift.used_by && gift.used_by[currentUser]) return alert("I hmang tawh!");
-                    database.ref('users/' + currentUser).update({ balance: (userData.balance||0) + gift.value });
-                    database.ref('settings/gift_codes/' + code + '/used_by/' + currentUser).set(true);
-                    alert("Gift Claimed!");
-                } else alert("Invalid Code!");
-            });
-        }
-
-        function handleWithdraw() {
-            const upi = document.getElementById('upi').value;
-            const amt = parseInt(document.getElementById('w-amt').value);
-            if(!upi) return alert("Enter UPI ID");
-            if(userData.balance < amt) return alert("Insufficient Balance");
-            database.ref('withdrawals').push({ user: currentUser, upi: upi, amount: amt, status: "Pending", date: new Date().toLocaleDateString() });
-            database.ref('users/' + currentUser).update({ balance: userData.balance - amt });
-            alert("Withdrawal Requested!");
-        }
-
-        function loadLeaderboard() {
-            database.ref('users').orderByChild('balance').limitToLast(10).once('value', snap => {
-                const list = document.getElementById('leader-list'); list.innerHTML = "";
-                let arr = []; snap.forEach(c => arr.push({id: c.key, ...c.val()}));
-                arr.reverse().forEach((u, i) => {
-                    list.innerHTML += `<div class="glass p-4 flex justify-between items-center ${u.id===currentUser?'border-pink-500 bg-pink-500/10':''}">
-                        <div class="flex items-center gap-3"><span class="font-black text-pink-500">#${i+1}</span><p class="text-[11px] font-bold">${u.id.replace(/_/g,'.')}</p></div>
-                        <p class="font-black text-yellow-500">${Math.floor(u.balance)}</p>
-                    </div>`;
-                });
-            });
-        }
-
-        function showTab(id) {
-            ['home-tab', 'refer-tab', 'wallet-tab', 'leader-tab'].forEach(t => document.getElementById(t).classList.add('hidden-section'));
-            document.getElementById(id).classList.remove('hidden-section');
-            document.querySelectorAll('nav button').forEach(b => b.classList.replace('nav-active', 'text-gray-600'));
-            const map = {'home-tab':'n-home','refer-tab':'n-refer','wallet-tab':'n-wallet','leader-tab':'n-leader'};
-            document.getElementById(map[id]).classList.replace('text-gray-600', 'nav-active');
-            if(id === 'leader-tab') loadLeaderboard();
-        }
-
-        function claimDaily() {
-            const now = Date.now();
-            if(now - (userData.lastDaily || 0) < 86400000) return alert("Wait 24h");
-            database.ref('users/' + currentUser).update({ balance: (userData.balance||0)+5, lastDaily: now });
-            alert("5 Coins Added!");
-        }
-
-        function showNotice() { database.ref('settings/notice').once('value', s => alert(s.val() || "Welcome!")); }
-        function copyLink() { navigator.clipboard.writeText(document.getElementById('share-link').innerText); alert("Referral Link Copied!"); }
-    </script>
-</body>
-        </html>
-                                                                                                          
+                                                                                                                                                                  
